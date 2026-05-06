@@ -41,3 +41,15 @@ body {
 .animate-pulse-highlight {
   animation: pulse-highlight 0.66s ease-in-out 3;
 }
+
+/* ─── Completed orders section (greyed out, reduced emphasis) ───── */
+.completed-orders-section {
+  opacity: 0.55;
+  filter: saturate(0.3);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.completed-orders-section:hover {
+  opacity: 0.75;
+  filter: saturate(0.5);
+}
