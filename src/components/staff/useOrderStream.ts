@@ -119,15 +119,26 @@ function orderReducer(state: OrderState, action: OrderAction): OrderState {
   }
 }
 
+// ─── Hook Options ───────────────────────────────────────────────────
+
+export type UseOrderStreamOptions = {
+  /** Called when a new order arrives that is relevant to this station */
+  onNewOrder?: (order: Order) => void
+}
+
 // ─── Hook ───────────────────────────────────────────────────────────
 
-export function useOrderStream(station: Station) {
+export function useOrderStream(station: Station, options?: UseOrderStreamOptions) {
   const [state, dispatch] = useReducer(orderReducer, {
     orders: [],
     connectionStatus: 'connecting',
   })
 
   const eventSourceRef = useRef<EventSource | null>(null)
+
+  // Stable ref for callback — avoids re-creating SSE on every render
+  const onNewOrderRef = useRef(options?.onNewOrder)
+  onNewOrderRef.current = options?.onNewOrder
 
   // Fetch initial orders
   const fetchOrders = useCallback(async () => {
@@ -168,6 +179,8 @@ export function useOrderStream(station: Station) {
         if (filtered) {
           console.log(`[useOrderStream] New order received: #${filtered.id}`)
           dispatch({ type: 'ADD_ORDER', payload: filtered })
+          // Notify caller (e.g. for notification chime)
+          onNewOrderRef.current?.(filtered)
         } else {
           console.log(`[useOrderStream] New order #${rawOrder.id} has no items for station=${station}, ignoring`)
         }

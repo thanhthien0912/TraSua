@@ -251,7 +251,7 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
 
 // ─── OrderCard ──────────────────────────────────────────────────────
 
-export default function OrderCard({ order }: { order: Order }) {
+export default function OrderCard({ order, isNew }: { order: Order; isNew?: boolean }) {
   const derivedStatus = order.derivedStatus ?? order.status
   const orderStatusConfig = ORDER_STATUS_CONFIG[derivedStatus] ?? ORDER_STATUS_CONFIG.PENDING
   const timeStr = new Date(order.createdAt).toLocaleTimeString('vi-VN', {
@@ -260,7 +260,7 @@ export default function OrderCard({ order }: { order: Order }) {
   })
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/60 shadow-lg shadow-amber-900/5 overflow-hidden transition-all duration-200 hover:shadow-xl hover:shadow-amber-900/10">
+    <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/60 shadow-lg shadow-amber-900/5 overflow-hidden transition-shadow duration-200 hover:shadow-xl hover:shadow-amber-900/10${isNew ? ' animate-pulse-highlight' : ''}`}>
       {/* Header */}
       <div className="px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200/40">
         <div className="flex items-center justify-between">

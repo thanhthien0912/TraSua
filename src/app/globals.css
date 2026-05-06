@@ -22,4 +22,22 @@ body {
   color: var(--foreground);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Notification pulse highlight (amber glow, 3 cycles) ───── */
+@keyframes pulse-highlight {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    background-color: transparent;
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(251, 191, 36, 0.35);
+    background-color: rgba(253, 230, 138, 0.25);
+  }
+}
+
+.animate-pulse-highlight {
+  animation: pulse-highlight 0.66s ease-in-out 3;
 }

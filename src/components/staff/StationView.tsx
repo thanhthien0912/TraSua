@@ -1,6 +1,8 @@
 'use client'
 
-import { useOrderStream, type Station } from './useOrderStream'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import { useOrderStream, type Station, type Order } from './useOrderStream'
+import { useNotification } from './useNotification'
 import OrderCard from './OrderCard'
 
 // ─── Station Labels ─────────────────────────────────────────────────
@@ -27,7 +29,41 @@ const CONNECTION_LABELS: Record<string, { label: string; color: string }> = {
 // ─── StationView ────────────────────────────────────────────────────
 
 export default function StationView({ station }: { station: Station }) {
-  const { orders, connectionStatus, refetch } = useOrderStream(station)
+  const { playChime, isMuted, toggleMute, needsUnlock, unlock } = useNotification()
+  const [newOrderIds, setNewOrderIds] = useState<Set<number>>(new Set())
+  const timersRef = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
+
+  // Callback for new order notification
+  const handleNewOrder = useCallback((order: Order) => {
+    if (!isMuted) {
+      playChime()
+    }
+    setNewOrderIds((prev) => new Set(prev).add(order.id))
+
+    // Clear highlight after 5 seconds
+    const timer = setTimeout(() => {
+      setNewOrderIds((prev) => {
+        const next = new Set(prev)
+        next.delete(order.id)
+        return next
+      })
+      timersRef.current.delete(order.id)
+    }, 5000)
+    timersRef.current.set(order.id, timer)
+  }, [isMuted, playChime])
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    const timers = timersRef.current
+    return () => {
+      timers.forEach((t) => clearTimeout(t))
+      timers.clear()
+    }
+  }, [])
+
+  const { orders, connectionStatus, refetch } = useOrderStream(station, {
+    onNewOrder: handleNewOrder,
+  })
 
   const connConfig = CONNECTION_LABELS[connectionStatus] ?? CONNECTION_LABELS.disconnected
 
@@ -70,6 +106,32 @@ export default function StationView({ station }: { station: Station }) {
                 {connConfig.label}
               </span>
             </div>
+
+            {/* Unlock notification prompt */}
+            {needsUnlock && (
+              <button
+                onClick={unlock}
+                className="min-h-[44px] px-4 py-2 rounded-xl bg-amber-600 text-amber-50 font-semibold text-sm shadow-md shadow-amber-900/20 hover:bg-amber-700 transition-colors active:scale-95"
+                style={{ transitionProperty: 'background-color, transform' }}
+              >
+                🔔 Bật thông báo
+              </button>
+            )}
+
+            {/* Mute toggle */}
+            {!needsUnlock && (
+              <button
+                onClick={toggleMute}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100 transition-colors active:scale-95"
+                style={{ transitionProperty: 'background-color, transform' }}
+                title={isMuted ? 'Bỏ tắt tiếng' : 'Tắt tiếng'}
+                aria-label={isMuted ? 'Bỏ tắt tiếng thông báo' : 'Tắt tiếng thông báo'}
+              >
+                <span className="text-xl" role="img" aria-hidden="true">
+                  {isMuted ? '🔕' : '🔔'}
+                </span>
+              </button>
+            )}
 
             {/* Refresh button */}
             <button
@@ -115,7 +177,7 @@ export default function StationView({ station }: { station: Station }) {
           /* Order grid — responsive for tablet+ */
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {activeOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard key={order.id} order={order} isNew={newOrderIds.has(order.id)} />
             ))}
           </div>
         )}
