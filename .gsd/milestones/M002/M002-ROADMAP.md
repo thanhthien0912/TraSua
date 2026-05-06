@@ -18,7 +18,7 @@
 - [x] **S01: S01** `risk:low` `depends:[]`
   > After this: Customer visits /order?table=5 on a phone → sees tabbed menu with 'Đồ uống' active showing seeded drink items with VND prices → switches to 'Đồ ăn' → sees food items → unavailable items show 'Hết hàng' badge and are not tappable. Visiting /order?table=99 or /order shows Vietnamese error page.
 
-- [ ] **S02: S02** `risk:medium` `depends:[]`
+- [x] **S02: S02** `risk:medium` `depends:[]`
   > After this: Customer on /order?table=5 taps items → sticky bottom bar appears with count + total → taps bar → slide-up cart sheet with qty +/-, notes per item, subtotals → adds 'ít đường' note → taps 'Gửi đơn' → Order + OrderItems created in DB with correct FKs and server-computed total → confirmation screen → taps 'Gọi thêm món' → back to menu → submits second order → two separate Order records in DB.
 
 ## Boundary Map

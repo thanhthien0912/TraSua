@@ -1,0 +1,21 @@
+BUILD RESULT (last 20 lines):
+✓ Generating static pages using 7 workers (10/10) in 319ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /admin
+├ ○ /admin/login
+├ ƒ /api/admin/login
+├ ƒ /api/admin/qr-pdf
+├ ƒ /api/order
+└ ƒ /order
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+

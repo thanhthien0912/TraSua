@@ -1,0 +1,11 @@
+=== BRANCHES ===
+* master
+
+=== CURRENT ===
+master
+
+merge-base with main failed: Command failed: git merge-base HEAD main
+fatal: Not a valid object name main
+
+=== MERGE-BASE with master ===
+1f3cb5a890daf0718cce2e4d8cabce4da7172c17

@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-06T04:17:07Z | Files: 32 | Described: 0/32
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T04:17:07Z","fingerprint":"1c0ff90495edba8184b80f1ceef5a447340316c2","fileCount":32,"truncated":false} -->
+Generated: 2026-05-06T04:42:13Z | Files: 38 | Described: 0/38
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T04:42:13Z","fingerprint":"56e486f253e70e230cdaf1645f3713ba2ec085a2","fileCount":38,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -49,12 +49,20 @@ Generated: 2026-05-06T04:17:07Z | Files: 32 | Described: 0/32
 ### src/app/api/admin/qr-pdf/
 - `src/app/api/admin/qr-pdf/route.ts`
 
+### src/app/api/order/
+- `src/app/api/order/route.ts`
+
 ### src/app/order/
 - `src/app/order/page.tsx`
 
 ### src/components/order/
+- `src/components/order/CartBar.tsx`
+- `src/components/order/CartProvider.tsx`
+- `src/components/order/CartSheet.tsx`
+- `src/components/order/CartUI.tsx`
 - `src/components/order/ErrorPage.tsx`
 - `src/components/order/MenuView.tsx`
+- `src/components/order/OrderConfirmation.tsx`
 
 ### src/lib/
 - `src/lib/auth.ts`

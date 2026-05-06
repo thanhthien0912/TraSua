@@ -53,7 +53,7 @@ S02 completes the customer write path. M002 is fully closed — Order + OrderIte
 - Cart bar hidden when cart is empty
 - All text in Vietnamese
 
-- [ ] **T03: Order Creation API + Submission + Confirmation** `est:45 min`
+- [x] **T03: Order Creation API + Submission + Confirmation** `est:45 min`
   Build the POST /api/order Route Handler, wire cart submission, and build the confirmation screen.
   - Files: `src/app/api/order/route.ts`, `src/components/order/CartSheet.tsx`, `src/components/order/OrderConfirmation.tsx`, `src/app/order/page.tsx`
   - Verify: - `next build` completes without type errors

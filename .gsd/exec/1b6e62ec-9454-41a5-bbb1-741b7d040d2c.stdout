@@ -1,0 +1,21 @@
+=== M002 SOURCE FILES ===
+src/app/api/order/route.ts
+src/app/order/page.tsx
+src/components/order/CartBar.tsx
+src/components/order/CartProvider.tsx
+src/components/order/CartSheet.tsx
+src/components/order/CartUI.tsx
+src/components/order/ErrorPage.tsx
+src/components/order/MenuView.tsx
+src/components/order/OrderConfirmation.tsx
+src/lib/format.ts
+
+=== 8dc86f9 commit diff (auto-commit) ===
+ src/app/order/page.tsx                |   7 +-
+ src/components/order/CartBar.tsx      |  61 ++++++
+ src/components/order/CartProvider.tsx | 217 ++++++++++++++++++++
+ src/components/order/CartSheet.tsx    | 373 ++++++++++++++++++++++++++++++++++
+ src/components/order/CartUI.tsx       |  23 +++
+ src/components/order/MenuView.tsx     |  24 ++-
+ 6 files changed, 701 insertions(+), 4 deletions(-)
+

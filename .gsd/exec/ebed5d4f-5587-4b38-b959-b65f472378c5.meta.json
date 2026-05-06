@@ -1,0 +1,18 @@
+{
+  "id": "ebed5d4f-5587-4b38-b959-b65f472378c5",
+  "runtime": "bash",
+  "purpose": "Verify all expected files exist",
+  "script_chars": 126,
+  "started_at": "2026-05-06T04:42:24.778Z",
+  "finished_at": "2026-05-06T04:42:24.780Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 2,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\ebed5d4f-5587-4b38-b959-b65f472378c5.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\ebed5d4f-5587-4b38-b959-b65f472378c5.stderr"
+}

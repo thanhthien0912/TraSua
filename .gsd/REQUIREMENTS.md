@@ -11,6 +11,7 @@ This file is the explicit capability and coverage contract for the project.
 - Why it matters: Đây là luồng chính của hệ thống — thay thế gọi nhân viên bằng self-service order
 - Source: user-interview
 - Validation: Khách scan QR → thấy menu → chọn món → gửi order thành công → nhân viên nhận được
+- Notes: M002 delivers the customer-facing half of R001: QR scan → menu browsing → cart → order submission → confirmation. Orders persist to DB with correct FKs and server-computed totals. Staff receiving orders (the second half of R001's validation criteria) is M003 scope.
 
 ### R002 — Phân loại đơn hàng thành món nước (bar) và món bếp (kitchen) tự động
 - Class: core-capability
@@ -60,6 +61,7 @@ This file is the explicit capability and coverage contract for the project.
 - Why it matters: Khách hàng dùng điện thoại scan QR — UI phải đẹp và dễ dùng trên mobile
 - Source: user-interview
 - Validation: Trang order hiển thị tốt trên iPhone SE (375px) đến tablet, text tiếng Việt rõ ràng
+- Notes: M002 delivers the primary customer-facing UI: /order page verified at 390px mobile viewport, all text Vietnamese, tabular-nums for prices, 44px+ touch targets, safe-area-inset padding, amber/warm branding. Cart sheet, confirmation screen all mobile-first.
 
 ### R008 — Nhân viên có thể huỷ món hoặc thêm món khác cho đơn hàng từ dashboard
 - Class: core-capability
