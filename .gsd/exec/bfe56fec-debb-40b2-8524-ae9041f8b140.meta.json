@@ -1,0 +1,18 @@
+{
+  "id": "bfe56fec-debb-40b2-8524-ae9041f8b140",
+  "runtime": "bash",
+  "purpose": "verify seed item counts by category",
+  "script_chars": 124,
+  "started_at": "2026-05-06T04:13:24.100Z",
+  "finished_at": "2026-05-06T04:13:24.107Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 7,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\bfe56fec-debb-40b2-8524-ae9041f8b140.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\bfe56fec-debb-40b2-8524-ae9041f8b140.stderr"
+}

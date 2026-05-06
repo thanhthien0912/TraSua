@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import ErrorPage from '@/components/order/ErrorPage'
 import MenuView from '@/components/order/MenuView'
+import CartUI from '@/components/order/CartUI'
+import { CartProvider } from '@/components/order/CartProvider'
 
 const INVALID_TABLE_MSG =
   'Bàn không hợp lệ. Vui lòng scan lại mã QR tại bàn của bạn.'
@@ -52,7 +54,10 @@ export default async function OrderPage({
 
   return (
     <div className="min-h-dvh bg-amber-50">
-      <MenuView menuItems={items} table={tableInfo} />
+      <CartProvider tableId={tableInfo.id}>
+        <MenuView menuItems={items} table={tableInfo} />
+        <CartUI />
+      </CartProvider>
     </div>
   )
 }

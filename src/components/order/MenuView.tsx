@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { formatVND } from '@/lib/format'
+import { useCart } from '@/components/order/CartProvider'
 
 // ─── Types ──────────────────────────────────────────────────────────
 export type SerializedMenuItem = {
@@ -29,7 +30,15 @@ export default function MenuView({
   menuItems: SerializedMenuItem[]
   table: { id: number; number: number; name: string }
 }) {
+  const { dispatch } = useCart()
   const [activeTab, setActiveTab] = useState<Tab>('DRINK')
+
+  function handleAdd(item: SerializedMenuItem) {
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: { menuItemId: item.id, name: item.name, price: item.price },
+    })
+  }
 
   const filtered = menuItems
     .filter((item) => item.category === activeTab)
@@ -98,7 +107,7 @@ export default function MenuView({
       >
         <div className="flex flex-col gap-3">
           {filtered.map((item) => (
-            <ItemCard key={item.id} item={item} />
+            <ItemCard key={item.id} item={item} onAdd={handleAdd} />
           ))}
         </div>
 
@@ -116,7 +125,13 @@ export default function MenuView({
 }
 
 // ─── Item Card ──────────────────────────────────────────────────────
-function ItemCard({ item }: { item: SerializedMenuItem }) {
+function ItemCard({
+  item,
+  onAdd,
+}: {
+  item: SerializedMenuItem
+  onAdd: (item: SerializedMenuItem) => void
+}) {
   const unavailable = !item.available
 
   return (
@@ -183,9 +198,12 @@ function ItemCard({ item }: { item: SerializedMenuItem }) {
             <button
               type="button"
               aria-label={`Thêm ${item.name}`}
+              onClick={(e) => {
+                e.stopPropagation()
+                onAdd(item)
+              }}
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-900 text-amber-50 transition-transform duration-150 ease-out active:scale-[0.92]"
               style={{ minHeight: 36, minWidth: 36 }}
-              tabIndex={-1}
             >
               <PlusIcon />
             </button>

@@ -1,19 +1,26 @@
 {
   "nodes": [
     {
-      "id": "milestone:M001",
-      "label": "M001: Project Foundation",
+      "id": "milestone:M002",
+      "label": "M002: Customer Order Flow",
       "type": "milestone",
-      "description": "Active milestone: M001",
+      "description": "Active milestone: M002",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
     },
     {
-      "id": "concept:phase:validating-milestone",
-      "label": "Phase: validating-milestone",
+      "id": "concept:phase:evaluating-gates",
+      "label": "Phase: evaluating-gates",
       "type": "concept",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
+    },
+    {
+      "id": "milestone:M001",
+      "label": "M001: Project Foundation",
+      "type": "milestone",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-ROADMAP.md"
     },
     {
       "id": "slice:M001:S01",
@@ -85,11 +92,48 @@
       "confidence": "EXTRACTED"
     },
     {
-      "id": "milestone:M002",
-      "label": "M002: Customer Order Flow",
-      "type": "milestone",
+      "id": "slice:M002:S01",
+      "label": "S01: Menu Browsing — QR to Tabbed Menu Display",
+      "type": "slice",
       "confidence": "EXTRACTED",
-      "sourceFile": "milestones/M002/M002-ROADMAP.md"
+      "sourceFile": "milestones/M002/slices/S01/S01-PLAN.md"
+    },
+    {
+      "id": "task:M002:S01:T01",
+      "label": "T01: VND Formatter Utility + Order Page with Table Validation",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M002:S01:T02",
+      "label": "T02: Tabbed Menu View with Item Cards",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M002:S02",
+      "label": "S02: Cart + Order Submission — Full Ordering Flow",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/slices/S02/S02-PLAN.md"
+    },
+    {
+      "id": "task:M002:S02:T01",
+      "label": "T01: Cart State Provider with sessionStorage Persistence",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M002:S02:T02",
+      "label": "T02: Sticky Cart Bar + Slide-Up Cart Sheet",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M002:S02:T03",
+      "label": "T03: Order Creation API + Submission + Confirmation",
+      "type": "task",
+      "confidence": "EXTRACTED"
     },
     {
       "id": "milestone:M003",
@@ -111,6 +155,134 @@
       "type": "milestone",
       "confidence": "EXTRACTED",
       "sourceFile": "milestones/M005/M005-ROADMAP.md"
+    },
+    {
+      "id": "decision:M001:1",
+      "label": "**Full ordering schema upfront (4 models + 3 enums) rather than incremental** — Defined MenuItem, Table, Order, OrderItem with Category, OrderStatus, ItemStatus enums all in M001, even though Order/OrderItem aren't used until M002. One clean migration covers everything; downstream milestones just consume.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M001:2",
+      "label": "**PDFKit + qrcode for QR PDF generation (D004)** — Pure Node.js pipeline: qrcode.toBuffer() for PNG → PDFKit for A4 layout. Rejected jspdf (browser-first) and @react-pdf/renderer (heavyweight). Both packages are offline-compatible per R006.",
+      "type": "decision",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M001:3",
+      "label": "**Edge-compatible cookie auth for admin (D005)** — ADMIN_PASSWORD env var + httpOnly cookie. Middleware on Edge runtime protects /admin/* routes. Proportionate to local-network threat model.",
+      "type": "decision",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M001:4",
+      "label": "**@@map() on all Prisma models** — Essential when model names collide with SQL reserved words (Order → orders, Table → tables). Applied to all 4 models proactively.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M001:5",
+      "label": "**Int prices for VND** — Vietnamese đồng has no decimal usage, so Int type is simpler and more correct than Float/Decimal for all price fields.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M001:1",
+      "label": "**create-next-app rejects capital-letter directory names** — TraSua fails validation. Workaround: scaffold into temp lowercase subdirectory, copy files up, fix package.json name field.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M001:2",
+      "label": "**Prisma 7 introduces prisma.config.ts** — Seed command configuration goes in the migrations block of prisma.config.ts, not in package.json scripts. The file is auto-generated by `prisma init` in v7.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M001:3",
+      "label": "**Scripts outside Next.js can't use @/ path alias** — seed.ts and other standalone scripts must use relative imports (e.g. '../generated/prisma/client') because they're executed via tsx, not within Next.js's module resolution.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M001:4",
+      "label": "**Next.js Route Handlers default to Edge runtime** — Must set explicit `runtime = 'nodejs'` when using Node.js APIs like pdfkit's Buffer/fs. Otherwise the route silently fails or throws at runtime.",
+      "type": "lesson",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M001:1",
+      "label": "**PrismaClient singleton via globalThis** — src/lib/prisma.ts caches the client on globalThis in non-production to survive HMR reloads. All code imports from `@/lib/prisma` — never instantiates PrismaClient directly.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M001:2",
+      "label": "**PDFKit buffer-collection for Next.js** — Collect chunks in array, await 'end' promise, then Buffer.concat() and pass to new Response(). pipe() is incompatible with Next.js Response constructor.",
+      "type": "pattern",
+      "description": "Source: S03-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M001:3",
+      "label": "**Prisma seed idempotency via deleteMany → recreate** — deleteMany in reverse FK order (orderItem → order → menuItem → table) then Promise.all create. Simpler than upsert when seed data doesn't need ID stability.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M001:4",
+      "label": "**Cookie-based admin auth with Edge middleware** — src/middleware.ts protects /admin/* and /api/admin/* via config.matcher, exempting login routes. Cookie helpers in src/lib/auth.ts are Edge-compatible (no Node.js APIs).",
+      "type": "pattern",
+      "description": "Source: S03-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M001:1",
+      "label": "**Prisma 7 config restructuring** — prisma.config.ts was unexpected from `prisma init`. Seed command, datasource URL, and other config moved from package.json/schema.prisma into this new file. Required plan adaptation.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M001:2",
+      "label": "**GitHub raw URLs redirect to HTML for large repos** — Attempted to download Inter TTF from GitHub raw content URL, but large repos redirect to an HTML page instead. Google Fonts static CDN (gstatic.com) is the reliable alternative.",
+      "type": "lesson",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M001:3",
+      "label": "**Deleting old migrations cleaner than incremental** — When S02 replaced the placeholder Category-only schema with 4 models, attempting incremental migration from the placeholder was problematic. Deleting the old migrations directory entirely and running a fresh `migrate dev` was cleaner and more reliable.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M001/M001-LEARNINGS.md"
     }
   ],
   "edges": [
@@ -179,7 +351,145 @@
       "to": "task:M001:S03:T03",
       "type": "contains",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "slice:M002:S01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M002:S01",
+      "to": "task:M002:S01:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M002:S01",
+      "to": "task:M002:S01:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "slice:M002:S02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M002:S02",
+      "to": "task:M002:S02:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M002:S02",
+      "to": "task:M002:S02:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M002:S02",
+      "to": "task:M002:S02:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "decision:M001:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "decision:M001:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "decision:M001:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "decision:M001:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "decision:M001:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "lesson:M001:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "lesson:M001:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "lesson:M001:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "lesson:M001:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "pattern:M001:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "pattern:M001:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "pattern:M001:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "pattern:M001:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "surprise:M001:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "surprise:M001:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M001",
+      "to": "surprise:M001:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-05-06T03:37:11.817Z"
+  "builtAt": "2026-05-06T04:19:21.948Z"
 }

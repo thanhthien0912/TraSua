@@ -6,7 +6,7 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 
 ## Current State
 
-**Phase:** M001 complete — project foundation established. Next.js 16 app running with Prisma 7/SQLite, full ordering schema (4 models, 3 enums), 18 Vietnamese menu items seeded, admin auth, and QR PDF generator operational. Ready for M002 (Customer Order Flow).
+**Phase:** M002 in progress — S01 (Menu Browsing) complete, S02 (Cart + Order Submission) next. Customer-facing `/order?table=N` page now renders a tabbed menu with Vietnamese text, VND prices, and table validation. The menu browsing step of the ordering flow works end-to-end: QR scan → valid table → tabbed DRINK/FOOD menu with real seeded data.
 
 **What exists:**
 - Next.js 16.2.4 + React 19.2.4 + Tailwind CSS v4 app at localhost:3000
@@ -16,6 +16,7 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - Admin auth system (cookie-based, Edge middleware protecting /admin/*)
 - QR PDF generator at /api/admin/qr-pdf (A4, 3×5 grid, Vietnamese labels)
 - Inter TTF font bundled locally for PDF generation
+- **Customer order page** at `/order?table=N` with tabbed DRINK/FOOD menu, VND-formatted prices, sortOrder, 'Hết hàng' badge for unavailable items, and Vietnamese error pages for invalid tables
 
 ## Core Capabilities
 
@@ -25,6 +26,7 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - **Menu Management:** Admin can add/edit/remove menu items, set prices, categories (drink vs food), availability toggle.
 - **Bill & Checkout:** Per-table bill summary, calculate totals, mark as paid.
 - **QR Generator:** Admin tool to generate and print QR codes for N tables. ✅ Delivered in M001.
+- **Menu Browsing:** Customer scans QR → sees tabbed menu organized by category with VND prices. ✅ Delivered in M002/S01.
 
 ## Tech Stack
 
@@ -45,12 +47,14 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - PrismaClient singleton at src/lib/prisma.ts — standard import for all DB access
 - Int prices (VND has no decimals) — simpler than Float/Decimal
 - System-ui fonts for HTML, bundled Inter TTF for PDF — no CDN dependencies
+- Inline ErrorPage dead-end for invalid table params — no navigation escape
+- Server→Client serialization: strip Prisma metadata to plain objects before client components
 
 ## Architecture
 
 ```
 Customer Phone → QR scan → /order?table=N (menu + order)
-                                ↓ order submitted
+                                ↓ order submitted (S02)
 Staff Dashboard (/staff) → receives orders in real-time
   ├── Bar Station (drinks/tea items)
   └── Kitchen Station (food items)
@@ -59,7 +63,7 @@ Admin (/admin) → protected by cookie auth + Edge middleware
   └── QR PDF Generator (/api/admin/qr-pdf)
 ```
 
-## Key Patterns Established (M001)
+## Key Patterns Established
 
 - PrismaClient singleton at `src/lib/prisma.ts` with globalThis caching for HMR
 - Cookie-based admin auth with Edge middleware at `src/middleware.ts`
@@ -67,11 +71,17 @@ Admin (/admin) → protected by cookie auth + Edge middleware
 - Prisma seed: deleteMany in reverse FK order → Promise.all create
 - Vietnamese font bundling via `public/fonts/` for PDF generation
 - Mobile-first Tailwind responsive layout with sm:/md: breakpoints
+- VND formatting via shared `formatVND()` utility in `src/lib/format.ts`
+- Server→Client data serialization: Prisma objects → plain objects at boundary
+- ARIA tablist/tab/tabpanel for category navigation
+- Next.js 16 Promise-based searchParams: `await searchParams` in Server Components
 
 ## Milestone Sequence
 
 - [x] M001: Project Foundation — Next.js setup, database schema, seed data, QR generator ✅
 - [ ] M002: Customer Order Flow — QR scan → menu → order submission (mobile-first UI)
+  - [x] S01: Menu Browsing — tabbed DRINK/FOOD menu with VND prices, table validation ✅
+  - [ ] S02: Cart + Order Submission — cart UI, order creation, confirmation
 - [ ] M003: Staff Dashboard — Real-time order board, station routing (bar/kitchen), status updates
 - [ ] M004: Bill & Checkout — Per-table bill, totals, payment marking
 - [ ] M005: Admin & Polish — Menu management, settings, UI polish, print-ready QR sheets
