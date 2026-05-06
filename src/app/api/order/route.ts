@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { broadcast } from '@/lib/sse'
 
 type OrderItemInput = {
   menuItemId: number
@@ -121,18 +122,24 @@ export async function POST(request: NextRequest) {
         })),
       })
 
-      // Re-fetch with items + menuItem names for response
+      // Re-fetch with items + menuItem names + table info for response & broadcast
       return tx.order.findUniqueOrThrow({
         where: { id: newOrder.id },
         include: {
+          table: true,
           items: {
             include: {
-              menuItem: { select: { name: true, price: true } },
+              menuItem: { select: { id: true, name: true, category: true, price: true } },
             },
           },
         },
       })
     })
+
+    // Broadcast new order to all SSE subscribers (no station filter —
+    // both bar and kitchen may have relevant items)
+    console.log(`[POST /api/order] Broadcasting new-order event for order #${order.id}`)
+    broadcast('new-order', order)
 
     return NextResponse.json({ order }, { status: 201 })
   } catch (error) {
