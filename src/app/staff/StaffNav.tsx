@@ -8,6 +8,7 @@ import Link from 'next/link'
 const NAV_ITEMS = [
   { href: '/staff/bar', label: 'Quầy Bar', emoji: '🧋' },
   { href: '/staff/kitchen', label: 'Bếp', emoji: '🍳' },
+  { href: '/staff/checkout', label: 'Tính tiền', emoji: '💰' },
   { href: '/staff', label: 'Tổng quan', emoji: '📋', exact: true },
 ] as const
 
