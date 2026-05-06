@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { formatVND } from '@/lib/format'
 import type { ItemStatus } from '@/lib/order-status'
+import MenuPickerModal from './MenuPickerModal'
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -193,6 +194,7 @@ export default function BillView({
   const [paying, setPaying] = useState(false)
   const [confirmingPay, setConfirmingPay] = useState(false)
   const payTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [showMenuPicker, setShowMenuPicker] = useState(false)
 
   // ─── Fetch bill ─────────────────────────────────────────────
   const fetchBill = useCallback(async () => {
@@ -394,6 +396,21 @@ export default function BillView({
           </div>
         )}
 
+        {/* ─── Add item button ────────────────────────────────── */}
+        <div className="px-5 py-3 border-t border-amber-100/60">
+          <button
+            type="button"
+            onClick={() => setShowMenuPicker(true)}
+            className="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-amber-100/70 border border-amber-200/60 text-amber-800 font-semibold text-sm hover:bg-amber-200/60 transition-colors active:scale-[0.96]"
+            style={{ transitionProperty: 'background-color, transform' }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Thêm món
+          </button>
+        </div>
+
         {/* ─── Total + Pay button ────────────────────────────── */}
         <div className="px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-t border-amber-200/40">
           <div className="flex items-center justify-between mb-4">
@@ -437,6 +454,15 @@ export default function BillView({
           </button>
         </div>
       </div>
+
+      {/* ─── Menu Picker Modal ───────────────────────────────── */}
+      <MenuPickerModal
+        orderId={bill.orders[bill.orders.length - 1].id}
+        tableId={tableId}
+        isOpen={showMenuPicker}
+        onClose={() => setShowMenuPicker(false)}
+        onSuccess={fetchBill}
+      />
     </div>
   )
 }
