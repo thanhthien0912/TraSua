@@ -1,0 +1,366 @@
+=== PRISMA SCHEMA ===
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────
+
+enum Category {
+  DRINK
+  FOOD
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  SERVED
+  PAID
+  CANCELLED
+}
+
+enum ItemStatus {
+  PENDING
+  PREPARING
+  READY
+  SERVED
+  CANCELLED
+}
+
+// ─── Models ─────────────────────────────────────────────────────────
+
+model MenuItem {
+  id          Int        @id @default(autoincrement())
+  name        String
+  category    Category
+  price       Int        // VND — no decimals needed
+  description String?
+  available   Boolean    @default(true)
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  orderItems  OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Table {
+  id     Int     @id @default(autoincrement())
+  number Int     @unique
+  name   String  // e.g. "Bàn 1"
+  orders Order[]
+
+  @@map("tables")
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  tableId     Int
+  table       Table       @relation(fields: [tableId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Int         @default(0)
+  paidAt      DateTime?
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int        @id @default(autoincrement())
+  orderId    Int
+  order      Order      @relation(fields: [orderId], references: [id])
+  menuItemId Int
+  menuItem   MenuItem   @relation(fields: [menuItemId], references: [id])
+  quantity   Int        @default(1)
+  status     ItemStatus @default(PENDING)
+  notes      String?
+  createdAt  DateTime   @default(now())
+
+  @@map("order_items")
+}
+
+
+=== ADMIN PAGE ===
+import Link from "next/link";
+
+export default function AdminPage() {
+  /* ── Server-side env var reading ──────────────────────── */
+  const tableCount = process.env.TABLE_COUNT || "15";
+  const shopIp = process.env.SHOP_IP || "";
+  const shopPort = process.env.SHOP_PORT || "3000";
+  const hasIp = shopIp.length > 0;
+  const baseUrl = hasIp
+    ? `http://${shopIp}:${shopPort}`
+    : null;
+
+  return (
+    <main className="flex min-h-dvh flex-col items-center px-4 py-8 sm:py-12">
+      <div
+        className="w-full max-w-lg"
+        style={{
+          animation: "fadeSlideUp 0.5s cubic-bezier(0.2, 0, 0, 1) both",
+        }}
+      >
+        {/* ── Header ──────────────────────────────────────── */}
+        <div className="mb-8 text-center">
+          <div
+            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl text-3xl"
+            style={{
+              background: "linear-gradient(145deg, #f59e0b, #d97706)",
+              boxShadow:
+                "0 4px 14px rgba(217, 119, 6, 0.3), 0 1px 3px rgba(0, 0, 0, 0.08)",
+            }}
+          >
+            🧋
+          </div>
+          <h1
+            className="text-2xl font-bold tracking-tight sm:text-3xl"
+            style={{ textWrap: "balance", color: "#78350f" }}
+          >
+            Quản lý QR Code
+          </h1>
+          <p
+            className="mt-1 text-sm sm:text-base"
+            style={{ textWrap: "pretty", color: "#92400e", opacity: 0.7 }}
+          >
+            Tạo và in mã QR cho từng bàn trong quán
+          </p>
+        </div>
+
+        {/* ── Configuration Card ──────────────────────────── */}
+        <div
+          className="mb-6 rounded-2xl p-5 sm:p-6"
+          style={{
+            background: "rgba(255, 255, 255, 0.7)",
+            boxShadow:
+              "0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(120, 53, 15, 0.06)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <h2
+            className="mb-4 text-sm font-semibold uppercase tracking-wider"
+            style={{ color: "#92400e", opacity: 0.6 }}
+          >
+            Cấu hình hiện tại
+          </h2>
+
+          <div className="space-y-3">
+            {/* Table count */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm" style={{ color: "#92400e" }}>
+                Số bàn
+              </span>
+              <span
+                className="text-sm font-semibold"
+                style={{
+                  color: "#78350f",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {tableCount}
+              </span>
+            </div>
+
+            {/* Separator */}
+            <div
+              style={{
+                height: "1px",
+                background:
+                  "linear-gradient(to right, transparent, rgba(120, 53, 15, 0.1), transparent)",
+              }}
+            />
+
+            {/* Shop address */}
+            <div className="flex items-center justify-between gap-4">
+              <span className="shrink-0 text-sm" style={{ color: "#92400e" }}>
+                Địa chỉ
+              </span>
+              <span
+                className="truncate text-sm font-semibold"
+                style={{ color: hasIp ? "#78350f" : "#dc2626" }}
+              >
+                {baseUrl || "Chưa cấu hình"}
+              </span>
+            </div>
+
+            {/* Separator */}
+            <div
+              style={{
+                height: "1px",
+                background:
+                  "linear-gradient(to right, transparent, rgba(120, 53, 15, 0.1), transparent)",
+              }}
+            />
+
+            {/* Example URL */}
+            <div className="flex flex-col gap-1">
+              <span className="text-sm" style={{ color: "#92400e" }}>
+                Mẫu URL
+              </span>
+              <code
+                className="rounded-lg px-3 py-1.5 text-xs sm:text-sm"
+                style={{
+                  background: "rgba(120, 53, 15, 0.05)",
+                  color: "#78350f",
+                  wordBreak: "break-all",
+                }}
+              >
+                {baseUrl
+                  ? `${baseUrl}/order?table=N`
+                  : "http://SHOP_IP:SHOP_PORT/order?table=N"}
+              </code>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Primary CTA — Download PDF ─────────────────── */}
+        <a
+          href="/api/admin/qr-pdf"
+          className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl px-4 text-base font-semibold text-white no-underline"
+          style={{
+            background: "linear-gradient(145deg, #f59e0b, #d97706)",
+            boxShadow:
+              "0 4px 14px rgba(217, 119, 6, 0.3), 0 1px 3px rgba(0, 0, 0, 0.08)",
+            minHeight: "48px",
+            height: "48px",
+            transition:
+              "transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1)",
+          }}
+          onMouseDown={undefined}
+        >
+          📄 Tạo QR Code (PDF)
+        </a>
+
+        {/* ── Logout ─────────────────────────────────────── */}
+        <Link
+          href="/admin/login"
+          className="flex w-full items-center justify-center rounded-xl px-4 text-sm font-medium no-underline"
+          style={{
+            color: "#92400e",
+            opacity: 0.7,
+            minHeight: "40px",
+            height: "40px",
+            transition:
+              "opacity 0.15s cubic-bezier(0.2, 0, 0, 1)",
+          }}
+        >
+          Đăng xuất
+        </Link>
+      </div>
+
+      {/* ── Keyframe animations ──────────────────────────── */}
+      <style>{`
+        @keyframes fadeSlideUp {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+
+=== STAFF NAV ===
+'use client'
+
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+
+// ─── Navigation Config ──────────────────────────────────────────────
+
+const NAV_ITEMS = [
+  { href: '/staff/bar', label: 'Quầy Bar', emoji: '🧋' },
+  { href: '/staff/kitchen', label: 'Bếp', emoji: '🍳' },
+  { href: '/staff/checkout', label: 'Tính tiền', emoji: '💰' },
+  { href: '/staff', label: 'Tổng quan', emoji: '📋', exact: true },
+] as const
+
+// ─── Staff Navigation ───────────────────────────────────────────────
+
+export default function StaffNav() {
+  const pathname = usePathname()
+
+  return (
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-amber-200/60 shadow-[0_-2px_16px_rgba(180,120,40,0.08)]"
+      aria-label="Điều hướng trạm"
+    >
+      <div className="max-w-7xl mx-auto flex items-stretch justify-around">
+        {NAV_ITEMS.map(({ href, label, emoji, ...rest }) => {
+          const exact = 'exact' in rest && rest.exact
+          const isActive = exact
+            ? pathname === href
+            : pathname.startsWith(href)
+
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`
+                relative flex flex-col items-center justify-center gap-1
+                min-h-[56px] min-w-[72px] px-4 py-2
+                text-xs font-semibold tracking-wide
+                transition-all duration-200 ease-out
+                ${
+                  isActive
+                    ? 'text-amber-900'
+                    : 'text-amber-600/60 hover:text-amber-800 active:scale-95'
+                }
+              `}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {/* Active indicator pill */}
+              {isActive && (
+                <span
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-amber-500"
+                  aria-hidden="true"
+                />
+              )}
+
+              <span className="text-xl leading-none" aria-hidden="true">
+                {emoji}
+              </span>
+              <span>{label}</span>
+            </Link>
+          )
+        })}
+      </div>
+    </nav>
+  )
+}
+
+
+=== STAFF LAYOUT ===
+import StaffNav from './StaffNav'
+
+export default function StaffLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <>
+      {/* Page content — padded at bottom to clear fixed nav */}
+      <div className="pb-20">{children}</div>
+
+      {/* Fixed bottom navigation */}
+      <StaffNav />
+    </>
+  )
+}
+

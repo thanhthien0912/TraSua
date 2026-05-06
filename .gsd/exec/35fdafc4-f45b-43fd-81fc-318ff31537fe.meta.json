@@ -1,0 +1,18 @@
+{
+  "id": "35fdafc4-f45b-43fd-81fc-318ff31537fe",
+  "runtime": "node",
+  "purpose": "Read middleware, layout, component tree",
+  "script_chars": 561,
+  "started_at": "2026-05-06T08:52:32.949Z",
+  "finished_at": "2026-05-06T08:52:33.018Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 69,
+  "stdout_bytes": 2087,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\35fdafc4-f45b-43fd-81fc-318ff31537fe.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\35fdafc4-f45b-43fd-81fc-318ff31537fe.stderr"
+}

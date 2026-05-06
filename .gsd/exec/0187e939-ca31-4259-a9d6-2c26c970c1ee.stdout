@@ -1,0 +1,25 @@
+=== T01 Expected Files ===
+✅ prisma/schema.prisma
+✅ src/components/ui/Toast.tsx
+✅ src/components/ui/ToastProvider.tsx
+✅ src/components/admin/AdminNav.tsx
+✅ src/app/admin/layout.tsx
+✅ src/app/admin/menu/page.tsx
+✅ src/app/admin/tables/page.tsx
+✅ src/app/admin/qr/page.tsx
+
+=== T02 Expected Files ===
+✅ src/app/api/admin/menu/route.ts
+✅ src/app/api/admin/menu/[id]/route.ts
+✅ src/app/order/page.tsx
+✅ src/app/api/staff/menu/route.ts
+✅ src/app/api/order/route.ts
+
+=== Task Summaries ===
+✅ .gsd/milestones/M005/slices/S01/tasks/T01-SUMMARY.md
+✅ .gsd/milestones/M005/slices/S01/tasks/T02-SUMMARY.md
+
+=== Schema hidden field: ✅ present ===
+
+=== Migration dirs with 'hidden': 20260506090234_add_menu_hidden ===
+All migration dirs: 20260506024910_add_full_schema, 20260506071758_add_paid_at, 20260506090234_add_menu_hidden, migration_lock.toml

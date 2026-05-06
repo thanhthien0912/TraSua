@@ -44,6 +44,7 @@ model MenuItem {
   price       Int        // VND — no decimals needed
   description String?
   available   Boolean    @default(true)
+  hidden      Boolean    @default(false)
   sortOrder   Int        @default(0)
   createdAt   DateTime   @default(now())
   orderItems  OrderItem[]

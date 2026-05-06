@@ -1,0 +1,66 @@
+=== order-status.test.ts (209 lines) ===
+import { describe, it, expect } from 'vitest'
+import {
+  deriveOrderStatus,
+  isValidTransition,
+  getValidNextStatuses,
+} from '../order-status'
+import type { ItemStatus } from '../order-status'
+
+// ─── deriveOrderStatus ──────────────────────────────────────────────
+
+describe('deriveOrderStatus', () => {
+  it('returns PENDING for empty array', () => {
+    expect(deriveOrderStatus([])).toBe('PENDING')
+  })
+
+  it('returns PENDING when all items are PENDING', () => {
+    expect(deriveOrderStatus(['PENDING', 'PENDING', 'PENDING'])).toBe(
+      'PENDING'
+    )
+  })
+
+  it('returns PREPARING when any item is PREPARING', () => {
+    expect(deriveOrderStatus(['PENDING', 'PREPARING'])).toBe('PREPARING')
+  })
+
+  it('returns PREPARING when mix of PREPARING and READY', () => {
+    expect(deriveOrderStatus(['PREPARING', 'READY'])).toBe('PREPARING')
+  })
+
+  it('returns PREPARING when PENDING + READY (some still behind)', () => {
+...
+
+=== bill-aggregation.test.ts (65 lines) ===
+/**
+ * Unit tests for calculateOrderTotal — bill aggregation logic.
+ *
+ * Verifies correct total calculation across multi-order item arrays,
+ * cancelled item exclusion, and edge cases.
+ */
+
+import { calculateOrderTotal } from '@/lib/order-status'
+
+describe('calculateOrderTotal', () => {
+  it('sums price * quantity for active items', () => {
+    const items = [
+      { status: 'PENDING', price: 30000, quantity: 2 },   // 60,000
+      { status: 'PREPARING', price: 45000, quantity: 1 },  // 45,000
+      { status: 'SERVED', price: 20000, quantity: 3 },     // 60,000
+    ]
+    expect(calculateOrderTotal(items)).toBe(165000)
+  })
+
+  it('excludes CANCELLED items from total', () => {
+    const items = [
+      { status: 'PENDING', price: 30000, quantity: 2 },    // 60,000
+      { status: 'CANCELLED', price: 50000, quantity: 1 },  // excluded
+      { status: 'READY', price: 25000, quantity: 1 },      // 25,000
+    ]
+    expect(calculateOrderTotal(items)).toBe(85000)
+  })
+
+  it('returns 0 for empty item array', () => {
+    expect(calculateOrderTotal([])).toBe(0)
+...
+

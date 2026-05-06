@@ -1,0 +1,18 @@
+{
+  "id": "290d2d42-e618-463e-9b23-2d5981a28f80",
+  "runtime": "bash",
+  "purpose": "Verify T01 and T02 outputs exist",
+  "script_chars": 1257,
+  "started_at": "2026-05-06T09:05:15.809Z",
+  "finished_at": "2026-05-06T09:05:15.811Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 2,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\290d2d42-e618-463e-9b23-2d5981a28f80.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\290d2d42-e618-463e-9b23-2d5981a28f80.stderr"
+}

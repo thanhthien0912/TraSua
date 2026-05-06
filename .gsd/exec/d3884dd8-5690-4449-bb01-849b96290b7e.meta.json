@@ -1,0 +1,18 @@
+{
+  "id": "d3884dd8-5690-4449-bb01-849b96290b7e",
+  "runtime": "node",
+  "purpose": "Read package.json, env, auth lib",
+  "script_chars": 671,
+  "started_at": "2026-05-06T08:52:32.955Z",
+  "finished_at": "2026-05-06T08:52:33.006Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 51,
+  "stdout_bytes": 2318,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\d3884dd8-5690-4449-bb01-849b96290b7e.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\d3884dd8-5690-4449-bb01-849b96290b7e.stderr"
+}

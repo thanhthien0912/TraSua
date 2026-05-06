@@ -1,0 +1,100 @@
+=== BILL VIEW (patterns) ===
+L57: const [loading, setLoading] = useState(false)
+L58: const [confirmingCancel, setConfirmingCancel] = useState(false)
+L65: // 3-second auto-reset for cancel confirmation
+L67: if (confirmingCancel) {
+L78: }, [confirmingCancel])
+L81: if (!confirmingCancel) {
+L99: console.error(`[BillView] Cancel failed (${res.status}):`, err.error ?? 'Unknown error')
+L104: console.error('[BillView] Cancel network error:', err)
+L108: }, [confirmingCancel, item.orderId, item.id, onCancelled])
+
+=== MENU PICKER MODAL (form pattern) ===
+'use client'
+
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { formatVND } from '@/lib/format'
+
+// ─── Types ──────────────────────────────────────────────────────────
+
+interface MenuItem {
+  id: number
+  name: string
+  price: number
+  category: 'DRINK' | 'FOOD'
+  available: boolean
+  sortOrder: number
+}
+
+type Tab = 'DRINK' | 'FOOD'
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: 'DRINK', label: 'Đồ uống' },
+  { key: 'FOOD', label: 'Đồ ăn' },
+]
+
+// ─── Props ──────────────────────────────────────────────────────────
+
+interface MenuPickerModalProps {
+  orderId: number
+  tableId: number
+  isOpen: boolean
+  onClose: () => void
+  onSuccess: () => void
+}
+
+// ─── MenuPickerModal ────────────────────────────────────────────────
+
+export default function MenuPickerModal({
+  orderId,
+  tableId,
+  isOpen,
+  onClose,
+  onSuccess,
+}: MenuPickerModalProps) {
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([])
+  const [activeTab, setActiveTab] = useState<Tab>('DRINK')
+  const [loadingMenu, setLoadingMenu] = useState(false)
+  const [menuError, setMenuError] = useState<string | null>(null)
+
+  // Selection state — single item at a time
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
+  const [quantity, setQuantity] = useState(1)
+  const [notes, setNotes] = useState('')
+
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
+  // Visibility + animation state
+  const [visible, setVisible] = useState(false)
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  // ─── Fetch menu when opened ─────────────────────────────────
+  useEffect(() => {
+    if (!isOpen) return
+
+    setLoadingMenu(true)
+    setMenuError(null)
+    setSelectedItem(null)
+    setQuantity(1)
+    setNotes('')
+    setSubmitError(null)
+    setActiveTab('DRINK')
+
+    // Trigger enter animation
+    requestAnimationFrame(() => setVisible(true))
+
+    fetch('/api/staff/menu')
+      .then(async 
+
+=== FORMAT LIB ===
+const vndFormatter = new Intl.NumberFormat('vi-VN')
+
+/**
+ * Format a VND price integer into a human-readable string.
+ * Example: 45000 → '45,000đ'
+ */
+export function formatVND(price: number): string {
+  return `${vndFormatter.format(price)}đ`
+}
+

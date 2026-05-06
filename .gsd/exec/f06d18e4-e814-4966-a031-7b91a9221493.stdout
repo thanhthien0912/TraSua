@@ -1,0 +1,391 @@
+=== QR PDF ROUTE ===
+/**
+ * GET /api/admin/qr-pdf
+ *
+ * Generates an A4 PDF with a 3×5 grid of QR codes — one per table.
+ * Each QR encodes http://SHOP_IP:SHOP_PORT/order?table=N.
+ * Protected by admin cookie auth.
+ */
+
+import { NextRequest } from "next/server";
+import path from "path";
+import PDFDocument from "pdfkit";
+import QRCode from "qrcode";
+
+import { checkAdminCookie } from "@/lib/auth";
+
+// Force Node.js runtime — pdfkit uses Buffer/fs internally
+export const runtime = "nodejs";
+
+export async function GET(request: NextRequest) {
+  // ── Auth gate ──────────────────────────────────────────────
+  const cookieHeader = request.headers.get("cookie");
+  if (!checkAdminCookie(cookieHeader)) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // ── Env var validation ─────────────────────────────────────
+  const shopIp = process.env.SHOP_IP;
+  if (!shopIp) {
+    return Response.json(
+      { error: "SHOP_IP chưa được cấu hình" },
+      { status: 400 },
+    );
+  }
+  const shopPort = process.env.SHOP_PORT || "3000";
+  const tableCount = Math.max(0, parseInt(process.env.TABLE_COUNT || "15", 10));
+
+  if (tableCount === 0) {
+    return Response.json(
+      { error: "TABLE_COUNT phải lớn hơn 0" },
+      { status: 400 },
+    );
+  }
+
+  // ── Font validation ────────────────────────────────────────
+  const fontPath = path.join(process.cwd(), "public", "fonts", "Inter.ttf");
+  try {
+    const fs = await import("fs");
+    if (!fs.existsSync(fontPath)) {
+      return Response.json(
+        { error: "Font file not found" },
+        { status: 500 },
+      );
+    }
+  } catch {
+    return Response.json(
+      { error: "Font file not found" },
+      { status: 500 },
+    );
+  }
+
+  try {
+    // ── Generate QR buffers ────────────────────────────────────
+    const qrBuffers: Buffer[] = [];
+    for (let n = 1; n <= tableCount; n++) {
+      const url = `http://${shopIp}:${shopPort}/order?table=${n}`;
+      const buf = await QRCode.toBuffer(url, {
+        width: 300,
+        errorCorrectionLevel: "M",
+      });
+      qrBuffers.push(buf);
+    }
+
+    // ── Build PDF ──────────────────────────────────────────────
+    // A4: 595.28 × 841.89 pt, margin 40
+    const doc = new PDFDocument({ size: "A4", margin: 40 });
+    doc.registerFont("Vietnamese", fontPath);
+
+    // Collect PDF chunks (cannot pipe to Response in Next.js)
+    const chunks: Buffer[] = [];
+    doc.on("data", (chunk: Buffer) => chunks.push(chunk));
+    const pdfReady = new Promise<void>((resolve, reject) => {
+      doc.on("end", resolve);
+      doc.on("error", reject);
+    });
+
+    // ── Layout constants ─────────────────────────────────────
+    const pageWidth = 595.28;
+    const margin = 40;
+    const cols = 3;
+    const rows = 5;
+    const perPage = cols * rows;
+    const availableWidth = pageWidth - margin * 2;
+    const colWidth = availableWidth / cols;
+    const qrSize = 120;
+    const rowHeight = 150;
+    const titleHeight = 50;
+
+    // ── Render pages ─────────────────────────────────────────
+    const totalPages = Math.ceil(tableCount / perPage);
+
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) doc.addPage();
+
+      // Page title (only first page gets big title)
+      if (page === 0) {
+        doc
+          .font("Vietnamese")
+          .fontSize(20)
+          .fillColor("#000000")
+          .text("QR Code - TraSua", margin, margin, {
+            align: "center",
+            width: availableWidth,
+          });
+      }
+
+      const startY = page === 0 ? margin + titleHeight : margin;
+      const startIdx = page * perPage;
+      const endIdx = Math.min(startIdx + perPage, tableCount);
+
+      for (let i = startIdx; i < endIdx; i++) {
+        const localIdx = i - startIdx;
+        const col = localIdx % cols;
+        const row = Math.floor(localIdx / cols);
+
+        const cellX = margin + col * colWidth;
+        const cellY = startY + row * rowHeight;
+
+        // Center QR in column
+        const qrX = cellX + (colWidth - qrSize) / 2;
+
+        // Embed QR image
+        doc.image(qrBuffers[i], qrX, cellY, {
+          width: qrSize,
+          height: qrSize,
+        });
+
+        // "Bàn N" label — 14pt, centered below QR
+        doc
+          .font("Vietnamese")
+          .fontSize(14)
+          .fillColor("#1a1a1a")
+          .text(`Bàn ${i + 1}`, cellX, cellY + qrSize + 4, {
+            width: colWidth,
+            align: "center",
+          });
+
+        // "Quét để đặt món" subtitle — 10pt, lighter
+        doc
+          .font("Vietnamese")
+          .fontSize(10)
+          .fillColor("#666666")
+          .text("Quét để đặt món", cellX, cellY + qrSize + 20, {
+            width: colWidth,
+            align: "center",
+          });
+      }
+    }
+
+    doc.end();
+    await pdfReady;
+
+    const pdfBuffer = Buffer.concat(chunks);
+
+    return new Response(pdfBuffer, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": 'attachment; filename="trasua-qr-codes.pdf"',
+        "Cache-Cont
+
+=== ORDER PAGE ===
+import { prisma } from '@/lib/prisma'
+import ErrorPage from '@/components/order/ErrorPage'
+import MenuView from '@/components/order/MenuView'
+import CartUI from '@/components/order/CartUI'
+import { CartProvider } from '@/components/order/CartProvider'
+
+const INVALID_TABLE_MSG =
+  'Bàn không hợp lệ. Vui lòng scan lại mã QR tại bàn của bạn.'
+
+export default async function OrderPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const { table } = await searchParams
+
+  // --- Table validation ---
+  const tableStr = typeof table === 'string' ? table : undefined
+  const tableNum = tableStr ? parseInt(tableStr, 10) : NaN
+
+  if (!tableStr || isNaN(tableNum)) {
+    return <ErrorPage message={INVALID_TABLE_MSG} />
+  }
+
+  const tableRecord = await prisma.table.findFirst({
+    where: { number: tableNum },
+  })
+
+  if (!tableRecord) {
+    return <ErrorPage message={INVALID_TABLE_MSG} />
+  }
+
+  // --- Fetch all menu items sorted by sortOrder ---
+  const menuItems = await prisma.menuItem.findMany({
+    orderBy: { sortOrder: 'asc' },
+  })
+
+  // Serialize to plain objects for client component boundary
+  const items = menuItems.map((item) => ({
+    id: item.id,
+    name: item.name,
+    category: item.category as 'DRINK' | 'FOOD',
+    price: item.price,
+    description: item.description,
+    available: item.available,
+    sortOrder: item.sortOrder,
+  }))
+
+  const tableInfo = {
+    id: tableRecord.id,
+    number: tableRecord.number,
+    name: tableRecord.name,
+  }
+
+  return (
+    <div className="min-h-dvh bg-amber-50">
+      <CartProvider tableId={tableInfo.id}>
+        <CartUI tableId={tableInfo.id} tableNumber={tableInfo.number}>
+          <MenuView menuItems={items} table={tableInfo} />
+        </CartUI>
+      </CartProvider>
+    </div>
+  )
+}
+
+
+=== STAFF MENU API ===
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+
+/**
+ * GET /api/staff/menu
+ *
+ * Returns all menu items sorted by sortOrder ascending.
+ * Used by the add-item modal to display available menu items.
+ *
+ * Returns: { items: MenuItem[] }
+ */
+export async function GET() {
+  try {
+    const menuItems = await prisma.menuItem.findMany({
+      orderBy: { sortOrder: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        category: true,
+        available: true,
+        sortOrder: true,
+      },
+    })
+
+    console.log(
+      `[GET /api/staff/menu] Returning ${menuItems.length} menu items`
+    )
+
+    return NextResponse.json({ items: menuItems })
+  } catch (error) {
+    console.error('[GET /api/staff/menu] Failed to fetch menu items:', error)
+    return NextResponse.json(
+      { error: 'Không thể tải danh sách món. Vui lòng thử lại.' },
+      { status: 500 }
+    )
+  }
+}
+
+
+=== ORDER CREATE API ===
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { broadcast } from '@/lib/sse'
+
+type OrderItemInput = {
+  menuItemId: number
+  quantity: number
+  notes?: string
+}
+
+type OrderRequestBody = {
+  tableId: number
+  items: OrderItemInput[]
+}
+
+export async function POST(request: NextRequest) {
+  // ─── Parse body ───────────────────────────────────────────────────
+  let body: OrderRequestBody
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json(
+      { error: 'Dữ liệu không hợp lệ.' },
+      { status: 400 },
+    )
+  }
+
+  const { tableId, items } = body
+
+  // ─── Validate shape ───────────────────────────────────────────────
+  if (
+    typeof tableId !== 'number' ||
+    !Array.isArray(items) ||
+    items.length === 0
+  ) {
+    return NextResponse.json(
+      { error: 'Dữ liệu đơn hàng không hợp lệ.' },
+      { status: 400 },
+    )
+  }
+
+  // ─── Validate quantities ──────────────────────────────────────────
+  for (const item of items) {
+    if (
+      typeof item.menuItemId !== 'number' ||
+      typeof item.quantity !== 'number' ||
+      !Number.isInteger(item.quantity) ||
+      item.quantity <= 0
+    ) {
+      return NextResponse.json(
+        { error: 'Số lượng phải là số nguyên dương.' },
+        { status: 400 },
+      )
+    }
+  }
+
+  // ─── Validate table exists ────────────────────────────────────────
+  const table = await prisma.table.findUnique({ where: { id: tableId } })
+  if (!table) {
+    return NextResponse.json(
+      { error: 'Bàn không tồn tại.' },
+      { status: 404 },
+    )
+  }
+
+  // ─── Validate menu items exist and are available ──────────────────
+  const menuItemIds = items.map((i) => i.menuItemId)
+  const menuItems = await prisma.menuItem.findMany({
+    where: { id: { in: menuItemIds } },
+  })
+
+  const menuItemMap = new Map(menuItems.map((mi) => [mi.id, mi]))
+
+  // Check for missing items
+  const missingIds = menuItemIds.filter((id) => !menuItemMap.has(id))
+  if (missingIds.length > 0) {
+    return NextResponse.json(
+      { error: 'Một số món không tồn tại.', missingItems: missingIds },
+      { status: 400 },
+    )
+  }
+
+  // Check for unavailable items
+  const unavailableItems = items
+    .filter((i) => {
+      const mi = menuItemMap.get(i.menuItemId)
+      return mi && !mi.available
+    })
+    .map((i) => i.menuItemId)
+
+  if (unavailableItems.length > 0) {
+    return NextResponse.json(
+      { error: 'Một số món đã hết hàng', unavailableItems },
+      { status: 409 },
+    )
+  }
+
+  // ─── Compute totalAmount server-side ──────────────────────────────
+  const totalAmount = items.reduce((sum, item) => {
+    const menuItem = menuItemMap.get(item.menuItemId)!
+    return sum + menuItem.price * item.quantity
+  }, 0)
+
+  // ─── Create Order + OrderItems in transaction ─────────────────────
+  try {
+    const order = await prisma.$transaction(async (tx) => {
+      const newOrder = await tx.order.create({
+        data: {
+          tableId,
+          totalAmount,
+  

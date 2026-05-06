@@ -32,6 +32,7 @@ export default async function OrderPage({
 
   // --- Fetch all menu items sorted by sortOrder ---
   const menuItems = await prisma.menuItem.findMany({
+    where: { hidden: false },
     orderBy: { sortOrder: 'asc' },
   })
 

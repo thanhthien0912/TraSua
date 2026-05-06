@@ -1,0 +1,18 @@
+{
+  "id": "40e04718-801c-4367-92ba-3f6bf5790a07",
+  "runtime": "node",
+  "purpose": "Find test files and config",
+  "script_chars": 772,
+  "started_at": "2026-05-06T08:53:03.923Z",
+  "finished_at": "2026-05-06T08:53:04.678Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 755,
+  "stdout_bytes": 12273,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\40e04718-801c-4367-92ba-3f6bf5790a07.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\40e04718-801c-4367-92ba-3f6bf5790a07.stderr"
+}

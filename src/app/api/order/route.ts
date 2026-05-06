@@ -80,6 +80,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Check for hidden items (soft-deleted)
+  const hiddenItems = items
+    .filter((i) => {
+      const mi = menuItemMap.get(i.menuItemId)
+      return mi && mi.hidden
+    })
+    .map((i) => i.menuItemId)
+
+  if (hiddenItems.length > 0) {
+    return NextResponse.json(
+      { error: 'Món này không còn trong thực đơn', hiddenItems },
+      { status: 400 },
+    )
+  }
+
   // Check for unavailable items
   const unavailableItems = items
     .filter((i) => {

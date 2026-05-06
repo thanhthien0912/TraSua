@@ -1,0 +1,18 @@
+{
+  "id": "0a80d960-a560-45dd-8556-a30451299992",
+  "runtime": "node",
+  "purpose": "Read schema, admin page, staff patterns",
+  "script_chars": 512,
+  "started_at": "2026-05-06T08:52:02.385Z",
+  "finished_at": "2026-05-06T08:52:02.444Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 59,
+  "stdout_bytes": 11339,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\0a80d960-a560-45dd-8556-a30451299992.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\0a80d960-a560-45dd-8556-a30451299992.stderr"
+}

@@ -1,0 +1,83 @@
+=== .env file ===
+# Prisma SQLite database URL
+DATABASE_URL="file:./prisma/dev.db"
+
+# Admin panel configuration
+ADMIN_PASSWORD=admin123
+SHOP_IP=192.168.1.100
+SHOP_PORT=3000
+TABLE_COUNT=15
+
+
+=== .env.example ===
+.env.example not found
+
+=== next.config ===
+--- next.config.ts ---
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+
+
+=== tsconfig.json ===
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+
+
+=== vitest.config ===
+--- vitest.config.ts ---
+import { defineConfig } from 'vitest/config'
+import path from 'path'
+
+export default defineConfig({
+  test: {
+    globals: true,
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+})
+
+
+=== Prisma migrations ===
+20260506024910_add_full_schema
+20260506071758_add_paid_at
+migration_lock.toml

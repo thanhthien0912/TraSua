@@ -1,0 +1,18 @@
+{
+  "id": "0faf1e04-67f7-4ab8-a6c2-f36322ab2e07",
+  "runtime": "node",
+  "purpose": "Check existing UI patterns for error/loading/forms",
+  "script_chars": 878,
+  "started_at": "2026-05-06T08:54:32.797Z",
+  "finished_at": "2026-05-06T08:54:32.848Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 51,
+  "stdout_bytes": 3251,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\0faf1e04-67f7-4ab8-a6c2-f36322ab2e07.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\0faf1e04-67f7-4ab8-a6c2-f36322ab2e07.stderr"
+}

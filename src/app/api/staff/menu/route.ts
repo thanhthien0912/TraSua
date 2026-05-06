@@ -12,6 +12,7 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const menuItems = await prisma.menuItem.findMany({
+      where: { hidden: false },
       orderBy: { sortOrder: 'asc' },
       select: {
         id: true,
