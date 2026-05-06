@@ -55,8 +55,9 @@ export default async function OrderPage({
   return (
     <div className="min-h-dvh bg-amber-50">
       <CartProvider tableId={tableInfo.id}>
-        <MenuView menuItems={items} table={tableInfo} />
-        <CartUI />
+        <CartUI tableId={tableInfo.id} tableNumber={tableInfo.number}>
+          <MenuView menuItems={items} table={tableInfo} />
+        </CartUI>
       </CartProvider>
     </div>
   )

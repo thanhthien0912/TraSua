@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/order/CartProvider'
 import type { CartItem } from '@/components/order/CartProvider'
 import { formatVND } from '@/lib/format'
@@ -10,15 +10,33 @@ const SHEET_PADDING = 8
 const INNER_RADIUS = 16 // rounded-2xl ≈ 16px
 const OUTER_RADIUS = INNER_RADIUS + SHEET_PADDING // 24px
 
+type OrderSummaryItem = {
+  name: string
+  quantity: number
+  price: number
+  notes: string | null
+}
+
+export type OrderResult = {
+  id: number
+  totalAmount: number
+  items: OrderSummaryItem[]
+}
+
 type CartSheetProps = {
   isOpen: boolean
   onClose: () => void
+  tableId: number
+  onOrderSuccess: (order: OrderResult) => void
 }
 
-export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
+export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: CartSheetProps) {
   const { state, totalAmount, dispatch } = useCart()
   const items = state.items
   const sheetRef = useRef<HTMLDivElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [unavailableIds, setUnavailableIds] = useState<Set<number>>(new Set())
 
   // Close on Escape key
   useEffect(() => {
@@ -42,10 +60,70 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
     }
   }, [isOpen])
 
-  const handleSubmit = useCallback(() => {
-    // T03 will wire submission logic
-    console.log('[CartSheet] Gửi đơn — placeholder, will be wired in T03')
-  }, [])
+  // Clear error when items change (user may have removed unavailable items)
+  useEffect(() => {
+    if (error) setError(null)
+    if (unavailableIds.size > 0) setUnavailableIds(new Set())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items])
+
+  const handleSubmit = useCallback(async () => {
+    if (isSubmitting || items.length === 0) return
+
+    setIsSubmitting(true)
+    setError(null)
+    setUnavailableIds(new Set())
+
+    try {
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tableId,
+          items: items.map((i) => ({
+            menuItemId: i.menuItemId,
+            quantity: i.quantity,
+            notes: i.notes || undefined,
+          })),
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.status === 409 && data.unavailableItems) {
+        // Items became unavailable
+        setUnavailableIds(new Set(data.unavailableItems as number[]))
+        setError(data.error || 'Một số món đã hết hàng')
+        return
+      }
+
+      if (!res.ok) {
+        setError(data.error || 'Không gửi được đơn. Vui lòng thử lại.')
+        return
+      }
+
+      // Success — extract summary for confirmation
+      const orderData = data.order
+      const orderResult: OrderResult = {
+        id: orderData.id,
+        totalAmount: orderData.totalAmount,
+        items: orderData.items.map((oi: { menuItem: { name: string; price: number }; quantity: number; notes: string | null }) => ({
+          name: oi.menuItem.name,
+          quantity: oi.quantity,
+          price: oi.menuItem.price,
+          notes: oi.notes,
+        })),
+      }
+
+      dispatch({ type: 'CLEAR_CART' })
+      onClose()
+      onOrderSuccess(orderResult)
+    } catch {
+      setError('Không gửi được đơn. Vui lòng thử lại.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [isSubmitting, items, tableId, dispatch, onClose, onOrderSuccess])
 
   return (
     <>
@@ -122,6 +200,7 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
                 <CartItemRow
                   key={item.menuItemId}
                   item={item}
+                  isUnavailable={unavailableIds.has(item.menuItemId)}
                   onUpdateQuantity={(qty) =>
                     dispatch({
                       type: 'UPDATE_QUANTITY',
@@ -146,12 +225,27 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
           )}
         </div>
 
-        {/* ── Footer: total + submit ──────────────────────────── */}
+        {/* ── Footer: error + total + submit ─────────────────── */}
         {items.length > 0 && (
           <div
             className="border-t border-amber-200/50 px-5 pt-4 pb-2"
             style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
           >
+            {/* Error toast */}
+            {error && (
+              <div
+                className="mb-3 rounded-xl px-4 py-3 text-sm font-medium text-red-800"
+                style={{
+                  backgroundColor: 'rgba(239, 68, 68, 0.08)',
+                  border: '1px solid rgba(239, 68, 68, 0.15)',
+                  borderRadius: 12,
+                }}
+                role="alert"
+              >
+                {error}
+              </div>
+            )}
+
             {/* Grand total */}
             <div className="mb-4 flex items-center justify-between">
               <span className="text-[15px] font-semibold text-amber-800">
@@ -169,7 +263,8 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full rounded-2xl py-3.5 text-[15px] font-bold text-amber-50 transition-transform duration-150 ease-out active:scale-[0.97]"
+              disabled={isSubmitting}
+              className="w-full rounded-2xl py-3.5 text-[15px] font-bold text-amber-50 transition-transform duration-150 ease-out active:scale-[0.97] disabled:opacity-60 disabled:active:scale-100"
               style={{
                 minHeight: 52,
                 background:
@@ -177,9 +272,10 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
                 boxShadow:
                   '0 4px 16px rgba(120, 53, 15, 0.25), 0 1px 4px rgba(120, 53, 15, 0.15)',
                 borderRadius: INNER_RADIUS,
+                cursor: isSubmitting ? 'wait' : undefined,
               }}
             >
-              Gửi đơn
+              {isSubmitting ? 'Đang gửi...' : 'Gửi đơn'}
             </button>
           </div>
         )}
@@ -191,11 +287,13 @@ export default function CartSheet({ isOpen, onClose }: CartSheetProps) {
 // ─── Cart Item Row ──────────────────────────────────────────────────
 function CartItemRow({
   item,
+  isUnavailable,
   onUpdateQuantity,
   onUpdateNotes,
   onRemove,
 }: {
   item: CartItem
+  isUnavailable?: boolean
   onUpdateQuantity: (qty: number) => void
   onUpdateNotes: (notes: string) => void
   onRemove: () => void
@@ -209,6 +307,8 @@ function CartItemRow({
         boxShadow:
           '0 1px 3px rgba(120, 53, 15, 0.06), 0 4px 12px rgba(120, 53, 15, 0.04)',
         borderRadius: INNER_RADIUS,
+        outline: isUnavailable ? '2px solid rgba(239, 68, 68, 0.5)' : undefined,
+        outlineOffset: -2,
       }}
     >
       {/* Top row: name + price + remove */}
@@ -226,6 +326,11 @@ function CartItemRow({
           >
             {formatVND(item.price)}
           </p>
+          {isUnavailable && (
+            <p className="mt-0.5 text-xs font-medium text-red-600">
+              Món này đã hết hàng
+            </p>
+          )}
         </div>
         <button
           type="button"
