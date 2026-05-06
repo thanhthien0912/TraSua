@@ -16,7 +16,7 @@
 
 ## Slices
 
-- [ ] **S01: S01** `risk:high` `depends:[]`
+- [x] **S01: S01** `risk:high` `depends:[]`
   > After this: Shop owner logs into /admin, sees tabbed dashboard with 3 tabs. Creates a new drink item with name/price/category. Toggles an existing item to 'Hết hàng'. Soft-deletes an old item (grayed out in admin, gone from customer menu). Restores it. All operations show toast feedback. Customer /order page excludes hidden items. Existing 111 tests still pass.
 
 - [ ] **S02: Table Management + QR Refactor** `risk:medium` `depends:[S01]`

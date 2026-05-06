@@ -45,12 +45,12 @@ Customer /order page, staff /api/staff/menu, and POST /api/order all updated to 
   - Files: `src/app/api/admin/menu/route.ts`, `src/app/api/admin/menu/[id]/route.ts`, `src/app/order/page.tsx`, `src/app/api/staff/menu/route.ts`, `src/app/api/order/route.ts`
   - Verify: npx vitest run && npx next build
 
-- [ ] **T03: Admin Menu Page UI** `est:large`
+- [x] **T03: Admin Menu Page UI** `est:large`
   Build the full menu management page at `/admin/menu`.
   - Files: `src/app/admin/menu/page.tsx`, `src/components/admin/MenuItemForm.tsx`
   - Verify: npx next build
 
-- [ ] **T04: Admin Menu CRUD Tests** `est:medium`
+- [x] **T04: Admin Menu CRUD Tests** `est:medium`
   Write comprehensive tests for the admin menu API routes and hidden-item filtering.
   - Files: `src/app/api/admin/menu/__tests__/menu-crud.test.ts`, `src/lib/__tests__/hidden-menu-filter.test.ts`
   - Verify: npx vitest run

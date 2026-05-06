@@ -1,16 +1,16 @@
 {
   "nodes": [
     {
-      "id": "milestone:M004",
-      "label": "M004: Bill & Checkout",
+      "id": "milestone:M005",
+      "label": "M005: Admin & Polish",
       "type": "milestone",
-      "description": "Active milestone: M004",
+      "description": "Active milestone: M005",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
     },
     {
-      "id": "concept:phase:validating-milestone",
-      "label": "Phase: validating-milestone",
+      "id": "concept:phase:refining",
+      "label": "Phase: refining",
       "type": "concept",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
@@ -225,6 +225,13 @@
       "confidence": "EXTRACTED"
     },
     {
+      "id": "milestone:M004",
+      "label": "M004: Bill & Checkout",
+      "type": "milestone",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-ROADMAP.md"
+    },
+    {
       "id": "slice:M004:S01",
       "label": "S01: Bill & Payment Flow",
       "type": "slice",
@@ -275,11 +282,35 @@
       "confidence": "EXTRACTED"
     },
     {
-      "id": "milestone:M005",
-      "label": "M005: Admin & Polish",
-      "type": "milestone",
+      "id": "slice:M005:S01",
+      "label": "S01: Admin Menu Management",
+      "type": "slice",
       "confidence": "EXTRACTED",
-      "sourceFile": "milestones/M005/M005-ROADMAP.md"
+      "sourceFile": "milestones/M005/slices/S01/S01-PLAN.md"
+    },
+    {
+      "id": "task:M005:S01:T01",
+      "label": "T01: Schema Migration + Toast + Admin Layout Shell",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M005:S01:T02",
+      "label": "T02: Menu CRUD API Routes",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M005:S01:T03",
+      "label": "T03: Admin Menu Page UI",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M005:S01:T04",
+      "label": "T04: Admin Menu CRUD Tests",
+      "type": "task",
+      "confidence": "EXTRACTED"
     },
     {
       "id": "decision:M001:1",
@@ -880,6 +911,254 @@
       "description": "Source: S02-SUMMARY.md/Verification",
       "confidence": "EXTRACTED",
       "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:1",
+      "label": "**PAID is order-level override, not item-derived.** deriveOrderStatus() remains pure (item-status only). PAID is set exclusively by the mark-paid API. Item PATCH guards against modifications on PAID orders with 409.",
+      "type": "decision",
+      "description": "Source: M004-ROADMAP.md/Architecture Decisions, S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:2",
+      "label": "**Add-item targets latest unpaid order (not new order).** Keeps order count manageable, bill aggregation handles multi-order transparently.",
+      "type": "decision",
+      "description": "Source: M004-CONTEXT.md/Architectural Decisions, S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:3",
+      "label": "**Reuse item-status-change SSE event type for add-item broadcasts.** Stations already handle this event, so no client-side changes needed — zero regression risk.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:4",
+      "label": "**Two-slice decomposition: bill-payment core first, add-item second.** S01 delivers R004 independently; S02 adds R008 extension. Follows D006 precedent (read path first, write path second).",
+      "type": "decision",
+      "description": "Source: M004-ROADMAP.md/Slices, S01-SUMMARY.md/Follow-ups",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:5",
+      "label": "**Bill totals should be computed from raw items, not stored totalAmount.** When aggregating across multiple orders, using stored per-order totals creates inconsistency if items are cancelled/added without re-persisting. Computing from flat item list (excluding CANCELLED) is always correct.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:6",
+      "label": "**Exporting pure reducer functions enables jsdom-free unit testing.** The orderReducer was exported separately from the useOrderStream hook, allowing direct test coverage of REMOVE_ORDERS, ADD_ORDER, UPDATE_ORDER, SET_ORDERS without any DOM environment.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:7",
+      "label": "**Playwright automation clicks don't reliably trigger React onClick.** React's synthetic event delegation means Playwright's native click doesn't always reach React handlers. Real browser clicks work fine — this is a test automation limitation, not a production issue.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:8",
+      "label": "**Bottom-sheet modals work better than centered dialogs for mobile/tablet staff workflows.** MenuPickerModal's slide-up-from-bottom pattern provides better thumb reach on touch devices. Established as the default modal pattern for staff-facing item selection.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:9",
+      "label": "**Two-tap confirmation for destructive actions.** 3-second auto-reset timer, color-coded confirmation state (amber default → emerald for pay, red for cancel). Reused for cancel-item, mark-paid, and extensible to future destructive actions.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:10",
+      "label": "**Belt-and-suspenders real-time: SSE supplements polling.** Checkout page uses 10s polling as baseline with SSE for instant updates. If SSE disconnects, polling catches the gap. If polling is slow, SSE delivers instantly.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:11",
+      "label": "**SSE event-driven UI removal via Set-based reducer action.** REMOVE_ORDERS converts orderIds to Set for O(1) lookup, then filters orders in a single pass. Efficient for clearing multiple paid orders simultaneously.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:12",
+      "label": "**Prisma batched $transaction for atomic multi-record status transitions.** Mark-paid wraps updateMany (all orders → PAID) + timestamp assignment in a single $transaction. Add-item wraps createMany + recalculate + re-fetch. Pattern is consistent across M004.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Patterns established, S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:13",
+      "label": "**Reuse existing SSE event types when new operations produce compatible payloads.** Add-item broadcasts via item-status-change (not a new event type) because stations already handle it. Eliminates client-side changes and regression risk.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M004:14",
+      "label": "**Playwright click vs React event delegation mismatch.** Expected Playwright clicks to trigger React onClick handlers reliably, but React's synthetic event system sometimes doesn't fire on Playwright-simulated native clicks. Real browser clicks work fine. Workaround: rely on unit tests for logic, acceptance testing for full-stack flows in real browsers.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:1",
+      "label": "**Bill totals should be computed from raw items, not stored totalAmount.** When aggregating across multiple orders, using stored per-order totals creates inconsistency if items are cancelled/added without re-persisting. Computing from flat item list (excluding CANCELLED) is always correct.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:2",
+      "label": "**Exporting pure reducer functions enables jsdom-free unit testing.** The orderReducer was exported separately from the useOrderStream hook, allowing direct test coverage of REMOVE_ORDERS, ADD_ORDER, UPDATE_ORDER, SET_ORDERS without any DOM environment.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:3",
+      "label": "**Playwright automation clicks don't reliably trigger React onClick.** React's synthetic event delegation means Playwright's native click doesn't always reach React handlers. Real browser clicks work fine — this is a test automation limitation, not a production issue.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:4",
+      "label": "**Bottom-sheet modals work better than centered dialogs for mobile/tablet staff workflows.** MenuPickerModal's slide-up-from-bottom pattern provides better thumb reach on touch devices. Established as the default modal pattern for staff-facing item selection.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:5",
+      "label": "**Two-tap confirmation for destructive actions.** 3-second auto-reset timer, color-coded confirmation state (amber default → emerald for pay, red for cancel). Reused for cancel-item, mark-paid, and extensible to future destructive actions.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:6",
+      "label": "**Belt-and-suspenders real-time: SSE supplements polling.** Checkout page uses 10s polling as baseline with SSE for instant updates. If SSE disconnects, polling catches the gap. If polling is slow, SSE delivers instantly.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:7",
+      "label": "**SSE event-driven UI removal via Set-based reducer action.** REMOVE_ORDERS converts orderIds to Set for O(1) lookup, then filters orders in a single pass. Efficient for clearing multiple paid orders simultaneously.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:8",
+      "label": "**Prisma batched $transaction for atomic multi-record status transitions.** Mark-paid wraps updateMany (all orders → PAID) + timestamp assignment in a single $transaction. Add-item wraps createMany + recalculate + re-fetch. Pattern is consistent across M004.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Patterns established, S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:9",
+      "label": "**Reuse existing SSE event types when new operations produce compatible payloads.** Add-item broadcasts via item-status-change (not a new event type) because stations already handle it. Eliminates client-side changes and regression risk.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M004:10",
+      "label": "**Playwright click vs React event delegation mismatch.** Expected Playwright clicks to trigger React onClick handlers reliably, but React's synthetic event system sometimes doesn't fire on Playwright-simulated native clicks. Real browser clicks work fine. Workaround: rely on unit tests for logic, acceptance testing for full-stack flows in real browsers.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:1",
+      "label": "**Two-tap confirmation for destructive actions.** 3-second auto-reset timer, color-coded confirmation state (amber default → emerald for pay, red for cancel). Reused for cancel-item, mark-paid, and extensible to future destructive actions.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:2",
+      "label": "**Belt-and-suspenders real-time: SSE supplements polling.** Checkout page uses 10s polling as baseline with SSE for instant updates. If SSE disconnects, polling catches the gap. If polling is slow, SSE delivers instantly.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:3",
+      "label": "**SSE event-driven UI removal via Set-based reducer action.** REMOVE_ORDERS converts orderIds to Set for O(1) lookup, then filters orders in a single pass. Efficient for clearing multiple paid orders simultaneously.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:4",
+      "label": "**Prisma batched $transaction for atomic multi-record status transitions.** Mark-paid wraps updateMany (all orders → PAID) + timestamp assignment in a single $transaction. Add-item wraps createMany + recalculate + re-fetch. Pattern is consistent across M004.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Patterns established, S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:5",
+      "label": "**Reuse existing SSE event types when new operations produce compatible payloads.** Add-item broadcasts via item-status-change (not a new event type) because stations already handle it. Eliminates client-side changes and regression risk.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M004:6",
+      "label": "**Playwright click vs React event delegation mismatch.** Expected Playwright clicks to trigger React onClick handlers reliably, but React's synthetic event system sometimes doesn't fire on Playwright-simulated native clicks. Real browser clicks work fine. Workaround: rely on unit tests for logic, acceptance testing for full-stack flows in real browsers.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M004:1",
+      "label": "**Playwright click vs React event delegation mismatch.** Expected Playwright clicks to trigger React onClick handlers reliably, but React's synthetic event system sometimes doesn't fire on Playwright-simulated native clicks. Real browser clicks work fine. Workaround: rely on unit tests for logic, acceptance testing for full-stack flows in real browsers.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Known limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/M004-LEARNINGS.md"
     }
   ],
   "edges": [
@@ -1108,6 +1387,36 @@
     {
       "from": "slice:M004:S02",
       "to": "task:M004:S02:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M005",
+      "to": "slice:M005:S01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M005:S01",
+      "to": "task:M005:S01:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M005:S01",
+      "to": "task:M005:S01:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M005:S01",
+      "to": "task:M005:S01:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M005:S01",
+      "to": "task:M005:S01:T04",
       "type": "contains",
       "confidence": "EXTRACTED"
     },
@@ -1560,7 +1869,193 @@
       "to": "surprise:M003:2",
       "type": "relates_to",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:9",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:10",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:11",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:12",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:13",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "decision:M004:14",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:9",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "lesson:M004:10",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "pattern:M004:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "surprise:M004:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-05-06T08:15:13.873Z"
+  "builtAt": "2026-05-06T09:18:35.774Z"
 }

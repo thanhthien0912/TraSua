@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T09:01:42Z","fingerprint":"aba9ebfc3f8ff234de013a8a3f508e429cde2fd4","fileCount":71,"truncated":false} -->
+Generated: 2026-05-06T09:47:11Z | Files: 84 | Described: 0/84
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T09:47:11Z","fingerprint":"720afd27dd5a291037e748f01310f6418c49e30d","fileCount":84,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -33,6 +33,9 @@ Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
 ### prisma/migrations/20260506071758_add_paid_at/
 - `prisma/migrations/20260506071758_add_paid_at/migration.sql`
 
+### prisma/migrations/20260506090234_add_menu_hidden/
+- `prisma/migrations/20260506090234_add_menu_hidden/migration.sql`
+
 ### src/
 - `src/middleware.ts`
 
@@ -42,13 +45,32 @@ Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
 - `src/app/page.tsx`
 
 ### src/app/admin/
+- `src/app/admin/layout.tsx`
 - `src/app/admin/page.tsx`
 
 ### src/app/admin/login/
 - `src/app/admin/login/page.tsx`
 
+### src/app/admin/menu/
+- `src/app/admin/menu/page.tsx`
+
+### src/app/admin/qr/
+- `src/app/admin/qr/page.tsx`
+
+### src/app/admin/tables/
+- `src/app/admin/tables/page.tsx`
+
 ### src/app/api/admin/login/
 - `src/app/api/admin/login/route.ts`
+
+### src/app/api/admin/menu/
+- `src/app/api/admin/menu/route.ts`
+
+### src/app/api/admin/menu/[id]/
+- `src/app/api/admin/menu/[id]/route.ts`
+
+### src/app/api/admin/menu/__tests__/
+- `src/app/api/admin/menu/__tests__/menu-crud.test.ts`
 
 ### src/app/api/admin/qr-pdf/
 - `src/app/api/admin/qr-pdf/route.ts`
@@ -97,6 +119,10 @@ Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
 ### src/app/staff/kitchen/
 - `src/app/staff/kitchen/page.tsx`
 
+### src/components/admin/
+- `src/components/admin/AdminNav.tsx`
+- `src/components/admin/MenuItemForm.tsx`
+
 ### src/components/order/
 - `src/components/order/CartBar.tsx`
 - `src/components/order/CartProvider.tsx`
@@ -117,6 +143,10 @@ Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
 ### src/components/staff/__tests__/
 - `src/components/staff/__tests__/orderReducer.test.ts`
 
+### src/components/ui/
+- `src/components/ui/Toast.tsx`
+- `src/components/ui/ToastProvider.tsx`
+
 ### src/lib/
 - `src/lib/auth.ts`
 - `src/lib/categorize-orders.ts`
@@ -130,6 +160,7 @@ Generated: 2026-05-06T09:01:42Z | Files: 71 | Described: 0/71
 - `src/lib/__tests__/bill-aggregation.test.ts`
 - `src/lib/__tests__/cancel-recalculation.test.ts`
 - `src/lib/__tests__/categorize-orders.test.ts`
+- `src/lib/__tests__/hidden-menu-filter.test.ts`
 - `src/lib/__tests__/order-status-paid.test.ts`
 - `src/lib/__tests__/order-status.test.ts`
 - `src/lib/__tests__/sse.test.ts`
