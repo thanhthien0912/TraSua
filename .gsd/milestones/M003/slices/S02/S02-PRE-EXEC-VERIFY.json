@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "milestoneId": "M003",
+  "sliceId": "S02",
+  "timestamp": 1778047689137,
+  "status": "warn",
+  "durationMs": 1079,
+  "checks": [
+    {
+      "category": "package",
+      "target": "@/components",
+      "passed": true,
+      "message": "Warning: npm view failed (code 4294963238): npm error code ENOENT\nnpm error syscall open\nnpm error path D:\\TraSua\\@\\components\\package.json\nnpm ",
+      "blocking": false
+    }
+  ]
+}

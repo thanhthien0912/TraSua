@@ -1,0 +1,18 @@
+{
+  "id": "a9e68fb7-bf4f-414e-b5e7-8a3fd10b1c0e",
+  "runtime": "node",
+  "purpose": "Check existing files for T04",
+  "script_chars": 696,
+  "started_at": "2026-05-06T05:44:07.499Z",
+  "finished_at": "2026-05-06T05:44:07.541Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 42,
+  "stdout_bytes": 567,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\a9e68fb7-bf4f-414e-b5e7-8a3fd10b1c0e.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\a9e68fb7-bf4f-414e-b5e7-8a3fd10b1c0e.stderr"
+}

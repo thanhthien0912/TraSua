@@ -1,0 +1,15 @@
+Using table 106, drink item 127
+✅ SSE stream connected
+POST order: 201
+Created order #9 with 1 items
+✅ SSE received new-order event for order #9
+PATCH item 13 PENDING→PREPARING: 200
+✅ SSE received item-status-change event for order #9
+PATCH invalid transition (PREPARING→PENDING): 409
+✅ Got expected 409 Conflict for invalid transition
+
+--- VERIFICATION SUMMARY ---
+SSE connection: ✅
+New order via SSE: ✅
+Item status change via SSE: ✅
+Invalid transition 409: ✅

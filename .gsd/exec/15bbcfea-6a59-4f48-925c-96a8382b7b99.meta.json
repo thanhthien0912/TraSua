@@ -1,0 +1,18 @@
+{
+  "id": "15bbcfea-6a59-4f48-925c-96a8382b7b99",
+  "runtime": "node",
+  "purpose": "tsc after cleaning .next/dev/types",
+  "script_chars": 447,
+  "started_at": "2026-05-06T06:18:03.579Z",
+  "finished_at": "2026-05-06T06:18:06.549Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 2970,
+  "stdout_bytes": 32,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\15bbcfea-6a59-4f48-925c-96a8382b7b99.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\15bbcfea-6a59-4f48-925c-96a8382b7b99.stderr"
+}

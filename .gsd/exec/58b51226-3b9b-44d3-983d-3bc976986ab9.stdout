@@ -1,0 +1,5 @@
+Plan file: 57 lines
+Task plans: T01-PLAN.md, T02-PLAN.md, T03-PLAN.md
+- [ ] **T01: Create kitchen page, overview page, and staff layout with navigation tabs** `est:30m`
+- [ ] **T02: Fix PATCH endpoint to recalculate totalAmount on item cancellation and add test** `est:45m`
+- [ ] **T03: Add cancel button with two-tap confirmation to OrderCard ItemRow** `est:30m`

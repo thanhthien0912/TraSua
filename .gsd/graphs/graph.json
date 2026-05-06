@@ -1,10 +1,10 @@
 {
   "nodes": [
     {
-      "id": "milestone:M002",
-      "label": "M002: Customer Order Flow",
+      "id": "milestone:M003",
+      "label": "M003: Staff Dashboard",
       "type": "milestone",
-      "description": "Active milestone: M002",
+      "description": "Active milestone: M003",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
     },
@@ -92,6 +92,13 @@
       "confidence": "EXTRACTED"
     },
     {
+      "id": "milestone:M002",
+      "label": "M002: Customer Order Flow",
+      "type": "milestone",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-ROADMAP.md"
+    },
+    {
       "id": "slice:M002:S01",
       "label": "S01: Menu Browsing — QR to Tabbed Menu Display",
       "type": "slice",
@@ -136,11 +143,79 @@
       "confidence": "EXTRACTED"
     },
     {
-      "id": "milestone:M003",
-      "label": "M003: Staff Dashboard",
-      "type": "milestone",
+      "id": "slice:M003:S01",
+      "label": "S01: Bar Station End-to-End (SSE + API + UI)",
+      "type": "slice",
       "confidence": "EXTRACTED",
-      "sourceFile": "milestones/M003/M003-ROADMAP.md"
+      "sourceFile": "milestones/M003/slices/S01/S01-PLAN.md"
+    },
+    {
+      "id": "task:M003:S01:T01",
+      "label": "T01: SSE subscriber registry + order status derivation",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S01:T02",
+      "label": "T02: SSE stream endpoint + GET orders endpoint",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S01:T03",
+      "label": "T03: PATCH item status endpoint + SSE broadcast on order creation",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S01:T04",
+      "label": "T04: useOrderStream hook + bar station page UI",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M003:S02",
+      "label": "S02: Kitchen + Overview Stations + Item Cancellation",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/slices/S02/S02-PLAN.md"
+    },
+    {
+      "id": "task:M003:S02:T01",
+      "label": "T01: Create kitchen page, overview page, and staff layout with navigation tabs",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S02:T02",
+      "label": "T02: Fix PATCH endpoint to recalculate totalAmount on item cancellation and add test",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S02:T03",
+      "label": "T03: Add cancel button with two-tap confirmation to OrderCard ItemRow",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M003:S03",
+      "label": "S03: Notifications & Auto-Hide Polish",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/slices/S03/S03-PLAN.md"
+    },
+    {
+      "id": "task:M003:S03:T01",
+      "label": "T01: Add notification chime with visual pulse and mute toggle",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M003:S03:T02",
+      "label": "T02: Add auto-hide completed items with Lịch sử toggle and disconnection banner",
+      "type": "task",
+      "confidence": "EXTRACTED"
     },
     {
       "id": "milestone:M004",
@@ -283,6 +358,214 @@
       "description": "Source: S02-SUMMARY.md/Deviations",
       "confidence": "EXTRACTED",
       "sourceFile": "milestones/M001/M001-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:1",
+      "label": "**Two-slice decomposition along read/write boundary:** Split M002 into S01 (menu browsing — read path) and S02 (cart + order submission — write path) instead of three slices with a standalone API slice. The read path is independently valuable (QR codes lead to a real menu), and the API belongs with the cart because they form a single demoable capability.",
+      "type": "decision",
+      "description": "Source: M002-ROADMAP.md/Slices",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:2",
+      "label": "**Route Handler over Server Action for order creation:** Used POST /api/order with JSON request/response and explicit status codes (400/404/409) instead of Server Actions. Cart submission is a JSON payload from client-side state, not a form — Server Actions would require workarounds for custom error shapes.",
+      "type": "decision",
+      "description": "Source: M002-CONTEXT.md/Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:3",
+      "label": "**Server-side totalAmount computation — never trust client:** POST /api/order always re-computes totalAmount from DB prices with full FK validation chain. This prevents price manipulation and ensures data integrity regardless of client state.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:4",
+      "label": "**CartUI children-wrapping with ViewState discriminated union:** Restructured CartUI to accept children (server components) and manage menu↔confirmation transitions via ViewState, keeping page.tsx as a server component. This deviation from the original T02 plan was necessary because the confirmation screen swap required a client boundary that could coordinate both views.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:5",
+      "label": "**Children-wrapping pattern for client boundaries:** When a server component page needs client-side view transitions, wrap server component children in a client wrapper managing ViewState — avoids converting the page itself to a client component. This was discovered during S02/T03 when the confirmation screen swap demanded a unified client boundary.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:6",
+      "label": "**sessionStorage keyed by domain entity prevents cross-entity contamination:** Keying cart persistence by `trasua-cart-{tableId}` ensures table isolation with zero additional infrastructure. Simple but effective — the key naming convention is the whole pattern.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:7",
+      "label": "**Unavailable item handling needs seed data for visual QA:** The 'Hết hàng' badge was code-verified but never visually confirmed in browser because no seed data items have `available: false`. For future milestones, seed data should cover all UI states, not just the happy path.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Known Limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:8",
+      "label": "**CartProvider useReducer + sessionStorage hydration guard:** Five-action reducer (ADD_ITEM, REMOVE_ITEM, UPDATE_QUANTITY, UPDATE_NOTES, CLEAR_CART) with payload wrapper objects. sessionStorage keyed by tableId. `useIsHydrated` guard prevents initial empty state from overwriting stored cart on mount. Reusable for any client-side state needing persistence across page navigations.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:9",
+      "label": "**Spring-like cubic-bezier(0.32, 0.72, 0, 1) for staggered entrance animations:** Used for OrderConfirmation's 5-element staggered fadeSlideUp (0→350ms delays) and CartSheet slide-up. Produces a natural, spring-like deceleration that feels polished on mobile. Reuse for any entrance animation in the app.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:10",
+      "label": "**Server-side price computation with full FK validation chain:** API route validates: body shape → quantity positivity → table existence → menuItem existence → menuItem availability, then computes totals from DB prices. Each validation returns a specific HTTP status code. This chain pattern should be applied to all order-modifying endpoints.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:11",
+      "label": "**Dead-end error page pattern for invalid URL params:** ErrorPage renders a full-screen Vietnamese message with no navigation links — no escape routes to valid content. Prevents users from reaching ordering functionality without a valid QR scan. Apply this pattern to any entry-point validation.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M002:12",
+      "label": "**CartUI required restructuring mid-slice:** The original T02 plan had CartUI as a thin sibling wrapper, but the confirmation screen (T03) needed a client boundary that could manage both MenuView and OrderConfirmation rendering — this forced a restructure to a children-wrapping pattern with ViewState. The deviation was small in code but conceptually important: it revealed that view-transition requirements should be considered during slice planning, not discovered during task implementation.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:1",
+      "label": "**Children-wrapping pattern for client boundaries:** When a server component page needs client-side view transitions, wrap server component children in a client wrapper managing ViewState — avoids converting the page itself to a client component. This was discovered during S02/T03 when the confirmation screen swap demanded a unified client boundary.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:2",
+      "label": "**sessionStorage keyed by domain entity prevents cross-entity contamination:** Keying cart persistence by `trasua-cart-{tableId}` ensures table isolation with zero additional infrastructure. Simple but effective — the key naming convention is the whole pattern.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:3",
+      "label": "**Unavailable item handling needs seed data for visual QA:** The 'Hết hàng' badge was code-verified but never visually confirmed in browser because no seed data items have `available: false`. For future milestones, seed data should cover all UI states, not just the happy path.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Known Limitations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:4",
+      "label": "**CartProvider useReducer + sessionStorage hydration guard:** Five-action reducer (ADD_ITEM, REMOVE_ITEM, UPDATE_QUANTITY, UPDATE_NOTES, CLEAR_CART) with payload wrapper objects. sessionStorage keyed by tableId. `useIsHydrated` guard prevents initial empty state from overwriting stored cart on mount. Reusable for any client-side state needing persistence across page navigations.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:5",
+      "label": "**Spring-like cubic-bezier(0.32, 0.72, 0, 1) for staggered entrance animations:** Used for OrderConfirmation's 5-element staggered fadeSlideUp (0→350ms delays) and CartSheet slide-up. Produces a natural, spring-like deceleration that feels polished on mobile. Reuse for any entrance animation in the app.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:6",
+      "label": "**Server-side price computation with full FK validation chain:** API route validates: body shape → quantity positivity → table existence → menuItem existence → menuItem availability, then computes totals from DB prices. Each validation returns a specific HTTP status code. This chain pattern should be applied to all order-modifying endpoints.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:7",
+      "label": "**Dead-end error page pattern for invalid URL params:** ErrorPage renders a full-screen Vietnamese message with no navigation links — no escape routes to valid content. Prevents users from reaching ordering functionality without a valid QR scan. Apply this pattern to any entry-point validation.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M002:8",
+      "label": "**CartUI required restructuring mid-slice:** The original T02 plan had CartUI as a thin sibling wrapper, but the confirmation screen (T03) needed a client boundary that could manage both MenuView and OrderConfirmation rendering — this forced a restructure to a children-wrapping pattern with ViewState. The deviation was small in code but conceptually important: it revealed that view-transition requirements should be considered during slice planning, not discovered during task implementation.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M002:1",
+      "label": "**CartProvider useReducer + sessionStorage hydration guard:** Five-action reducer (ADD_ITEM, REMOVE_ITEM, UPDATE_QUANTITY, UPDATE_NOTES, CLEAR_CART) with payload wrapper objects. sessionStorage keyed by tableId. `useIsHydrated` guard prevents initial empty state from overwriting stored cart on mount. Reusable for any client-side state needing persistence across page navigations.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M002:2",
+      "label": "**Spring-like cubic-bezier(0.32, 0.72, 0, 1) for staggered entrance animations:** Used for OrderConfirmation's 5-element staggered fadeSlideUp (0→350ms delays) and CartSheet slide-up. Produces a natural, spring-like deceleration that feels polished on mobile. Reuse for any entrance animation in the app.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M002:3",
+      "label": "**Server-side price computation with full FK validation chain:** API route validates: body shape → quantity positivity → table existence → menuItem existence → menuItem availability, then computes totals from DB prices. Each validation returns a specific HTTP status code. This chain pattern should be applied to all order-modifying endpoints.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Patterns established",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M002:4",
+      "label": "**Dead-end error page pattern for invalid URL params:** ErrorPage renders a full-screen Vietnamese message with no navigation links — no escape routes to valid content. Prevents users from reaching ordering functionality without a valid QR scan. Apply this pattern to any entry-point validation.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M002:5",
+      "label": "**CartUI required restructuring mid-slice:** The original T02 plan had CartUI as a thin sibling wrapper, but the confirmation screen (T03) needed a client boundary that could manage both MenuView and OrderConfirmation rendering — this forced a restructure to a children-wrapping pattern with ViewState. The deviation was small in code but conceptually important: it revealed that view-transition requirements should be considered during slice planning, not discovered during task implementation.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M002:1",
+      "label": "**CartUI required restructuring mid-slice:** The original T02 plan had CartUI as a thin sibling wrapper, but the confirmation screen (T03) needed a client boundary that could manage both MenuView and OrderConfirmation rendering — this forced a restructure to a children-wrapping pattern with ViewState. The deviation was small in code but conceptually important: it revealed that view-transition requirements should be considered during slice planning, not discovered during task implementation.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M002/M002-LEARNINGS.md"
     }
   ],
   "edges": [
@@ -395,6 +678,78 @@
       "confidence": "EXTRACTED"
     },
     {
+      "from": "milestone:M003",
+      "to": "slice:M003:S01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S01",
+      "to": "task:M003:S01:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S01",
+      "to": "task:M003:S01:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S01",
+      "to": "task:M003:S01:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S01",
+      "to": "task:M003:S01:T04",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "slice:M003:S02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S02",
+      "to": "task:M003:S02:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S02",
+      "to": "task:M003:S02:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S02",
+      "to": "task:M003:S02:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "slice:M003:S03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S03",
+      "to": "task:M003:S03:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M003:S03",
+      "to": "task:M003:S03:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
       "from": "milestone:M001",
       "to": "decision:M001:1",
       "type": "relates_to",
@@ -489,7 +844,163 @@
       "to": "surprise:M001:3",
       "type": "relates_to",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:9",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:10",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:11",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "decision:M002:12",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "lesson:M002:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "pattern:M002:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "pattern:M002:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "pattern:M002:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "pattern:M002:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "pattern:M002:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M002",
+      "to": "surprise:M002:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-05-06T04:45:05.652Z"
+  "builtAt": "2026-05-06T06:36:42.420Z"
 }

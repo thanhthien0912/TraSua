@@ -1,0 +1,81 @@
+=== Project structure ===
+D:\TraSua\src\middleware.ts
+D:\TraSua\src\app\layout.tsx
+D:\TraSua\src\app\page.tsx
+D:\TraSua\src\app\admin\page.tsx
+D:\TraSua\src\app\admin\login\page.tsx
+D:\TraSua\src\app\api\admin\login\route.ts
+D:\TraSua\src\app\api\admin\qr-pdf\route.ts
+D:\TraSua\src\app\api\order\route.ts
+D:\TraSua\src\app\order\page.tsx
+D:\TraSua\src\components\order\CartBar.tsx
+D:\TraSua\src\components\order\CartProvider.tsx
+D:\TraSua\src\components\order\CartSheet.tsx
+D:\TraSua\src\components\order\CartUI.tsx
+D:\TraSua\src\components\order\ErrorPage.tsx
+D:\TraSua\src\components\order\MenuView.tsx
+D:\TraSua\src\components\order\OrderConfirmation.tsx
+D:\TraSua\src\lib\auth.ts
+D:\TraSua\src\lib\format.ts
+D:\TraSua\src\lib\prisma.ts
+
+=== App routes ===
+D:\TraSua\src\app\admin
+D:\TraSua\src\app\api
+D:\TraSua\src\app\order
+D:\TraSua\src\app\admin\login
+D:\TraSua\src\app\api\admin
+D:\TraSua\src\app\api\order
+D:\TraSua\src\app\api\admin\login
+D:\TraSua\src\app\api\admin\qr-pdf
+
+=== Prisma schema Order models ===
+model MenuItem {
+  id          Int        @id @default(autoincrement())
+  name        String
+  category    Category
+  price       Int        // VND — no decimals needed
+  description String?
+  available   Boolean    @default(true)
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  orderItems  OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Table {
+  id     Int     @id @default(autoincrement())
+  number Int     @unique
+  name   String  // e.g. "Bàn 1"
+  orders Order[]
+
+  @@map("tables")
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  tableId     Int
+  table       Table       @relation(fields: [tableId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Int         @default(0)
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int        @id @default(autoincrement())
+  orderId    Int
+  order      Order      @relation(fields: [orderId], references: [id])
+  menuItemId Int
+  menuItem   MenuItem   @relation(fields: [menuItemId], references: [id])
+  quantity   Int        @default(1)
+  status     ItemStatus @default(PENDING)
+  notes      String?
+  createdAt  DateTime   @default(now())
+
+  @@map("order_items")
+}
+

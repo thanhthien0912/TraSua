@@ -1,0 +1,18 @@
+{
+  "id": "7ef276ca-d7c2-4bc3-8a03-c79aa24a255a",
+  "runtime": "node",
+  "purpose": "Verify S02 and S03 RESEARCH files exist",
+  "script_chars": 386,
+  "started_at": "2026-05-06T06:04:08.063Z",
+  "finished_at": "2026-05-06T06:04:08.105Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 42,
+  "stdout_bytes": 75,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\7ef276ca-d7c2-4bc3-8a03-c79aa24a255a.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\7ef276ca-d7c2-4bc3-8a03-c79aa24a255a.stderr"
+}

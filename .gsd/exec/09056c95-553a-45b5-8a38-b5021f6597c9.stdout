@@ -1,0 +1,21 @@
+PRESENT: 17
+✅ src/lib/sse.ts (3356B)
+✅ src/lib/order-status.ts (3558B)
+✅ src/lib/categorize-orders.ts (1996B)
+✅ src/app/api/staff/orders/stream/route.ts (1541B)
+✅ src/app/api/staff/orders/route.ts (2706B)
+✅ src/app/api/staff/orders/[orderId]/items/[itemId]/route.ts (5320B)
+✅ src/app/staff/bar/page.tsx (319B)
+✅ src/app/staff/kitchen/page.tsx (314B)
+✅ src/app/staff/page.tsx (313B)
+✅ src/app/staff/layout.tsx (326B)
+✅ src/app/staff/StaffNav.tsx (2377B)
+✅ src/components/staff/StationView.tsx (15855B)
+✅ src/components/staff/OrderCard.tsx (10287B)
+✅ src/components/staff/useOrderStream.ts (7125B)
+✅ src/components/staff/useNotification.ts (4255B)
+✅ src/app/globals.css (1200B)
+✅ vitest.config.ts (220B)
+
+SSE stream route has ReadableStream: true
+SSE stream route has text/event-stream: true

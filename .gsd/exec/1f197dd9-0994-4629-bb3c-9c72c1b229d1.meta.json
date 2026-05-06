@@ -1,0 +1,18 @@
+{
+  "id": "1f197dd9-0994-4629-bb3c-9c72c1b229d1",
+  "runtime": "node",
+  "purpose": "Read Prisma schema for data types",
+  "script_chars": 145,
+  "started_at": "2026-05-06T05:44:40.251Z",
+  "finished_at": "2026-05-06T05:44:40.290Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 39,
+  "stdout_bytes": 2090,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\1f197dd9-0994-4629-bb3c-9c72c1b229d1.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\1f197dd9-0994-4629-bb3c-9c72c1b229d1.stderr"
+}

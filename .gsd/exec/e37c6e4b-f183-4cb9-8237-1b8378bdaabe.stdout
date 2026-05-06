@@ -1,0 +1,19 @@
+ → SERVED (skip forward)[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects PREPARING → SERVED (skip forward)[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects PENDING → PENDING (no-op)[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects PREPARING → PREPARING (no-op)[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects CANCELLED → PENDING[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects CANCELLED → PREPARING[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22misValidTransition[2m > [22mrejects CANCELLED → CANCELLED[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22mgetValidNextStatuses[2m > [22mreturns [PREPARING, CANCELLED] for PENDING[32m 1[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22mgetValidNextStatuses[2m > [22mreturns [READY, CANCELLED] for PREPARING[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22mgetValidNextStatuses[2m > [22mreturns [SERVED, CANCELLED] for READY[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22mgetValidNextStatuses[2m > [22mreturns [CANCELLED] for SERVED[32m 0[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/order-status.test.ts[2m > [22mgetValidNextStatuses[2m > [22mreturns empty array for CANCELLED (terminal)[32m 0[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m71 passed[39m[22m[90m (71)[39m
+[2m   Start at [22m 13:44:22
+[2m   Duration [22m 331ms[2m (transform 239ms, setup 0ms, import 318ms, tests 42ms, environment 0ms)[22m
+
+

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "taskId": "T03",
+  "unitId": "M003/S01/T03",
+  "timestamp": 1778046212470,
+  "passed": false,
+  "discoverySource": "task-plan",
+  "checks": [
+    {
+      "command": "Open SSE stream with curl -N, POST a new order via curl, verify SSE receives new-order event. PATCH item status, verify SSE receives item-status-change event. PATCH with invalid transition (e.g. READY→PENDING), verify 409 Conflict response.",
+      "exitCode": 1,
+      "durationMs": 150,
+      "verdict": "fail"
+    }
+  ],
+  "retryAttempt": 1,
+  "maxRetries": 2
+}

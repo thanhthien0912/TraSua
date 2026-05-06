@@ -1,0 +1,18 @@
+{
+  "id": "583fa610-2138-4027-b22b-79654eadbe98",
+  "runtime": "node",
+  "purpose": "Scout codebase for M003 Staff Dashboard",
+  "script_chars": 1026,
+  "started_at": "2026-05-06T04:57:12.540Z",
+  "finished_at": "2026-05-06T04:57:12.610Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 70,
+  "stdout_bytes": 2319,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\583fa610-2138-4027-b22b-79654eadbe98.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\583fa610-2138-4027-b22b-79654eadbe98.stderr"
+}

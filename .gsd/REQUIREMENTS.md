@@ -4,15 +4,6 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Active
 
-### R001 — Khách hàng scan QR code tại bàn để mở menu và đặt món trên điện thoại
-- Class: core-capability
-- Status: active
-- Description: Khách hàng scan QR code tại bàn để mở menu và đặt món trên điện thoại
-- Why it matters: Đây là luồng chính của hệ thống — thay thế gọi nhân viên bằng self-service order
-- Source: user-interview
-- Validation: Khách scan QR → thấy menu → chọn món → gửi order thành công → nhân viên nhận được
-- Notes: M002 delivers the customer-facing half of R001: QR scan → menu browsing → cart → order submission → confirmation. Orders persist to DB with correct FKs and server-computed totals. Staff receiving orders (the second half of R001's validation criteria) is M003 scope.
-
 ### R002 — Phân loại đơn hàng thành món nước (bar) và món bếp (kitchen) tự động
 - Class: core-capability
 - Status: active
@@ -74,6 +65,15 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Validated
 
+### R001 — Khách hàng scan QR code tại bàn để mở menu và đặt món trên điện thoại
+- Class: core-capability
+- Status: validated
+- Description: Khách hàng scan QR code tại bàn để mở menu và đặt món trên điện thoại
+- Why it matters: Đây là luồng chính của hệ thống — thay thế gọi nhân viên bằng self-service order
+- Source: user-interview
+- Validation: M002 delivered customer QR ordering flow. M003 delivered staff real-time dashboard with SSE — staff receives orders within 3 seconds via bar/kitchen/overview stations. Full R001 loop proven: customer scans QR → places order → staff sees it in real-time on their station tablet.
+- Notes: M002 delivers the customer-facing half of R001: QR scan → menu browsing → cart → order submission → confirmation. Orders persist to DB with correct FKs and server-computed totals. Staff receiving orders (the second half of R001's validation criteria) is M003 scope.
+
 ## Deferred
 
 ## Out of Scope
@@ -82,7 +82,7 @@ This file is the explicit capability and coverage contract for the project.
 
 | ID | Class | Status | Primary owner | Supporting | Proof |
 |---|---|---|---|---|---|
-| R001 | core-capability | active | none | none | Khách scan QR → thấy menu → chọn món → gửi order thành công → nhân viên nhận được |
+| R001 | core-capability | validated | none | none | M002 delivered customer QR ordering flow. M003 delivered staff real-time dashboard with SSE — staff receives orders within 3 seconds via bar/kitchen/overview stations. Full R001 loop proven: customer scans QR → places order → staff sees it in real-time on their station tablet. |
 | R002 | core-capability | active | none | none | Order chứa cả đồ uống và đồ ăn → bar chỉ thấy đồ uống, kitchen chỉ thấy đồ ăn |
 | R003 | core-capability | active | none | none | Khách gửi order → dashboard cập nhật trong <3 giây không cần refresh trang |
 | R004 | core-capability | active | none | none | Nhân viên xem bill bàn X → thấy tất cả món đã order → tổng tiền đúng → đánh dấu paid |
@@ -93,7 +93,7 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Coverage Summary
 
-- Active requirements: 8
-- Mapped to slices: 8
-- Validated: 0
+- Active requirements: 7
+- Mapped to slices: 7
+- Validated: 1 (R001)
 - Unmapped active requirements: 0

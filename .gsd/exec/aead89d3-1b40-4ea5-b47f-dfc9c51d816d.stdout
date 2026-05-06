@@ -1,0 +1,18 @@
+VITEST OUTPUT: nt=2 cleaned=0
+
+[90mstdout[2m | src/lib/__tests__/sse.test.ts[2m > [22m[2mSSE Subscriber Registry[2m > [22m[2mbroadcast[2m > [22m[2mcleans up dead subscribers on broadcast
+[22m[39m[SSE] Registry initialized
+[SSE] Subscriber connected (station=all, total=1)
+[SSE] Subscriber connected (station=all, total=2)
+[SSE] Removed dead subscriber (station=all)
+[SSE] Broadcast event="test" station=all sent=1 cleaned=1
+
+ [32m✓[39m src/lib/__tests__/sse.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m71 passed[39m[22m[90m (71)[39m
+[2m   Start at [22m 13:33:45
+[2m   Duration [22m 411ms[2m (transform 199ms, setup 0ms, import 294ms, tests 45ms, environment 1ms)[22m
+
+
+VITEST EXIT: 0

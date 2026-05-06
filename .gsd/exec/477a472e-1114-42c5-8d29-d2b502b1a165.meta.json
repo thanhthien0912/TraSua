@@ -1,0 +1,18 @@
+{
+  "id": "477a472e-1114-42c5-8d29-d2b502b1a165",
+  "runtime": "node",
+  "purpose": "M003 validation - tsc check",
+  "script_chars": 404,
+  "started_at": "2026-05-06T06:41:14.628Z",
+  "finished_at": "2026-05-06T06:41:16.551Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 1923,
+  "stdout_bytes": 50,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\477a472e-1114-42c5-8d29-d2b502b1a165.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\477a472e-1114-42c5-8d29-d2b502b1a165.stderr"
+}

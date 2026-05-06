@@ -1,0 +1,18 @@
+{
+  "id": "cc6e6645-43ec-4ed3-8e0f-be22961702ea",
+  "runtime": "node",
+  "purpose": "Verify SSE broadcast, multi-station, and page structure",
+  "script_chars": 2540,
+  "started_at": "2026-05-06T06:45:20.060Z",
+  "finished_at": "2026-05-06T06:45:20.103Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 43,
+  "stdout_bytes": 672,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\cc6e6645-43ec-4ed3-8e0f-be22961702ea.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\cc6e6645-43ec-4ed3-8e0f-be22961702ea.stderr"
+}

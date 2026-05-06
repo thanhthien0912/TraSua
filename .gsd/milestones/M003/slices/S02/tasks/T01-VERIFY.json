@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "taskId": "T01",
+  "unitId": "M003/S02/T01",
+  "timestamp": 1778047856453,
+  "passed": false,
+  "discoverySource": "task-plan",
+  "checks": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "durationMs": 1887,
+      "verdict": "pass"
+    },
+    {
+      "command": "test -f src/app/staff/kitchen/page.tsx",
+      "exitCode": 1,
+      "durationMs": 14,
+      "verdict": "fail"
+    },
+    {
+      "command": "test -f src/app/staff/page.tsx",
+      "exitCode": 1,
+      "durationMs": 15,
+      "verdict": "fail"
+    },
+    {
+      "command": "test -f src/app/staff/layout.tsx",
+      "exitCode": 1,
+      "durationMs": 14,
+      "verdict": "fail"
+    }
+  ],
+  "retryAttempt": 1,
+  "maxRetries": 2
+}

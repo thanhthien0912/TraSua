@@ -1,0 +1,18 @@
+{
+  "id": "af44c217-7a77-47bb-891f-03c4e305ad64",
+  "runtime": "node",
+  "purpose": "Map Next.js 16 app docs structure",
+  "script_chars": 526,
+  "started_at": "2026-05-06T05:10:09.474Z",
+  "finished_at": "2026-05-06T05:10:09.519Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 45,
+  "stdout_bytes": 4840,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\af44c217-7a77-47bb-891f-03c4e305ad64.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\af44c217-7a77-47bb-891f-03c4e305ad64.stderr"
+}

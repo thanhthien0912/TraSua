@@ -1,0 +1,5 @@
+MISSING: src/app/staff/layout.tsx
+MISSING: src/app/staff/page.tsx
+MISSING: src/app/staff/kitchen/page.tsx
+EXISTS: src/app/globals.css
+  size: 467 bytes

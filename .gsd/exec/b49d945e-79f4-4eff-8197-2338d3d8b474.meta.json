@@ -1,0 +1,18 @@
+{
+  "id": "b49d945e-79f4-4eff-8197-2338d3d8b474",
+  "runtime": "node",
+  "purpose": "verify all S02 files exist",
+  "script_chars": 567,
+  "started_at": "2026-05-06T06:18:20.577Z",
+  "finished_at": "2026-05-06T06:18:20.618Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 41,
+  "stdout_bytes": 303,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\b49d945e-79f4-4eff-8197-2338d3d8b474.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\b49d945e-79f4-4eff-8197-2338d3d8b474.stderr"
+}

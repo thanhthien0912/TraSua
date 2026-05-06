@@ -1,0 +1,18 @@
+{
+  "id": "7072cdef-578e-46b5-b535-a659657247d0",
+  "runtime": "node",
+  "purpose": "Verify all S03 key files exist",
+  "script_chars": 527,
+  "started_at": "2026-05-06T06:33:56.613Z",
+  "finished_at": "2026-05-06T06:33:56.655Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 42,
+  "stdout_bytes": 330,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\7072cdef-578e-46b5-b535-a659657247d0.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\7072cdef-578e-46b5-b535-a659657247d0.stderr"
+}
