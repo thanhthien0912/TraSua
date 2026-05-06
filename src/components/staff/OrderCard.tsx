@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { formatVND } from '@/lib/format'
 import { getValidNextStatuses, type ItemStatus } from '@/lib/order-status'
 import type { Order, OrderItem } from './useOrderStream'
@@ -65,13 +65,39 @@ const ORDER_STATUS_CONFIG: Record<
 
 // ─── ItemRow ────────────────────────────────────────────────────────
 
+/** Statuses that allow cancellation */
+const CANCELLABLE_STATUSES: Set<ItemStatus> = new Set([
+  'PENDING',
+  'PREPARING',
+  'READY',
+])
+
 function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
   const [loading, setLoading] = useState(false)
+  const [confirmingCancel, setConfirmingCancel] = useState(false)
+  const cancelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const status = item.status as ItemStatus
   const config = STATUS_CONFIG[status]
   const nextStatuses = getValidNextStatuses(status).filter(
     (s) => s !== 'CANCELLED'
   )
+  const canCancel = CANCELLABLE_STATUSES.has(status)
+
+  // Reset confirmation timeout after 3 seconds
+  useEffect(() => {
+    if (confirmingCancel) {
+      cancelTimerRef.current = setTimeout(() => {
+        setConfirmingCancel(false)
+      }, 3000)
+    }
+    return () => {
+      if (cancelTimerRef.current) {
+        clearTimeout(cancelTimerRef.current)
+        cancelTimerRef.current = null
+      }
+    }
+  }, [confirmingCancel])
 
   const handleAdvance = useCallback(
     async (targetStatus: ItemStatus) => {
@@ -100,6 +126,38 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
     },
     [orderId, item.id]
   )
+
+  const handleCancelTap = useCallback(async () => {
+    if (!confirmingCancel) {
+      // First tap — enter confirmation mode
+      setConfirmingCancel(true)
+      return
+    }
+    // Second tap — execute cancel
+    setLoading(true)
+    setConfirmingCancel(false)
+    try {
+      const res = await fetch(
+        `/api/staff/orders/${orderId}/items/${item.id}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'cancel' }),
+        }
+      )
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        console.error(
+          `[OrderCard] Cancel failed (${res.status}):`,
+          err.error ?? 'Unknown error'
+        )
+      }
+    } catch (err) {
+      console.error('[OrderCard] Cancel network error:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [confirmingCancel, orderId, item.id])
 
   return (
     <div className="flex items-center gap-3 py-3 border-b border-amber-100 last:border-b-0">
@@ -160,6 +218,32 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
             </button>
           )
         })}
+
+        {/* Cancel button — two-tap confirmation */}
+        {canCancel && (
+          <button
+            onClick={handleCancelTap}
+            disabled={loading}
+            className={`
+              min-h-[44px] px-4 py-2 rounded-xl font-semibold text-sm
+              transition-all duration-150 active:scale-95
+              disabled:opacity-50 disabled:cursor-not-allowed
+              ${
+                confirmingCancel
+                  ? 'bg-red-600 text-white shadow-md shadow-red-900/20 min-w-[120px]'
+                  : 'bg-red-50 text-red-600 ring-1 ring-inset ring-red-200 hover:bg-red-100'
+              }
+            `}
+          >
+            {loading ? (
+              <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            ) : confirmingCancel ? (
+              'Xác nhận huỷ?'
+            ) : (
+              'Huỷ'
+            )}
+          </button>
+        )}
       </div>
     </div>
   )
