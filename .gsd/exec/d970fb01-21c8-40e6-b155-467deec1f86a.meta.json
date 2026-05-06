@@ -1,0 +1,18 @@
+{
+  "id": "d970fb01-21c8-40e6-b155-467deec1f86a",
+  "runtime": "node",
+  "purpose": "Verify T01+T02 outputs",
+  "script_chars": 2179,
+  "started_at": "2026-05-06T07:20:57.391Z",
+  "finished_at": "2026-05-06T07:20:57.434Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 43,
+  "stdout_bytes": 829,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\d970fb01-21c8-40e6-b155-467deec1f86a.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\d970fb01-21c8-40e6-b155-467deec1f86a.stderr"
+}

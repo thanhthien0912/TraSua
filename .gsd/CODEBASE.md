@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-06T06:33:11Z | Files: 56 | Described: 0/56
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T06:33:11Z","fingerprint":"a9f65183b1b22173ee61bb1f50c976aad81ea0f7","fileCount":56,"truncated":false} -->
+Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T07:09:28Z","fingerprint":"3c8b2a16d2827c1e97a7c3754e777aee36f1f042","fileCount":58,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -53,8 +53,14 @@ Generated: 2026-05-06T06:33:11Z | Files: 56 | Described: 0/56
 ### src/app/api/order/
 - `src/app/api/order/route.ts`
 
+### src/app/api/staff/orders/
+- `src/app/api/staff/orders/route.ts`
+
 ### src/app/api/staff/orders/[orderId]/items/[itemId]/
 - `src/app/api/staff/orders/[orderId]/items/[itemId]/route.ts`
+
+### src/app/api/staff/orders/stream/
+- `src/app/api/staff/orders/stream/route.ts`
 
 ### src/app/order/
 - `src/app/order/page.tsx`

@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const orders = await prisma.order.findMany({
       where: {
         status: {
-          notIn: ['SERVED', 'CANCELLED'],
+          notIn: ['SERVED', 'CANCELLED', 'PAID'],
         },
       },
       include: {

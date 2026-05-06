@@ -42,6 +42,29 @@ export async function PATCH(
     )
   }
 
+  // ─── Guard: reject changes on PAID orders ─────────────────────────
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { status: true },
+  })
+
+  if (!order) {
+    return NextResponse.json(
+      { error: 'Đơn hàng không tồn tại.' },
+      { status: 404 }
+    )
+  }
+
+  if (order.status === 'PAID') {
+    console.log(
+      `[PATCH /api/staff/orders/${orderId}/items/${itemId}] Rejected: order is PAID`
+    )
+    return NextResponse.json(
+      { error: 'Đơn hàng đã thanh toán, không thể thay đổi.' },
+      { status: 409 }
+    )
+  }
+
   // ─── Parse body ───────────────────────────────────────────────────
   let body: PatchBody
   try {

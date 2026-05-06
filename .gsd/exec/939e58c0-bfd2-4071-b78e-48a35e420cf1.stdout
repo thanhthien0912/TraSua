@@ -1,0 +1,16 @@
+
+=== .gsd root files ===
+audit-log.jsonl
+auto.lock
+CODEBASE.md
+completed-units.json
+DECISIONS.md
+doctor-history.jsonl
+gsd.db
+gsd.db-shm
+gsd.db-wal
+metrics.json
+notifications.jsonl
+PROJECT.md
+REQUIREMENTS.md
+STATE.md

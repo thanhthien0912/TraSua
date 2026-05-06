@@ -1,0 +1,18 @@
+{
+  "id": "e91397cd-ce2a-4ea0-8544-cf8827298ee7",
+  "runtime": "node",
+  "purpose": "Verify next build with T01+T02 changes",
+  "script_chars": 712,
+  "started_at": "2026-05-06T07:21:20.620Z",
+  "finished_at": "2026-05-06T07:21:30.640Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 10020,
+  "stdout_bytes": 154,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\e91397cd-ce2a-4ea0-8544-cf8827298ee7.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\e91397cd-ce2a-4ea0-8544-cf8827298ee7.stderr"
+}

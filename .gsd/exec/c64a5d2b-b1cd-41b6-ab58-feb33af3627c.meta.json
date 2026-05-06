@@ -1,0 +1,18 @@
+{
+  "id": "c64a5d2b-b1cd-41b6-ab58-feb33af3627c",
+  "runtime": "bash",
+  "purpose": "Verify T01+T02 parallel outputs",
+  "script_chars": 1310,
+  "started_at": "2026-05-06T07:20:44.653Z",
+  "finished_at": "2026-05-06T07:20:44.656Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 3,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\c64a5d2b-b1cd-41b6-ab58-feb33af3627c.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\c64a5d2b-b1cd-41b6-ab58-feb33af3627c.stderr"
+}

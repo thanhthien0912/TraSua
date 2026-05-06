@@ -1,0 +1,643 @@
+=== OrderStatus enum ===
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  SERVED
+  PAID
+  CANCELLED
+}
+
+=== Order model (first 30 lines) ===
+model Order {
+  id          Int         @id @default(autoincrement())
+  tableId     Int
+  table       Table       @relation(fields: [tableId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Int         @default(0)
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+=== paidAt in schema? ===
+NO - paidAt NOT in schema
+
+=== StaffNav ===
+'use client'
+
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+
+// ─── Navigation Config ──────────────────────────────────────────────
+
+const NAV_ITEMS = [
+  { href: '/staff/bar', label: 'Quầy Bar', emoji: '🧋' },
+  { href: '/staff/kitchen', label: 'Bếp', emoji: '🍳' },
+  { href: '/staff', label: 'Tổng quan', emoji: '📋', exact: true },
+] as const
+
+// ─── Staff Navigation ───────────────────────────────────────────────
+
+export default function StaffNav() {
+  const pathname = usePathname()
+
+  return (
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-amber-200/60 shadow-[0_-2px_16px_rgba(180,120,40,0.08)]"
+      aria-label="Điều hướng trạm"
+    >
+      <div className="max-w-7xl mx-auto flex items-stretch justify-around">
+        {NAV_ITEMS.map(({ href, label, emoji, ...rest }) => {
+          const exact = 'exact' in rest && rest.exact
+          const isActive = exact
+            ? pathname === href
+            : pathname.startsWith(href)
+
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`
+                relative flex flex-col items-center justify-center gap-1
+                min-h-[56px] min-w-[72px] px-4 py-2
+                text-xs font-semibold tracking-wide
+                transition-all duration-200 ease-out
+                ${
+                  isActive
+                    ? 'text-amber-900'
+                    : 'text-amber-600/60 hover:text-amber-800 active:scale-95'
+                }
+              `}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {/* Active indicator pill */}
+              {isActive && (
+                <span
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-amber-500"
+                  aria-hidden="true"
+                />
+              )}
+
+              <span className="text-xl leading-none" aria-hidden="true">
+                {emoji}
+              </span>
+              <span>{label}</span>
+            </Link>
+          )
+        })}
+      </div>
+    </nav>
+  )
+}
+
+
+=== order-status.ts ===
+/**
+ * Order Status Derivation & Item Status Transition Validation
+ *
+ * Pure functions — no side effects, no DB access.
+ * Imported by API routes and UI components alike.
+ */
+
+import type { ItemStatus, OrderStatus } from '../../generated/prisma/enums'
+
+// Re-export for convenience so consumers don't need to import from generated
+export type { ItemStatus, OrderStatus }
+
+// ─── Status Derivation ──────────────────────────────────────────────
+
+/**
+ * Derive the overall order status from its item statuses.
+ *
+ * Rules (evaluated in priority order):
+ * 1. Empty array → PENDING (no items = nothing to process)
+ * 2. ALL items CANCELLED → CANCELLED
+ * 3. ALL non-cancelled items SERVED → SERVED
+ * 4. ALL non-cancelled items READY → READY
+ * 5. ANY non-cancelled item PREPARING → PREPARING
+ * 6. Otherwise → PENDING
+ */
+export function deriveOrderStatus(itemStatuses: ItemStatus[]): OrderStatus {
+  if (itemStatuses.length === 0) return 'PENDING'
+
+  const nonCancelled = itemStatuses.filter((s) => s !== 'CANCELLED')
+
+  // All cancelled
+  if (nonCancelled.length === 0) return 'CANCELLED'
+
+  // All non-cancelled are SERVED
+  if (nonCancelled.every((s) => s === 'SERVED')) return 'SERVED'
+
+  // All non-cancelled are READY (or SERVED — already handled above means some READY)
+  if (nonCancelled.every((s) => s === 'READY' || s === 'SERVED')) return 'READY'
+
+  // Any non-cancelled is PREPARING (or beyond — READY/SERVED)
+  if (
+    nonCancelled.some(
+      (s) => s === 'PREPARING' || s === 'READY' || s === 'SERVED'
+    )
+  )
+    return 'PREPARING'
+
+  // Default: all non-cancelled items are PENDING
+  return 'PENDING'
+}
+
+// ─── Total Recalculation ────────────────────────────────────────────
+
+/**
+ * Calculate the order total from item data, excluding CANCELLED items.
+ * Prices are Int (VND — no decimals).
+ */
+export function calculateOrderTotal(
+  items: Array<{ status: string; price: number; quantity: number }>
+): number {
+  return items.reduce((sum, item) => {
+    if (item.status === 'CANCELLED') return sum
+    return sum + item.price * item.quantity
+  }, 0)
+}
+
+// ─── Transition Validation ──────────────────────────────────────────
+
+/**
+ * Valid forward transitions for item statuses.
+ * PENDING → PREPARING → READY → SERVED (forward-only)
+ * Any status → CANCELLED (always allowed)
+ */
+const VALID_TRANSITIONS: Record<ItemStatus, ItemStatus[]> = {
+  PENDING: ['PREPARING', 'CANCELLED'],
+  PREPARING: ['READY', 'CANCELLED'],
+  READY: ['SERVED', 'CANCELLED'],
+  SERVED: ['CANCELLED'],
+  CANCELLED: [], // Terminal — no transitions out
+}
+
+/**
+ * Check whether transitioning from one item status to another is valid.
+ * Forward-only: PENDING → PREPARING → READY → SERVED
+ * Plus: any status → CANCELLED (except CANCELLED itself)
+ */
+export function isValidTransition(
+  from: ItemStatus,
+  to: ItemStatus
+): boolean {
+  if (from === to) return false // No-op transitions are invalid
+  const allowed = VALID_TRANSITIONS[from]
+  return allowed !== undefined && allowed.includes(to)
+}
+
+/**
+ * Get the list of valid next statuses for a given item status.
+ * Useful for UI to render available action buttons.
+ */
+export function getValidNextStatuses(current: ItemStatus): ItemStatus[] {
+  return VALID_TRANSITIONS[current] ?? []
+}
+
+
+=== sse.ts ===
+/**
+ * SSE Subscriber Registry
+ *
+ * In-memory registry of SSE connections, cached on globalThis to survive
+ * Next.js HMR reloads (same pattern as Prisma singleton in src/lib/prisma.ts).
+ *
+ * Subscribers can be filtered by station (bar/kitchen) so broadcasts only
+ * reach relevant clients.
+ */
+
+export interface SSESubscriber {
+  controller: ReadableStreamDefaultController
+  station: string | null
+}
+
+interface SSERegistry {
+  subscribers: Set<SSESubscriber>
+}
+
+const globalForSSE = globalThis as unknown as { __sseRegistry: SSERegistry }
+
+function getRegistry(): SSERegistry {
+  if (!globalForSSE.__sseRegistry) {
+    globalForSSE.__sseRegistry = { subscribers: new Set() }
+    console.log('[SSE] Registry initialized')
+  }
+  return globalForSSE.__sseRegistry
+}
+
+/**
+ * Register a new SSE subscriber.
+ * @param controller - ReadableStream controller to write SSE events to
+ * @param station - Optional station filter ('bar', 'kitchen', or null for all)
+ * @returns The subscriber object (for later removal)
+ */
+export function addSubscriber(
+  controller: ReadableStreamDefaultController,
+  station: string | null = null
+): SSESubscriber {
+  const registry = getRegistry()
+  const subscriber: SSESubscriber = { controller, station }
+  registry.subscribers.add(subscriber)
+  console.log(
+    `[SSE] Subscriber connected (station=${station ?? 'all'}, total=${registry.subscribers.size})`
+  )
+  return subscriber
+}
+
+/**
+ * Remove a subscriber from the registry.
+ * Call this when the client disconnects.
+ */
+export function removeSubscriber(subscriber: SSESubscriber): void {
+  const registry = getRegistry()
+  registry.subscribers.delete(subscriber)
+  console.log(
+    `[SSE] Subscriber disconnected (station=${subscriber.station ?? 'all'}, total=${registry.subscribers.size})`
+  )
+}
+
+/**
+ * Broadcast an SSE event to all matching subscribers.
+ * @param event - SSE event name (e.g. 'order-update', 'item-status-change')
+ * @param data - JSON-serializable payload
+ * @param station - If set, only send to subscribers matching this station (or those with no station filter)
+ */
+export function broadcast(
+  event: string,
+  data: unknown,
+  station?: string | null
+): void {
+  const registry = getRegistry()
+  const payload = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`
+  const encoder = new TextEncoder()
+  const encoded = encoder.encode(payload)
+
+  let sent = 0
+  const toRemove: SSESubscriber[] = []
+
+  for (const subscriber of registry.subscribers) {
+    // Filter: if station is specified, only send to subscribers with matching station or no filter
+    if (station && subscriber.station && subscriber.station !== station) {
+      continue
+    }
+
+    try {
+      subscriber.controller.enqueue(encoded)
+      sent++
+    } catch {
+      // Controller is closed or errored — mark for cleanup
+      toRemove.push(subscriber)
+    }
+  }
+
+  // Clean up dead connections
+  for (const dead of toRemove) {
+    registry.subscribers.delete(dead)
+    console.log(
+      `[SSE] Removed dead subscriber (station=${dead.station ?? 'all'})`
+    )
+  }
+
+  console.log(
+    `[SSE] Broadcast event="${event}" station=${station ?? 'all'} sent=${sent} cleaned=${toRemove.length}`
+  )
+}
+
+/**
+ * Get the current subscriber count. Useful for health checks and debugging.
+ */
+export function getSubscriberCount(): number {
+  return getRegistry().subscribers.size
+}
+
+
+=== staff orders route (GET) ===
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { deriveOrderStatus } from '@/lib/order-status'
+
+/**
+ * GET /api/staff/orders?station=bar|kitchen|all
+ *
+ * Returns active orders (not SERVED/CANCELLED at order level) with items
+ * filtered by station:
+ *   - bar:     only items where menuItem.category = DRINK
+ *   - kitchen: only items where menuItem.category = FOOD
+ *   - all:     all items (default)
+ *
+ * Each order includes its table info, filtered items with menuItem details,
+ * and a derived status computed from item statuses.
+ */
+export async function GET(request: NextRequest) {
+  const station = request.nextUrl.searchParams.get('station') ?? 'all'
+
+  console.log(`[GET /api/staff/orders] Fetching orders (station=${station})`)
+
+  try {
+    // Determine category filter based on station
+    const categoryFilter =
+      station === 'bar'
+        ? ('DRINK' as const)
+        : station === 'kitchen'
+          ? ('FOOD' as const)
+          : null
+
+    // Fetch orders that are not SERVED or CANCELLED at order level
+    const orders = await prisma.order.findMany({
+      where: {
+        status: {
+          notIn: ['SERVED', 'CANCELLED'],
+        },
+      },
+      include: {
+        table: true,
+        items: {
+          include: {
+            menuItem: {
+              select: {
+                id: true,
+                name: true,
+                category: true,
+                price: true,
+              },
+            },
+          },
+          // Apply category filter on the items relation if station is specified
+          ...(categoryFilter
+            ? {
+                where: {
+                  menuItem: {
+                    category: categoryFilter,
+                  },
+                },
+              }
+            : {}),
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    // Filter out orders that have no items after station filtering
+    // (e.g. a food-only order should not appear on bar station)
+    const filteredOrders = orders.filter((order) => order.items.length > 0)
+
+    // Derive order status from item statuses for accurate display
+    const enrichedOrders = filteredOrders.map((order) => ({
+      ...order,
+      derivedStatus: deriveOrderStatus(order.items.map((item) => item.status)),
+    }))
+
+    console.log(
+      `[GET /api/staff/orders] Returning ${enrichedOrders.length} orders (station=${station})`
+    )
+
+    return NextResponse.json(enrichedOrders)
+  } catch (error) {
+    console.error('[GET /api/staff/orders] Failed:', error)
+    return NextResponse.json(
+      { error: 'Không thể tải danh sách đơn hàng.' },
+      { status: 500 },
+    )
+  }
+}
+
+
+=== useOrderStream ===
+'use client'
+
+import { useEffect, useReducer, useCallback, useRef } from 'react'
+import type { ItemStatus } from '@/lib/order-status'
+import { deriveOrderStatus } from '@/lib/order-status'
+
+// ─── Types ──────────────────────────────────────────────────────────
+
+export type Station = 'bar' | 'kitchen' | 'all'
+export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error'
+
+export type OrderMenuItem = {
+  id: number
+  name: string
+  category: 'DRINK' | 'FOOD'
+  price: number
+}
+
+export type OrderItem = {
+  id: number
+  orderId: number
+  menuItemId: number
+  menuItem: OrderMenuItem
+  quantity: number
+  status: ItemStatus
+  notes: string | null
+  createdAt: string
+}
+
+export type Order = {
+  id: number
+  tableId: number
+  table: { id: number; number: number; name: string }
+  status: string
+  derivedStatus: string
+  totalAmount: number
+  createdAt: string
+  items: OrderItem[]
+}
+
+// ─── Station-level filtering ────────────────────────────────────────
+
+const STATION_CATEGORY: Record<string, 'DRINK' | 'FOOD' | null> = {
+  bar: 'DRINK',
+  kitchen: 'FOOD',
+  all: null,
+}
+
+/**
+ * Filter order items by station category and re-derive order status.
+ * SSE events broadcast full orders; station views need only their category.
+ * Returns null if no items remain after filtering (order irrelevant to station).
+ */
+function filterOrderForStation(order: Order, station: Station): Order | null {
+  const category = STATION_CATEGORY[station]
+  if (!category) return order // 'all' station sees everything
+
+  const filteredItems = order.items.filter(
+    (item) => item.menuItem.category === category
+  )
+  if (filteredItems.length === 0) return null
+
+  return {
+    ...order,
+    items: filteredItems,
+    derivedStatus: deriveOrderStatus(
+      filteredItems.map((i) => i.status as ItemStatus)
+    ),
+  }
+}
+
+// ─── Reducer ────────────────────────────────────────────────────────
+
+type OrderState = {
+  orders: Order[]
+  connectionStatus: ConnectionStatus
+}
+
+type OrderAction =
+  | { type: 'SET_ORDERS'; payload: Order[] }
+  | { type: 'ADD_ORDER'; payload: Order }
+  | { type: 'UPDATE_ORDER'; payload: Order }
+  | { type: 'SET_CONNECTION'; payload: ConnectionStatus }
+
+function orderReducer(state: OrderState, action: OrderAction): OrderState {
+  switch (action.type) {
+    case 'SET_ORDERS':
+      return { ...state, orders: action.payload }
+
+    case 'ADD_ORDER': {
+      // Avoid duplicates — if order ID already exists, update it instead
+      const exists = state.orders.some((o) => o.id === action.payload.id)
+      if (exists) {
+        return {
+          ...state,
+          orders: state.orders.map((o) =>
+            o.id === action.payload.id ? action.payload : o
+          ),
+        }
+      }
+      // Add new order at the top
+      return { ...state, orders: [action.payload, ...state.orders] }
+    }
+
+    case 'UPDATE_ORDER': {
+      return {
+        ...state,
+        orders: state.orders.map((o) =>
+          o.id === action.payload.id ? action.payload : o
+        ),
+      }
+    }
+
+    case 'SET_CONNECTION':
+      return { ...state, connectionStatus: action.payload }
+
+    default:
+      return state
+  }
+}
+
+// ─── Hook Options ───────────────────────────────────────────────────
+
+export type UseOrderStreamOptions = {
+  /** Called when a new order arrives that is relevant to this station */
+  onNewOrder?: (order: Order) => void
+}
+
+// ─── Hook ───────────────────────────────────────────────────────────
+
+export function useOrderStream(station: Station, options?: UseOrderStreamOptions) {
+  const [state, dispatch] = useReducer(orderReducer, {
+    orders: [],
+    connectionStatus: 'connecting',
+  })
+
+  const eventSourceRef = useRef<EventSource | null>(null)
+
+  // Stable ref for callback — avoids re-creating SSE on every render
+  const onNewOrderRef = useRef(options?.onNewOrder)
+  onNewOrderRef.current = options?.onNewOrder
+
+  // Fetch initial orders
+  const fetchOrders = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/staff/orders?station=${station}`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data: Order[] = await res.json()
+      dispatch({ type: 'SET_ORDERS', payload: data })
+    } catch (err) {
+      console.error('[useOrderStream] Failed to fetch orders:', err)
+    }
+  }, [station])
+
+  // Refetch (exposed for manual refresh)
+  const refetch = useCallback(() => {
+    fetchOrders()
+  }, [fetchOrders])
+
+  useEffect(() => {
+    // Fetch initial data
+    fetchOrders()
+
+    // Open SSE connection
+    const url = `/api/staff/orders/stream?station=${station}`
+    console.log(`[useOrderStream] Connecting to SSE: ${url}`)
+    const es = new EventSource(url)
+    eventSourceRef.current = es
+
+    es.onopen = () => {
+      console.log('[useOrderStream] SSE connected')
+      dispatch({ type: 'SET_CONNECTION', payload: 'connected' })
+    }
+
+    es.addEventListener('new-order', (event) => {
+      try {
+        const rawOrder: Order = JSON.parse(event.data)
+        const filtered = filterOrderForStation(rawOrder, station)
+        if (filtered) {
+          console.log(`[useOrderStream] New order received: #${filtered.id}`)
+          dispatch({ type: 'ADD_ORDER', payload: filtered })
+          // Notify caller (e.g. for notification chime)
+          onNewOrderRef.current?.(filtered)
+        } else {
+          console.log(`[useOrderStream] New order #${rawOrder.id} has no items for station=${station}, ignoring`)
+        }
+      } catch (err) {
+        console.error('[useOrderStream] Failed to parse new-order event:', err)
+      }
+    })
+
+    es.addEventListener('item-status-change', (event) => {
+      try {
+        const rawOrder: Order = JSON.parse(event.data)
+        const filtered = filterOrderForStation(rawOrder, station)
+        if (filtered) {
+          console.log(`[useOrderStream] Item status change for order #${filtered.id}`)
+          dispatch({ type: 'UPDATE_ORDER', payload: filtered })
+        }
+      } catch (err) {
+        console.error('[useOrderStream] Failed to parse item-status-change event:', err)
+      }
+    })
+
+    es.onerror = () => {
+      console.error('[useOrderStream] SSE error — connection may be lost')
+      dispatch({ type: 'SET_CONNECTION', payload: 'error' })
+    }
+
+    return () => {
+      console.log('[useOrderStream] Closing SSE connection')
+      es.close()
+      eventSourceRef.current = null
+      dispatch({ type: 'SET_CONNECTION', payload: 'disconnected' })
+    }
+  }, [station, fetchOrders])
+
+  return {
+    orders: state.orders,
+    connectionStatus: state.connectionStatus,
+    refetch,
+  }
+}
+
+
+=== Existing API routes ===
+src\app\api\admin\login\route.ts
+src\app\api\admin\qr-pdf\route.ts
+src\app\api\order\route.ts
+src\app\api\staff\orders\[orderId]\items\[itemId]\route.ts
+src\app\api\staff\orders\route.ts
+src\app\api\staff\orders\stream\route.ts
