@@ -11,10 +11,10 @@
 
 ## Slices
 
-- [ ] **S01: Next.js + Tailwind + Prisma Setup** `risk:low` `depends:[]`
+- [x] **S01: S01** `risk:low` `depends:[]`
   > After this: Chạy npm run dev → mở localhost:3000 → thấy trang chủ TraSua
 
-- [ ] **S02: Database Schema & Seed Data** `risk:medium` `depends:[S01]`
+- [ ] **S02: S02** `risk:medium` `depends:[]`
   > After this: Chạy prisma db seed → database có 10+ món mẫu → query thấy đúng
 
 - [ ] **S03: QR Code Generator** `risk:low` `depends:[S01]`

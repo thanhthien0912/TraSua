@@ -1,0 +1,18 @@
+{
+  "id": "8f6ff868-fe7f-4e01-aff6-c971d8e9ebfa",
+  "runtime": "node",
+  "purpose": "Slice S01 full must-have verification",
+  "script_chars": 2572,
+  "started_at": "2026-05-06T02:36:45.456Z",
+  "finished_at": "2026-05-06T02:36:53.825Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 8369,
+  "stdout_bytes": 403,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\8f6ff868-fe7f-4e01-aff6-c971d8e9ebfa.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\8f6ff868-fe7f-4e01-aff6-c971d8e9ebfa.stderr"
+}

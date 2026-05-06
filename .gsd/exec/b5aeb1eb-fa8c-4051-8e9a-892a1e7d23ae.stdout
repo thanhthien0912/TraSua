@@ -1,0 +1,10 @@
+✅ schema uses prisma-client provider
+✅ schema output = "../generated/prisma"
+✅ generated/prisma/ has client files
+✅ prisma/dev.db exists
+✅ prisma/migrations/ has init migration
+✅ src/lib/prisma.ts exports PrismaClient singleton
+✅ .gitignore includes generated/
+✅ .env has DATABASE_URL for SQLite
+
+All 8 must-haves PASSED

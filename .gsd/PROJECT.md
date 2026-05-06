@@ -6,7 +6,14 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 
 ## Current State
 
-**Phase:** Project initialization — no code yet.
+**Phase:** M001 in progress — S01 (project foundation) complete. App skeleton running at localhost:3000 with Vietnamese TraSua landing page, Prisma 7 + SQLite pipeline working. S02 (database schema & seed data) and S03 (QR generator) pending.
+
+**What works now:**
+- `npm run dev` → localhost:3000 serves Vietnamese TraSua landing page
+- `npm run build` → clean build, zero TypeScript errors
+- Prisma 7 + SQLite pipeline: schema → migration → generated client → singleton
+- Mobile-first responsive layout (375px to desktop)
+- Fully offline — no external fonts, CDNs, or services
 
 ## Core Capabilities
 
@@ -19,20 +26,25 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 
 ## Tech Stack
 
-- **Framework:** Next.js 14+ (App Router)
-- **Styling:** Tailwind CSS
-- **Database:** SQLite (via Prisma) — simple, no external DB server needed for local use
-- **Real-time:** Server-Sent Events (SSE) or polling for order updates
-- **QR:** `qrcode` npm package for generation
+- **Framework:** Next.js 16.2.4 (App Router) + React 19.2.4
+- **Styling:** Tailwind CSS v4
+- **Database:** SQLite via Prisma 7.8.0 + better-sqlite3 adapter — zero-config, local file DB
+- **Language:** TypeScript (strict), Vietnamese UI (lang="vi")
+- **Real-time:** Server-Sent Events (SSE) or polling for order updates (planned)
+- **QR:** `qrcode` npm package for generation (planned)
 - **Deployment:** Local network (laptop/PC/tablet at the shop)
 
 ## Key Design Decisions
 
-- Local-first: runs on shop's machine, customers connect via shop WiFi
+- Local-first: runs on shop's machine, customers connect via shop WiFi (R006)
 - SQLite for zero-config database — perfect for single-shop deployment
+- System-ui font stack (no Google Fonts) for offline compliance
+- PrismaClient singleton at `src/lib/prisma.ts` with globalThis caching for HMR
+- Generated Prisma client at `generated/prisma/` (project root)
 - No auth for customers (QR = table identity); simple admin password for staff dashboard
-- Mobile-first customer UI, tablet/desktop-optimized staff dashboard
+- Mobile-first customer UI with Tailwind sm:/md: breakpoints (R007)
 - Vietnamese UI for customer-facing screens
+- Warm amber color palette for tea-house branding
 
 ## Architecture
 
@@ -44,9 +56,20 @@ Staff Dashboard (/staff) → receives orders in real-time
   └── Kitchen Station (food items)
 ```
 
+## Key Paths
+
+- `src/app/` — Next.js App Router pages
+- `src/lib/prisma.ts` — PrismaClient singleton
+- `prisma/schema.prisma` — Database schema
+- `prisma/dev.db` — SQLite database file
+- `generated/prisma/` — Generated Prisma client
+
 ## Milestone Sequence
 
 - [ ] M001: Project Foundation — Next.js setup, database schema, seed data, QR generator
+  - [x] S01: Next.js + Tailwind + Prisma Setup ✅
+  - [ ] S02: Database Schema & Seed Data
+  - [ ] S03: QR Code Generator
 - [ ] M002: Customer Order Flow — QR scan → menu → order submission (mobile-first UI)
 - [ ] M003: Staff Dashboard — Real-time order board, station routing (bar/kitchen), status updates
 - [ ] M004: Bill & Checkout — Per-table bill, totals, payment marking

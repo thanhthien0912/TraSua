@@ -60,6 +60,15 @@ This file is the explicit capability and coverage contract for the project.
 - Source: user-interview
 - Validation: Trang order hiển thị tốt trên iPhone SE (375px) đến tablet, text tiếng Việt rõ ràng
 
+### R008 — Nhân viên có thể huỷ món hoặc thêm món khác cho đơn hàng từ dashboard
+- Class: core-capability
+- Status: active
+- Description: Nhân viên có thể huỷ món hoặc thêm món khác cho đơn hàng từ dashboard
+- Why it matters: Khách cần thay đổi đơn thì báo nhân viên — nhân viên thao tác trực tiếp trên hệ thống, đảm bảo kiểm soát
+- Source: user-interview
+- Primary owning slice: M003
+- Validation: Nhân viên mở đơn bàn X → huỷ 1 món → tổng bill cập nhật đúng. Nhân viên thêm món khác → món mới xuất hiện trên trạm bar/bếp tương ứng.
+
 ## Validated
 
 ## Deferred
@@ -77,10 +86,11 @@ This file is the explicit capability and coverage contract for the project.
 | R005 | primary-user-loop | active | none | none | Admin tạo QR cho N bàn → xuất file in được → scan test thành công mở đúng trang order |
 | R006 | constraint | active | none | none | App hoạt động bình thường khi máy chủ và điện thoại cùng mạng WiFi, không có internet |
 | R007 | quality-attribute | active | none | none | Trang order hiển thị tốt trên iPhone SE (375px) đến tablet, text tiếng Việt rõ ràng |
+| R008 | core-capability | active | M003 | none | Nhân viên mở đơn bàn X → huỷ 1 món → tổng bill cập nhật đúng. Nhân viên thêm món khác → món mới xuất hiện trên trạm bar/bếp tương ứng. |
 
 ## Coverage Summary
 
-- Active requirements: 7
-- Mapped to slices: 7
+- Active requirements: 8
+- Mapped to slices: 8
 - Validated: 0
 - Unmapped active requirements: 0
