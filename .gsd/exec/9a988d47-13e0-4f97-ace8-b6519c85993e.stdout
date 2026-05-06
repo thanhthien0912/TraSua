@@ -1,0 +1,33 @@
+tchen, total=2)
+[SSE] Broadcast event="item-update" station=bar sent=1 cleaned=0
+
+[90mstdout[2m | src/lib/__tests__/sse.test.ts[2m > [22m[2mSSE Subscriber Registry[2m > [22m[2mbroadcast[2m > [22m[2msubscribers with no station filter receive all events
+[22m[39m[SSE] Registry initialized
+[SSE] Subscriber connected (station=all, total=1)
+[SSE] Subscriber connected (station=bar, total=2)
+[SSE] Broadcast event="item-update" station=kitchen sent=1 cleaned=0
+
+[90mstdout[2m | src/lib/__tests__/sse.test.ts[2m > [22m[2mSSE Subscriber Registry[2m > [22m[2mbroadcast[2m > [22m[2mbroadcast with no station sends to everyone
+[22m[39m[SSE] Registry initialized
+[SSE] Subscriber connected (station=bar, total=1)
+[SSE] Subscriber connected (station=kitchen, total=2)
+[SSE] Broadcast event="order-created" station=all sent=2 cleaned=0
+
+[90mstdout[2m | src/lib/__tests__/sse.test.ts[2m > [22m[2mSSE Subscriber Registry[2m > [22m[2mbroadcast[2m > [22m[2mcleans up dead subscribers on broadcast
+[22m[39m[SSE] Registry initialized
+[SSE] Subscriber connected (station=all, total=1)
+[SSE] Subscriber connected (station=all, total=2)
+[SSE] Removed dead subscriber (station=all)
+[SSE] Broadcast event="test" station=all sent=1 cleaned=1
+
+ [32m✓[39m src/lib/__tests__/sse.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/categorize-orders.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/components/staff/__tests__/orderReducer.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/cancel-recalculation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m111 passed[39m[22m[90m (111)[39m
+[2m   Start at [22m 15:07:14
+[2m   Duration [22m 765ms[2m (transform 623ms, setup 0ms, import 866ms, tests 97ms, environment 2ms)[22m
+
+

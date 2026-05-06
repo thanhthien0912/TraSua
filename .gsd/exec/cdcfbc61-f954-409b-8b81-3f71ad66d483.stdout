@@ -1,0 +1,16 @@
+443 lines — src/components/staff/BillView.tsx
+235 lines — src/app/staff/checkout/page.tsx
+153 lines — src/app/api/order/route.ts
+91 lines — src/app/api/staff/tables/[tableId]/bill/route.ts
+89 lines — src/app/api/staff/tables/[tableId]/pay/route.ts
+194 lines — src/app/api/staff/orders/[orderId]/items/[itemId]/route.ts
+250 lines — src/components/staff/useOrderStream.ts
+68 lines — src/app/staff/StaffNav.tsx
+89 lines — prisma/schema.prisma
+10 lines — src/lib/format.ts
+
+=== Menu-related files ===
+src\components\order\MenuView.tsx
+
+=== Order page files ===
+src\app\order\page.tsx

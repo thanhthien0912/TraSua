@@ -56,13 +56,13 @@ SSE order-paid event propagates to all connected station views. Staff orders API
   - Files: `src/app/api/staff/tables/[tableId]/bill/route.ts`, `src/app/api/staff/tables/[tableId]/pay/route.ts`
   - Verify: npx next build && manual curl test or automated test against running dev server
 
-- [ ] **T03: Checkout page UI — table list + bill detail + payment** `est:60 min`
+- [x] **T03: Checkout page UI — table list + bill detail + payment** `est:60 min`
   1. Add 4th tab to StaffNav (src/app/staff/StaffNav.tsx):
      - Add { href: '/staff/checkout', label: 'Tính tiền', emoji: '💰' } to NAV_ITEMS array
   - Files: `src/app/staff/StaffNav.tsx`, `src/app/staff/checkout/page.tsx`, `src/components/staff/BillView.tsx`, `src/app/api/staff/checkout/route.ts`
   - Verify: npx next build && open http://localhost:3000/staff/checkout in browser → verify tab visible, table list renders, bill detail works
 
-- [ ] **T04: SSE payment integration + useOrderStream extension + unit tests** `est:40 min`
+- [x] **T04: SSE payment integration + useOrderStream extension + unit tests** `est:40 min`
   1. Extend useOrderStream (src/components/staff/useOrderStream.ts):
      - Add REMOVE_ORDERS action to reducer: removes orders by ID array
      - Add event listener for 'order-paid' SSE event

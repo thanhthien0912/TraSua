@@ -1,0 +1,18 @@
+{
+  "id": "9a988d47-13e0-4f97-ace8-b6519c85993e",
+  "runtime": "node",
+  "purpose": "Run vitest via node exec",
+  "script_chars": 379,
+  "started_at": "2026-05-06T08:07:13.258Z",
+  "finished_at": "2026-05-06T08:07:15.119Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 1861,
+  "stdout_bytes": 2009,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\9a988d47-13e0-4f97-ace8-b6519c85993e.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\9a988d47-13e0-4f97-ace8-b6519c85993e.stderr"
+}

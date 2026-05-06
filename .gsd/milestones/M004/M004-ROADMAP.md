@@ -14,10 +14,10 @@
 
 ## Slices
 
-- [ ] **S01: S01** `risk:medium` `depends:[]`
+- [x] **S01: S01** `risk:medium` `depends:[]`
   > After this: Staff opens '💰 Tính tiền' tab → sees tables with unpaid orders → taps a table → sees aggregated bill (items from multiple orders, cancelled items struck through) → cancels an item (two-tap) → total updates → taps 'Đã thanh toán' (two-tap) → all orders → PAID → table disappears from list → bar/kitchen stations clear paid orders via SSE.
 
-- [ ] **S02: Add Items from Bill** `risk:medium` `depends:[S01]`
+- [x] **S02: S02** `risk:medium` `depends:[]`
   > After this: On bill detail view, staff taps '+ Thêm món' → modal opens with DRINK/FOOD tabs showing available menu items → selects an item, enters quantity → submits → item appears on bill → total recalculates → bar/kitchen station receives new item via SSE.
 
 ## Boundary Map

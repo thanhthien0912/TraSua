@@ -1,10 +1,10 @@
 {
   "nodes": [
     {
-      "id": "milestone:M003",
-      "label": "M003: Staff Dashboard",
+      "id": "milestone:M004",
+      "label": "M004: Bill & Checkout",
       "type": "milestone",
-      "description": "Active milestone: M003",
+      "description": "Active milestone: M004",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
     },
@@ -143,6 +143,13 @@
       "confidence": "EXTRACTED"
     },
     {
+      "id": "milestone:M003",
+      "label": "M003: Staff Dashboard",
+      "type": "milestone",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-ROADMAP.md"
+    },
+    {
       "id": "slice:M003:S01",
       "label": "S01: Bar Station End-to-End (SSE + API + UI)",
       "type": "slice",
@@ -218,11 +225,54 @@
       "confidence": "EXTRACTED"
     },
     {
-      "id": "milestone:M004",
-      "label": "M004: Bill & Checkout",
-      "type": "milestone",
+      "id": "slice:M004:S01",
+      "label": "S01: Bill & Payment Flow",
+      "type": "slice",
       "confidence": "EXTRACTED",
-      "sourceFile": "milestones/M004/M004-ROADMAP.md"
+      "sourceFile": "milestones/M004/slices/S01/S01-PLAN.md"
+    },
+    {
+      "id": "task:M004:S01:T01",
+      "label": "T01: Schema migration + order-status guards + staff orders PAID exclusion",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M004:S01:T02",
+      "label": "T02: Bill aggregation API + mark-paid API",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M004:S01:T03",
+      "label": "T03: Checkout page UI — table list + bill detail + payment",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M004:S01:T04",
+      "label": "T04: SSE payment integration + useOrderStream extension + unit tests",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M004:S02",
+      "label": "S02: Add Items from Bill",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M004/slices/S02/S02-PLAN.md"
+    },
+    {
+      "id": "task:M004:S02:T01",
+      "label": "T01: Create GET /api/staff/menu and POST /api/staff/orders/[orderId]/items endpoints with unit tests",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M004:S02:T02",
+      "label": "T02: Build MenuPickerModal and wire into BillView with full flow verification",
+      "type": "task",
+      "confidence": "EXTRACTED"
     },
     {
       "id": "milestone:M005",
@@ -566,6 +616,270 @@
       "description": "Source: S02-SUMMARY.md/Deviations",
       "confidence": "EXTRACTED",
       "sourceFile": "milestones/M002/M002-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:1",
+      "label": "**Station-first vertical slice decomposition (D008):** Three slices ordered by risk — S01 proves SSE with the bar station end-to-end, S02 extends the proven StationView pattern to kitchen/overview + cancel, S03 adds purely additive polish. This de-risked SSE technology before investing in station expansion.",
+      "type": "decision",
+      "description": "Source: M003-ROADMAP.md/Slices",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:2",
+      "label": "**SSE subscriber registry on globalThis with station-level filtering (D009):** Single SSE endpoint at /api/staff/orders/stream with ?station= query param. Registry caches on globalThis for HMR safety. Broadcasts filter by station to reduce client noise.",
+      "type": "decision",
+      "description": "Source: M003-CONTEXT.md/Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:3",
+      "label": "**Shared StationView component parameterized by station type (D010):** All three stations share the same data shape, real-time mechanism, and card layout. Only filtering and available transitions differ. A single parameterized component avoids triplicate code and ensures change propagation.",
+      "type": "decision",
+      "description": "Source: M003-CONTEXT.md/Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:4",
+      "label": "**Cancel items only — R008 partial delivery:** M003 delivers item cancellation from dashboard. Adding items to existing orders deferred to M005. Customers use \"Gọi thêm món\" (new order for same table) as interim.",
+      "type": "decision",
+      "description": "Source: M003-CONTEXT.md/Cancel Items Only (R008 Partial)",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:5",
+      "label": "**Enriched SSE payloads eliminate client-side API roundtrips:** Including full menuItem details + table info in SSE events means station UIs can render and filter without additional GET calls. Design SSE events to be self-sufficient — enriching at broadcast time is cheaper than N client-side API roundtrips.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Key Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:6",
+      "label": "**StaffNav must be extracted as Client Component for usePathname while keeping layout as Server Component:** Next.js App Router requires careful server/client boundary management. The layout.tsx stays as Server Component for better performance; the navigation component that needs `usePathname()` is extracted into its own client component file.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:7",
+      "label": "**Windows compatibility for verification commands:** Unix-specific shell commands like `test -f` in verification scripts fail on Windows development environments. Cross-platform alternatives (or Node.js fs.existsSync checks) should be used in task plan verification steps.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Follow-ups",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:8",
+      "label": "**SSE subscriber registry on globalThis with dead subscriber cleanup:** Registry pattern at src/lib/sse.ts — addSubscriber/removeSubscriber/broadcast/getSubscriberCount. Dead subscribers auto-cleaned during broadcast iteration. Station-level metadata on each subscriber for filtered broadcast.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/What This Slice Built",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:9",
+      "label": "**Order status auto-derivation from item statuses (computed, not stored):** deriveOrderStatus() computes on read and write as single source of truth. All PENDING→PENDING, any PREPARING→PREPARING, all non-cancelled READY→READY, all SERVED→SERVED, all CANCELLED→CANCELLED.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/Key Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:10",
+      "label": "**Three-bucket order display with time-based auto-transitions:** categorizeOrders pure function splits orders into active/recentlyCompleted/hidden buckets. Injectable time parameters enable deterministic testing. 30-second bucketTick interval balances precision and performance.",
+      "type": "decision",
+      "description": "Source: S03-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:11",
+      "label": "**Ref-based callback stabilization for SSE hooks:** onNewOrderRef stores callback in a ref so useEffect dependency array doesn't include callback identity. Prevents SSE reconnection churn when parent re-renders with new callback reference.",
+      "type": "decision",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:12",
+      "label": "**Two-tap confirmation UX for destructive actions on touch interfaces:** First tap shows confirmation prompt ('Xác nhận huỷ?'), second tap executes. 3-second auto-reset timer via useEffect+useRef. Loading spinner prevents double-submission.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:13",
+      "label": "**SSE in Next.js 16 App Router worked smoothly with zero friction:** ReadableStream + text/event-stream headers worked out of the box. The globalThis subscriber registry pattern (matching Prisma singleton) survived HMR reloads. No connection lifecycle issues in dev mode despite initial risk assessment flagging this as high-risk.",
+      "type": "decision",
+      "description": "Source: S01-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "decision:M003:14",
+      "label": "**Stale .next/dev/types/ auto-generated files cause TypeScript errors when pages are added without the dev server running:** The files go stale and report type errors for new pages. Deleting .next/dev/types/ before running tsc --noEmit resolves it. This is a Windows development environment gotcha.",
+      "type": "decision",
+      "description": "Source: S02-SUMMARY.md/Verification",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:1",
+      "label": "**Enriched SSE payloads eliminate client-side API roundtrips:** Including full menuItem details + table info in SSE events means station UIs can render and filter without additional GET calls. Design SSE events to be self-sufficient — enriching at broadcast time is cheaper than N client-side API roundtrips.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Key Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:2",
+      "label": "**StaffNav must be extracted as Client Component for usePathname while keeping layout as Server Component:** Next.js App Router requires careful server/client boundary management. The layout.tsx stays as Server Component for better performance; the navigation component that needs `usePathname()` is extracted into its own client component file.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Deviations",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:3",
+      "label": "**Windows compatibility for verification commands:** Unix-specific shell commands like `test -f` in verification scripts fail on Windows development environments. Cross-platform alternatives (or Node.js fs.existsSync checks) should be used in task plan verification steps.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Follow-ups",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:4",
+      "label": "**SSE subscriber registry on globalThis with dead subscriber cleanup:** Registry pattern at src/lib/sse.ts — addSubscriber/removeSubscriber/broadcast/getSubscriberCount. Dead subscribers auto-cleaned during broadcast iteration. Station-level metadata on each subscriber for filtered broadcast.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/What This Slice Built",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:5",
+      "label": "**Order status auto-derivation from item statuses (computed, not stored):** deriveOrderStatus() computes on read and write as single source of truth. All PENDING→PENDING, any PREPARING→PREPARING, all non-cancelled READY→READY, all SERVED→SERVED, all CANCELLED→CANCELLED.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/Key Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:6",
+      "label": "**Three-bucket order display with time-based auto-transitions:** categorizeOrders pure function splits orders into active/recentlyCompleted/hidden buckets. Injectable time parameters enable deterministic testing. 30-second bucketTick interval balances precision and performance.",
+      "type": "lesson",
+      "description": "Source: S03-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:7",
+      "label": "**Ref-based callback stabilization for SSE hooks:** onNewOrderRef stores callback in a ref so useEffect dependency array doesn't include callback identity. Prevents SSE reconnection churn when parent re-renders with new callback reference.",
+      "type": "lesson",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:8",
+      "label": "**Two-tap confirmation UX for destructive actions on touch interfaces:** First tap shows confirmation prompt ('Xác nhận huỷ?'), second tap executes. 3-second auto-reset timer via useEffect+useRef. Loading spinner prevents double-submission.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:9",
+      "label": "**SSE in Next.js 16 App Router worked smoothly with zero friction:** ReadableStream + text/event-stream headers worked out of the box. The globalThis subscriber registry pattern (matching Prisma singleton) survived HMR reloads. No connection lifecycle issues in dev mode despite initial risk assessment flagging this as high-risk.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "lesson:M003:10",
+      "label": "**Stale .next/dev/types/ auto-generated files cause TypeScript errors when pages are added without the dev server running:** The files go stale and report type errors for new pages. Deleting .next/dev/types/ before running tsc --noEmit resolves it. This is a Windows development environment gotcha.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Verification",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:1",
+      "label": "**SSE subscriber registry on globalThis with dead subscriber cleanup:** Registry pattern at src/lib/sse.ts — addSubscriber/removeSubscriber/broadcast/getSubscriberCount. Dead subscribers auto-cleaned during broadcast iteration. Station-level metadata on each subscriber for filtered broadcast.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/What This Slice Built",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:2",
+      "label": "**Order status auto-derivation from item statuses (computed, not stored):** deriveOrderStatus() computes on read and write as single source of truth. All PENDING→PENDING, any PREPARING→PREPARING, all non-cancelled READY→READY, all SERVED→SERVED, all CANCELLED→CANCELLED.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/Key Architectural Decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:3",
+      "label": "**Three-bucket order display with time-based auto-transitions:** categorizeOrders pure function splits orders into active/recentlyCompleted/hidden buckets. Injectable time parameters enable deterministic testing. 30-second bucketTick interval balances precision and performance.",
+      "type": "pattern",
+      "description": "Source: S03-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:4",
+      "label": "**Ref-based callback stabilization for SSE hooks:** onNewOrderRef stores callback in a ref so useEffect dependency array doesn't include callback identity. Prevents SSE reconnection churn when parent re-renders with new callback reference.",
+      "type": "pattern",
+      "description": "Source: S03-SUMMARY.md/Key decisions",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:5",
+      "label": "**Two-tap confirmation UX for destructive actions on touch interfaces:** First tap shows confirmation prompt ('Xác nhận huỷ?'), second tap executes. 3-second auto-reset timer via useEffect+useRef. Loading spinner prevents double-submission.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:6",
+      "label": "**SSE in Next.js 16 App Router worked smoothly with zero friction:** ReadableStream + text/event-stream headers worked out of the box. The globalThis subscriber registry pattern (matching Prisma singleton) survived HMR reloads. No connection lifecycle issues in dev mode despite initial risk assessment flagging this as high-risk.",
+      "type": "pattern",
+      "description": "Source: S01-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "pattern:M003:7",
+      "label": "**Stale .next/dev/types/ auto-generated files cause TypeScript errors when pages are added without the dev server running:** The files go stale and report type errors for new pages. Deleting .next/dev/types/ before running tsc --noEmit resolves it. This is a Windows development environment gotcha.",
+      "type": "pattern",
+      "description": "Source: S02-SUMMARY.md/Verification",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M003:1",
+      "label": "**SSE in Next.js 16 App Router worked smoothly with zero friction:** ReadableStream + text/event-stream headers worked out of the box. The globalThis subscriber registry pattern (matching Prisma singleton) survived HMR reloads. No connection lifecycle issues in dev mode despite initial risk assessment flagging this as high-risk.",
+      "type": "lesson",
+      "description": "Source: S01-SUMMARY.md/What Happened",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
+    },
+    {
+      "id": "surprise:M003:2",
+      "label": "**Stale .next/dev/types/ auto-generated files cause TypeScript errors when pages are added without the dev server running:** The files go stale and report type errors for new pages. Deleting .next/dev/types/ before running tsc --noEmit resolves it. This is a Windows development environment gotcha.",
+      "type": "lesson",
+      "description": "Source: S02-SUMMARY.md/Verification",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M003/M003-LEARNINGS.md"
     }
   ],
   "edges": [
@@ -746,6 +1060,54 @@
     {
       "from": "slice:M003:S03",
       "to": "task:M003:S03:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "slice:M004:S01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S01",
+      "to": "task:M004:S01:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S01",
+      "to": "task:M004:S01:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S01",
+      "to": "task:M004:S01:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S01",
+      "to": "task:M004:S01:T04",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M004",
+      "to": "slice:M004:S02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S02",
+      "to": "task:M004:S02:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M004:S02",
+      "to": "task:M004:S02:T02",
       "type": "contains",
       "confidence": "EXTRACTED"
     },
@@ -1000,7 +1362,205 @@
       "to": "surprise:M002:1",
       "type": "relates_to",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:9",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:10",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:11",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:12",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:13",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "decision:M003:14",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:8",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:9",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "lesson:M003:10",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:3",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:4",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:5",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:6",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "pattern:M003:7",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "surprise:M003:1",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M003",
+      "to": "surprise:M003:2",
+      "type": "relates_to",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-05-06T06:36:42.420Z"
+  "builtAt": "2026-05-06T08:15:13.873Z"
 }

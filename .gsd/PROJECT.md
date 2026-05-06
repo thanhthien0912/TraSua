@@ -2,16 +2,16 @@
 
 ## What It Is
 
-A local-network POS and order management system for a mid-range bubble tea shop. Customers scan pre-printed QR codes at their table to browse the menu and place orders from their phone. Staff receive orders in real-time on a dashboard, with automatic routing to bar (drinks) and kitchen (food) stations.
+A local-network POS and order management system for a mid-range bubble tea shop. Customers scan pre-printed QR codes at their table to browse the menu and place orders from their phone. Staff receive orders in real-time on a dashboard, with automatic routing to bar (drinks) and kitchen (food) stations. Staff can view aggregated bills per table, cancel or add items, and mark tables as paid.
 
 ## Current State
 
-**Phase:** M003 complete — all three slices delivered. Staff Dashboard fully functional with real-time SSE, station routing, item cancellation, notifications, and auto-hide polish. Next: M004 (Bill & Checkout).
+**Phase:** M004 complete — Bill & Checkout fully delivered. Next up: M005 (Admin & Polish).
 
 **What exists:**
 - Next.js 16.2.4 + React 19.2.4 + Tailwind CSS v4 app at localhost:3000
 - Vietnamese TraSua landing page with warm amber branding
-- Prisma 7.8.0 + SQLite database with full ordering schema (MenuItem, Table, Order, OrderItem)
+- Prisma 7.8.0 + SQLite database with full ordering schema (MenuItem, Table, Order, OrderItem) + paidAt on Order
 - 18 seeded menu items (12 DRINK, 6 FOOD) with VND prices + 15 tables
 - Admin auth system (cookie-based, Edge middleware protecting /admin/*)
 - QR PDF generator at /api/admin/qr-pdf (A4, 3×5 grid, Vietnamese labels)
@@ -24,31 +24,38 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - **Order confirmation** screen with staggered animations, 'Gọi thêm món' for multi-order support
 - **SSE subscriber registry** at `src/lib/sse.ts` — globalThis-cached, station-filtered broadcasts, dead subscriber cleanup
 - **Order status derivation** at `src/lib/order-status.ts` — pure functions for deriveOrderStatus, isValidTransition, getValidNextStatuses, calculateOrderTotal
-- **Staff API endpoints** — GET /api/staff/orders?station=bar|kitchen|all, GET /api/staff/orders/stream (SSE), PATCH /api/staff/orders/[orderId]/items/[itemId] with forward-only validation + totalAmount recalculation on cancel
+- **Staff API endpoints** — GET /api/staff/orders?station=bar|kitchen|all, GET /api/staff/orders/stream (SSE), PATCH /api/staff/orders/[orderId]/items/[itemId] with forward-only validation + totalAmount recalculation on cancel + 409 guard for PAID orders
+- **GET /api/staff/menu** — Returns all menu items sorted by sortOrder
+- **POST /api/staff/orders/[orderId]/items** — Add items to orders with full validation chain, atomic $transaction, SSE broadcast via item-status-change event
 - **Bar station page** at `/staff/bar` — real-time order display via SSE, one-tap status transitions PENDING→PREPARING→READY
 - **Kitchen station page** at `/staff/kitchen` — FOOD items only via SSE, same status transitions
 - **Overview station page** at `/staff` — all orders, all items, READY→SERVED transitions for runners
-- **Staff layout** with bottom-fixed navigation (Quầy Bar / Bếp / Tổng quan) using StaffNav client component
+- **Staff layout** with bottom-fixed navigation (Quầy Bar / Bếp / Tính tiền / Tổng quan) using StaffNav client component
 - **Cancel button** on OrderCard items with two-tap confirmation, 3-second auto-reset
-- **Reusable staff components** — StationView, OrderCard, useOrderStream hook
-- **Notification system** — useNotification hook with Web Audio API chime (A5→C#6), mute toggle persisted to localStorage, AudioContext autoplay unlock prompt
-- **New order pulse highlight** — amber glow animation on new OrderCards for ~2 seconds
-- **Auto-hide completed orders** — categorizeOrders pure function splits into active/recentlyCompleted/hidden buckets, 30-second tick re-evaluation
+- **Reusable staff components** — StationView, OrderCard, useOrderStream hook (with REMOVE_ORDERS action + order-paid SSE listener)
+- **Notification system** — useNotification hook with Web Audio API chime, mute toggle persisted to localStorage
+- **Auto-hide completed orders** — categorizeOrders splits into active/recentlyCompleted/hidden buckets, 30-second tick
 - **Lịch sử toggle** — reveals hidden completed orders with count badge
-- **SSE disconnection banner** — 3-second debounced "⚠️ Mất kết nối" amber banner with "Tải lại" button
-- **Reconnection banner** — "✅ Đã kết nối lại" green banner for 2 seconds on reconnect
-- **71 unit tests** via Vitest covering order-status derivation, cancel recalculation, SSE registry, and categorize-orders
+- **SSE disconnection/reconnection banners** — debounced warning + auto-dismiss on reconnect
+- **Checkout tab** at `/staff/checkout` — table list with unpaid orders, bill detail view with item aggregation, cancelled items struck through, cancel-from-bill (two-tap), mark-paid (two-tap) with atomic $transaction + SSE broadcast
+- **Bill APIs** — GET /api/staff/tables/[tableId]/bill, POST /api/staff/tables/[tableId]/pay, GET /api/staff/checkout
+- **PAID order exclusion** — station views exclude PAID orders, item PATCH returns 409 on PAID orders
+- **MenuPickerModal** — bottom-sheet modal with DRINK/FOOD tabs, quantity selector, notes input, 409 error handling; wired into BillView
+- **111 unit tests** via Vitest covering order-status, cancel, SSE, categorize-orders, PAID guards, bill aggregation, orderReducer, add-item validation
 
 ## Core Capabilities
 
-- **QR Table Ordering:** Pre-generated QR codes (10-20 tables) link to `http://<local-ip>:3000/order?table=N`. Customers scan, browse menu, and submit orders from their phone. ✅ Full flow delivered in M002.
-- **Order Management Dashboard:** Staff see incoming orders in real-time via SSE, with status tracking (PENDING → PREPARING → READY → SERVED). Audio chime + visual pulse on new orders. ✅ All three stations + notifications delivered in M003.
-- **Station Routing:** Orders auto-split into bar items (drinks) and kitchen items (food), each station sees only their items. ✅ Bar and kitchen filtering delivered in M003.
-- **Item Cancellation:** Staff can cancel items with two-tap confirmation, totalAmount recalculated server-side, SSE broadcasts changes. ✅ Delivered in M003/S02.
-- **Order Lifecycle:** Completed orders auto-hide after 5 minutes, Lịch sử toggle reveals history, disconnection/reconnection banners for SSE resilience. ✅ Delivered in M003/S03.
-- **Menu Management:** Admin can add/edit/remove menu items, set prices, categories (drink vs food), availability toggle. Planned for M005.
-- **Bill & Checkout:** Per-table bill summary, calculate totals, mark as paid. Planned for M004.
-- **QR Generator:** Admin tool to generate and print QR codes for N tables. ✅ Delivered in M001.
+| Capability | Status | Milestone |
+|---|---|---|
+| QR Table Ordering | ✅ Delivered | M001 (QR gen), M002 (order flow) |
+| Order Management Dashboard | ✅ Delivered | M003 (SSE, stations, notifications) |
+| Station Routing (bar/kitchen) | ✅ Delivered | M003 |
+| Item Cancellation | ✅ Delivered | M003/S02, extended in M004/S01 |
+| Add Item from Bill | ✅ Delivered | M004/S02 |
+| Order Lifecycle (auto-hide, history) | ✅ Delivered | M003/S03 |
+| Bill & Checkout | ✅ Delivered | M004 (S01 + S02) |
+| Menu Management | 🔜 Planned | M005 |
+| QR Generator | ✅ Delivered | M001 |
 
 ## Tech Stack
 
@@ -56,7 +63,7 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - **Styling:** Tailwind CSS v4
 - **Database:** SQLite via Prisma 7.8.0 + better-sqlite3 adapter
 - **Real-time:** Server-Sent Events (SSE) via ReadableStream with globalThis subscriber registry
-- **Testing:** Vitest with TypeScript path alias support
+- **Testing:** Vitest with TypeScript path alias support (111 tests)
 - **QR:** `qrcode` npm package + `pdfkit` for PDF generation
 - **Audio:** Web Audio API OscillatorNode for notification chimes (zero external deps)
 - **Deployment:** Local network (laptop/PC/tablet at the shop)
@@ -72,90 +79,32 @@ A local-network POS and order management system for a mid-range bubble tea shop.
 - PrismaClient singleton at src/lib/prisma.ts — standard import for all DB access
 - SSE subscriber registry on globalThis.__sseRegistry — same HMR-safe singleton pattern
 - Order status derived from item statuses (computed, not stored separately)
+- PAID is order-level override — set by mark-paid API, not derived from items
 - SSE broadcasts to all stations — client-side hook filters by category
 - Forward-only item status transitions (PENDING→PREPARING→READY→SERVED + any→CANCELLED)
-- Int prices (VND has no decimals) — simpler than Float/Decimal
-- System-ui fonts for HTML, bundled Inter TTF for PDF — no CDN dependencies
-- Server always re-computes totalAmount from DB prices — never trusts client
-- sessionStorage keyed by tableId for cross-table cart isolation
-- Route Handler (POST /api/order) over Server Action for JSON payloads with custom status codes
-- Bottom navigation over top tabs for staff layout — better tablet/thumb ergonomics
-- PATCH endpoint unconditionally updates both status AND totalAmount to prevent stale totals
-- Two-tap cancel confirmation with 3-second auto-reset for destructive actions
-- Web Audio API OscillatorNode for chimes — zero external audio dependencies, works offline
-- Ref-based callback stabilization (onNewOrderRef) to prevent SSE reconnection churn
-- categorizeOrders as pure function with injectable time params for testability
-- 30-second bucketTick interval for time-based bucket re-evaluation (balance between precision and performance)
-- max-h + opacity CSS transition for animated banners without JS animation libraries
+- Reuse item-status-change SSE event type for add-item broadcasts — zero client changes needed
+- Bill totals computed from raw items excluding CANCELLED (not from stored totalAmount) for multi-order consistency
+- Two-tap confirmation pattern for destructive actions with color-coded states and 3s auto-reset
 
 ## Architecture
 
 ```
-Customer Phone → QR scan → /order?table=N (menu + cart + order)
-                                ↓ POST /api/order (validated, server-computed total)
-                                ↓ Order + OrderItems → SQLite (status: PENDING)
-                                ↓ SSE broadcast → new-order event to all station subscribers
-                                ↓ Confirmation screen → 'Gọi thêm món' → repeat
-
-Staff Dashboard (shared layout with bottom nav: Quầy Bar / Bếp / Tổng quan)
-  ├── /staff/bar → Bar Station (DRINK items only) ✅ M003/S01
-  ├── /staff/kitchen → Kitchen Station (FOOD items only) ✅ M003/S02
-  └── /staff → Overview (all orders, READY→SERVED for runners) ✅ M003/S02
-
-Notification System:
-  └── useNotification hook → Web Audio API chime + mute toggle + autoplay unlock
-  └── useOrderStream onNewOrder callback → ref-stabilized → triggers chime + pulse
-
-Order Lifecycle:
-  └── categorizeOrders(active | recentlyCompleted | hidden) → 30s tick re-evaluation
-  └── Lịch sử toggle → reveals hidden orders with count badge
-
-SSE Pipeline: POST /api/order → broadcast(new-order)
-              PATCH /api/staff/orders/:id/items/:id → broadcast(item-status-change)
-              Cancel item → recalculate totalAmount → broadcast(updated order)
-              Client useOrderStream hook → EventSource → filter by station → render
-              Disconnection → 3s debounce → amber banner → reconnect → green banner
-
-Admin (/admin) → protected by cookie auth + Edge middleware
-  └── QR PDF Generator (/api/admin/qr-pdf)
+Customer Phone → QR scan → /order?table=N (menu + order)
+                                ↓ order submitted (POST /api/order)
+                                ↓ SSE broadcast (new-order)
+Staff Dashboard (/staff) → receives orders in real-time via SSE
+  ├── Bar Station (/staff/bar) — DRINK items, PENDING→PREPARING→READY
+  ├── Kitchen Station (/staff/kitchen) — FOOD items, same transitions
+  ├── Overview (/staff) — all items, READY→SERVED
+  └── Checkout (/staff/checkout) — bill aggregation, cancel/add items, mark paid
+                                ↓ mark paid (POST /api/staff/tables/[id]/pay)
+                                ↓ SSE broadcast (order-paid) → stations clear
 ```
-
-## Key Patterns Established
-
-- PrismaClient singleton at `src/lib/prisma.ts` with globalThis caching for HMR
-- SSE subscriber registry at `src/lib/sse.ts` with station-level filtering and dead subscriber cleanup
-- Order status derivation at `src/lib/order-status.ts` — computed from item statuses
-- calculateOrderTotal pure helper for server-side total recalculation (excludes CANCELLED items)
-- StationView + OrderCard reusable component pattern for station pages
-- Thin Server Component page pattern — each station wraps StationView with a station prop
-- useOrderStream hook: initial snapshot + incremental SSE with client-side category filtering
-- Staff bottom-nav layout with extracted Client Component (StaffNav) for usePathname
-- Two-tap confirmation UX for destructive actions with auto-reset timer
-- Cookie-based admin auth with Edge middleware at `src/middleware.ts`
-- PDFKit buffer-collection pattern for Next.js Route Handlers
-- Prisma seed: deleteMany in reverse FK order → Promise.all create
-- Vietnamese font bundling via `public/fonts/` for PDF generation
-- Mobile-first Tailwind responsive layout with sm:/md: breakpoints
-- VND formatting via shared `formatVND()` utility in `src/lib/format.ts`
-- Server→Client data serialization: Prisma objects → plain objects at boundary
-- Next.js 16 Promise-based searchParams: `await searchParams` in Server Components
-- CartProvider useReducer + sessionStorage hydration guard pattern
-- Spring-like cubic-bezier(0.32, 0.72, 0, 1) staggered entrance animations
-- Server-side price computation with full FK validation chain in API routes
-- Prisma $transaction for atomic multi-record creation
-- useNotification hook: Web Audio API + localStorage mute + AudioContext autoplay unlock
-- Ref-based callback stabilization to prevent SSE reconnection churn
-- Pure function extraction for time-dependent logic (categorizeOrders with injectable time sources)
-- Three-bucket order display: active / recentlyCompleted / hidden with auto-transitions
-- 3-second debounced disconnection detection with reconnection success banner
 
 ## Milestone Sequence
 
-- [x] M001: Project Foundation — Next.js setup, database schema, seed data, QR generator ✅
-- [x] M002: Customer Order Flow — QR scan → menu → cart → order submission → confirmation ✅
-- [x] M003: Staff Dashboard — Real-time order board, station routing (bar/kitchen), status updates, notifications, auto-hide ✅
-  - [x] S01: Bar Station End-to-End (SSE + API + UI) ✅
-  - [x] S02: Kitchen + Overview Stations + Item Cancellation ✅
-  - [x] S03: Notifications & Auto-Hide Polish ✅
-- [ ] M004: Bill & Checkout — Per-table bill, totals, payment marking
+- [x] M001: Project Foundation — Next.js setup, database schema, seed data, QR generator
+- [x] M002: Customer Order Flow — QR scan → menu → order submission (mobile-first UI)
+- [x] M003: Staff Dashboard — Real-time order board, station routing (bar/kitchen), status updates
+- [x] M004: Bill & Checkout — Per-table bill, totals, cancel/add items, payment marking, SSE propagation
 - [ ] M005: Admin & Polish — Menu management, settings, UI polish, print-ready QR sheets

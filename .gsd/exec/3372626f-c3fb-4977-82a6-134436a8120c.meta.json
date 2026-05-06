@@ -1,0 +1,18 @@
+{
+  "id": "3372626f-c3fb-4977-82a6-134436a8120c",
+  "runtime": "bash",
+  "purpose": "M004 validation - build check",
+  "script_chars": 46,
+  "started_at": "2026-05-06T08:26:46.746Z",
+  "finished_at": "2026-05-06T08:26:46.749Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 3,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\3372626f-c3fb-4977-82a6-134436a8120c.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\3372626f-c3fb-4977-82a6-134436a8120c.stderr"
+}

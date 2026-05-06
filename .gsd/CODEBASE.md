@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T07:09:28Z","fingerprint":"3c8b2a16d2827c1e97a7c3754e777aee36f1f042","fileCount":58,"truncated":false} -->
+Generated: 2026-05-06T08:30:02Z | Files: 71 | Described: 0/71
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T08:30:02Z","fingerprint":"aba9ebfc3f8ff234de013a8a3f508e429cde2fd4","fileCount":71,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -30,6 +30,9 @@ Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
 ### prisma/migrations/20260506024910_add_full_schema/
 - `prisma/migrations/20260506024910_add_full_schema/migration.sql`
 
+### prisma/migrations/20260506071758_add_paid_at/
+- `prisma/migrations/20260506071758_add_paid_at/migration.sql`
+
 ### src/
 - `src/middleware.ts`
 
@@ -53,14 +56,29 @@ Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
 ### src/app/api/order/
 - `src/app/api/order/route.ts`
 
+### src/app/api/staff/checkout/
+- `src/app/api/staff/checkout/route.ts`
+
+### src/app/api/staff/menu/
+- `src/app/api/staff/menu/route.ts`
+
 ### src/app/api/staff/orders/
 - `src/app/api/staff/orders/route.ts`
+
+### src/app/api/staff/orders/[orderId]/items/
+- `src/app/api/staff/orders/[orderId]/items/route.ts`
 
 ### src/app/api/staff/orders/[orderId]/items/[itemId]/
 - `src/app/api/staff/orders/[orderId]/items/[itemId]/route.ts`
 
 ### src/app/api/staff/orders/stream/
 - `src/app/api/staff/orders/stream/route.ts`
+
+### src/app/api/staff/tables/[tableId]/bill/
+- `src/app/api/staff/tables/[tableId]/bill/route.ts`
+
+### src/app/api/staff/tables/[tableId]/pay/
+- `src/app/api/staff/tables/[tableId]/pay/route.ts`
 
 ### src/app/order/
 - `src/app/order/page.tsx`
@@ -72,6 +90,9 @@ Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
 
 ### src/app/staff/bar/
 - `src/app/staff/bar/page.tsx`
+
+### src/app/staff/checkout/
+- `src/app/staff/checkout/page.tsx`
 
 ### src/app/staff/kitchen/
 - `src/app/staff/kitchen/page.tsx`
@@ -86,10 +107,15 @@ Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
 - `src/components/order/OrderConfirmation.tsx`
 
 ### src/components/staff/
+- `src/components/staff/BillView.tsx`
+- `src/components/staff/MenuPickerModal.tsx`
 - `src/components/staff/OrderCard.tsx`
 - `src/components/staff/StationView.tsx`
 - `src/components/staff/useNotification.ts`
 - `src/components/staff/useOrderStream.ts`
+
+### src/components/staff/__tests__/
+- `src/components/staff/__tests__/orderReducer.test.ts`
 
 ### src/lib/
 - `src/lib/auth.ts`
@@ -100,7 +126,10 @@ Generated: 2026-05-06T07:09:28Z | Files: 58 | Described: 0/58
 - `src/lib/sse.ts`
 
 ### src/lib/__tests__/
+- `src/lib/__tests__/add-item-api.test.ts`
+- `src/lib/__tests__/bill-aggregation.test.ts`
 - `src/lib/__tests__/cancel-recalculation.test.ts`
 - `src/lib/__tests__/categorize-orders.test.ts`
+- `src/lib/__tests__/order-status-paid.test.ts`
 - `src/lib/__tests__/order-status.test.ts`
 - `src/lib/__tests__/sse.test.ts`

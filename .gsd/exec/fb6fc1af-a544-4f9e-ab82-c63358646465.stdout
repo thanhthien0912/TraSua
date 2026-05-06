@@ -1,0 +1,30 @@
+=== Code changes since M003 completion (non-.gsd files) ===
+ prisma/dev.db                                      | Bin 36864 -> 36864 bytes
+ .../20260506071758_add_paid_at/migration.sql       |   2 +
+ prisma/schema.prisma                               |   1 +
+ src/app/api/staff/checkout/route.ts                |  68 +++
+ src/app/api/staff/menu/route.ts                    |  38 ++
+ .../staff/orders/[orderId]/items/[itemId]/route.ts |  23 +
+ src/app/api/staff/orders/[orderId]/items/route.ts  | 220 ++++++++++
+ src/app/api/staff/orders/route.ts                  |   2 +-
+ src/app/api/staff/tables/[tableId]/bill/route.ts   |  90 ++++
+ src/app/api/staff/tables/[tableId]/pay/route.ts    |  88 ++++
+ src/app/staff/StaffNav.tsx                         |   1 +
+ src/app/staff/checkout/page.tsx                    | 234 +++++++++++
+ src/components/staff/BillView.tsx                  | 468 +++++++++++++++++++++
+ src/components/staff/MenuPickerModal.tsx           | 460 ++++++++++++++++++++
+ .../staff/__tests__/orderReducer.test.ts           | 136 ++++++
+ src/components/staff/useOrderStream.ts             |  32 +-
+ src/lib/__tests__/add-item-api.test.ts             | 128 ++++++
+ src/lib/__tests__/bill-aggregation.test.ts         |  64 +++
+ src/lib/__tests__/order-status-paid.test.ts        | 110 +++++
+ 19 files changed, 2161 insertions(+), 4 deletions(-)
+
+
+=== M004 commits (since 73c3dcf) ===
+e1b1469 feat: Built MenuPickerModal with DRINK/FOOD tabs, quantity selector, an…
+96301b3 test: Created GET /api/staff/menu and POST /api/staff/orders/[orderId]/…
+63d6297 test: Added REMOVE_ORDERS action to useOrderStream reducer, order-paid…
+ef0ca00 feat: Built checkout page with table list, bill detail view, item cance…
+5a85cb6 chore: auto-commit after reactive-execute
+

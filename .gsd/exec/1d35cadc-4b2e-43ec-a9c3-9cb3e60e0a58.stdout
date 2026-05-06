@@ -1,0 +1,21 @@
+✅ prisma/migrations/20260506071758_add_paid_at/migration.sql
+✅ src/app/api/staff/tables/[tableId]/bill/route.ts
+✅ src/app/api/staff/tables/[tableId]/pay/route.ts
+✅ src/app/api/staff/checkout/route.ts
+✅ src/app/staff/checkout/page.tsx
+✅ src/components/staff/BillView.tsx
+✅ src/components/staff/MenuPickerModal.tsx
+✅ src/app/api/staff/menu/route.ts
+✅ src/app/api/staff/orders/[orderId]/items/route.ts
+✅ src/lib/__tests__/bill-aggregation.test.ts
+✅ src/lib/__tests__/order-status-paid.test.ts
+✅ src/components/staff/__tests__/orderReducer.test.ts
+✅ src/lib/__tests__/add-item-api.test.ts
+
+All key files exist
+
+paidAt in schema: ✅ Yes
+Checkout tab in nav: ✅ Yes
+REMOVE_ORDERS action: ✅ Yes
+PAID guard on item PATCH: ✅ Yes
+PAID exclusion from orders GET: ✅ Yes

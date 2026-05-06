@@ -1,0 +1,18 @@
+{
+  "id": "5d3959a0-97fc-47c1-beb5-d7306df5e820",
+  "runtime": "node",
+  "purpose": "Build verification for M004",
+  "script_chars": 542,
+  "started_at": "2026-05-06T08:31:21.583Z",
+  "finished_at": "2026-05-06T08:31:34.026Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 12443,
+  "stdout_bytes": 663,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\5d3959a0-97fc-47c1-beb5-d7306df5e820.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\5d3959a0-97fc-47c1-beb5-d7306df5e820.stderr"
+}

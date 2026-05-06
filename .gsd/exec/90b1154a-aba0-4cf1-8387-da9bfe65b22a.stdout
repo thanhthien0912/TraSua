@@ -1,0 +1,22 @@
+Menu API routes: NONE
+Items POST routes: NONE
+
+=== All API routes ===
+src\app\api\admin\login\route.ts
+src\app\api\admin\qr-pdf\route.ts
+src\app\api\order\route.ts
+src\app\api\staff\checkout\route.ts
+src\app\api\staff\orders\route.ts
+src\app\api\staff\orders\stream\route.ts
+src\app\api\staff\orders\[orderId]\items\[itemId]\route.ts
+src\app\api\staff\tables\[tableId]\bill\route.ts
+src\app\api\staff\tables\[tableId]\pay\route.ts
+
+=== Test files ===
+src\components\staff\__tests__\orderReducer.test.ts
+src\lib\__tests__\bill-aggregation.test.ts
+src\lib\__tests__\cancel-recalculation.test.ts
+src\lib\__tests__\categorize-orders.test.ts
+src\lib\__tests__\order-status-paid.test.ts
+src\lib\__tests__\order-status.test.ts
+src\lib\__tests__\sse.test.ts

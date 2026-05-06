@@ -1,0 +1,18 @@
+{
+  "id": "1d62617d-cb01-401b-87ca-7c9cd0fc4720",
+  "runtime": "bash",
+  "purpose": "Map key files for S02 research",
+  "script_chars": 609,
+  "started_at": "2026-05-06T07:53:51.184Z",
+  "finished_at": "2026-05-06T07:53:51.187Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 3,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\1d62617d-cb01-401b-87ca-7c9cd0fc4720.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\1d62617d-cb01-401b-87ca-7c9cd0fc4720.stderr"
+}
