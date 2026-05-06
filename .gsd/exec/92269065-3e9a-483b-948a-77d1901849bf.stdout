@@ -1,0 +1,11 @@
+Generated dir contents: browser.ts, client.ts, commonInputTypes.ts, enums.ts, internal, models, models.ts
+
+=== PRISMA DB QUERY ===
+Script executed successfully.
+
+=== SQLITE3 DIRECT ===
+DB size: 36864 bytes
+Menu items in seed.ts: 19
+Has DRINK category: true
+Has FOOD category: true
+Table records in seed.ts: 0

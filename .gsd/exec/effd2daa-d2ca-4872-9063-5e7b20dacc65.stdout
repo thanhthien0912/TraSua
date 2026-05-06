@@ -1,0 +1,8 @@
+DATA VERIFICATION: OK
+MenuItems total: 18
+Drinks: 12 | Foods: 6
+Tables: 15
+Sample drink: Trà sữa trân châu - price: 35000 VND
+Sample food: Bánh tráng trộn - price: 25000 VND
+Table 1 name: Bàn 1
+Price is Int: true

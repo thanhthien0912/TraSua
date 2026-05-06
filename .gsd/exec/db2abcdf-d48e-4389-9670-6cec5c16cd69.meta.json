@@ -1,0 +1,18 @@
+{
+  "id": "db2abcdf-d48e-4389-9670-6cec5c16cd69",
+  "runtime": "node",
+  "purpose": "M001 query seed data via tsx",
+  "script_chars": 1478,
+  "started_at": "2026-05-06T03:43:51.603Z",
+  "finished_at": "2026-05-06T03:43:52.573Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 970,
+  "stdout_bytes": 594,
+  "stderr_bytes": 1391,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\db2abcdf-d48e-4389-9670-6cec5c16cd69.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\db2abcdf-d48e-4389-9670-6cec5c16cd69.stderr"
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "taskId": "T03",
+  "unitId": "M001/S03/T03",
+  "timestamp": 1778038460210,
+  "passed": false,
+  "discoverySource": "task-plan",
+  "checks": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "durationMs": 1647,
+      "verdict": "pass"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationMs": 7408,
+      "verdict": "pass"
+    },
+    {
+      "command": "grep -q 'Tạo QR' src/app/admin/page.tsx",
+      "exitCode": 1,
+      "durationMs": 15,
+      "verdict": "fail"
+    },
+    {
+      "command": "grep -q 'qr-pdf' src/app/admin/page.tsx",
+      "exitCode": 1,
+      "durationMs": 12,
+      "verdict": "fail"
+    }
+  ],
+  "retryAttempt": 1,
+  "maxRetries": 2
+}

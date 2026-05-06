@@ -1,0 +1,18 @@
+{
+  "id": "b6fe0ba3-7ef8-4af8-b387-4233c7f1b3cc",
+  "runtime": "node",
+  "purpose": "Verify seed data counts and content with tsx",
+  "script_chars": 1721,
+  "started_at": "2026-05-06T03:11:04.244Z",
+  "finished_at": "2026-05-06T03:11:05.538Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 1294,
+  "stdout_bytes": 1446,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\b6fe0ba3-7ef8-4af8-b387-4233c7f1b3cc.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\b6fe0ba3-7ef8-4af8-b387-4233c7f1b3cc.stderr"
+}

@@ -1,0 +1,18 @@
+Total menu items: 18
+  DRINK: 12
+  FOOD: 6
+Tables: 15
+
+Sample items:
+  Trà sữa trân châu - 35000 VND (DRINK)
+  Trà sữa matcha - 40000 VND (DRINK)
+  Trà sữa socola - 38000 VND (DRINK)
+
+Sample tables:
+  Bàn 1 (#1)
+  Bàn 2 (#2)
+  Bàn 3 (#3)
+
+DB tables: _prisma_migrations, menu_items, order_items, orders, sqlite_sequence, tables
+
+=== ALL SEED DATA VERIFIED ===

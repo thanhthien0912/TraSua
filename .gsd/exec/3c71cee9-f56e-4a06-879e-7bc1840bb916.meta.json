@@ -1,0 +1,18 @@
+{
+  "id": "3c71cee9-f56e-4a06-879e-7bc1840bb916",
+  "runtime": "node",
+  "purpose": "M001 direct SQLite query for seed data verification",
+  "script_chars": 1462,
+  "started_at": "2026-05-06T03:44:16.029Z",
+  "finished_at": "2026-05-06T03:44:16.096Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 67,
+  "stdout_bytes": 373,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\3c71cee9-f56e-4a06-879e-7bc1840bb916.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\3c71cee9-f56e-4a06-879e-7bc1840bb916.stderr"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "c93c6b6a-56a8-4694-8b15-25d0704ab1dd",
+  "runtime": "node",
+  "purpose": "Verify seed run 1",
+  "script_chars": 378,
+  "started_at": "2026-05-06T03:10:10.342Z",
+  "finished_at": "2026-05-06T03:10:19.528Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 9186,
+  "stdout_bytes": 87,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\c93c6b6a-56a8-4694-8b15-25d0704ab1dd.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\c93c6b6a-56a8-4694-8b15-25d0704ab1dd.stderr"
+}

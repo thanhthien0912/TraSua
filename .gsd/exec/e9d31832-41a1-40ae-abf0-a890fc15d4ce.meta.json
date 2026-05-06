@@ -1,0 +1,18 @@
+{
+  "id": "e9d31832-41a1-40ae-abf0-a890fc15d4ce",
+  "runtime": "bash",
+  "purpose": "Verify prisma generate succeeds with full schema",
+  "script_chars": 69,
+  "started_at": "2026-05-06T03:09:43.625Z",
+  "finished_at": "2026-05-06T03:09:43.633Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 8,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\e9d31832-41a1-40ae-abf0-a890fc15d4ce.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\e9d31832-41a1-40ae-abf0-a890fc15d4ce.stderr"
+}

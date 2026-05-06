@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "taskId": "T02",
+  "unitId": "M001/S03/T02",
+  "timestamp": 1778038230352,
+  "passed": false,
+  "discoverySource": "task-plan",
+  "checks": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "durationMs": 2214,
+      "verdict": "pass"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationMs": 7423,
+      "verdict": "pass"
+    },
+    {
+      "command": "grep -q 'order?table=' src/app/api/admin/qr-pdf/route.ts",
+      "exitCode": 1,
+      "durationMs": 14,
+      "verdict": "fail"
+    }
+  ],
+  "retryAttempt": 1,
+  "maxRetries": 2
+}

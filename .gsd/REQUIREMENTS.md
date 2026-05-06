@@ -43,6 +43,7 @@ This file is the explicit capability and coverage contract for the project.
 - Why it matters: QR phải được chuẩn bị trước — không phải tạo mới mỗi lần khách đến
 - Source: user-interview
 - Validation: Admin tạo QR cho N bàn → xuất file in được → scan test thành công mở đúng trang order
+- Notes: M001/S03 delivers the QR generation infrastructure: admin auth + /api/admin/qr-pdf generates A4 PDF with 3x5 grid of QR codes for N tables. Each QR encodes http://SHOP_IP:SHOP_PORT/order?table=N. Machine-verified: build passes, file content correct. Full validation (scan test) pending live runtime UAT.
 
 ### R006 — Hệ thống chạy local trên mạng nội bộ quán — không cần internet
 - Class: constraint
