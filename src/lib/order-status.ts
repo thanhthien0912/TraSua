@@ -49,6 +49,21 @@ export function deriveOrderStatus(itemStatuses: ItemStatus[]): OrderStatus {
   return 'PENDING'
 }
 
+// ─── Total Recalculation ────────────────────────────────────────────
+
+/**
+ * Calculate the order total from item data, excluding CANCELLED items.
+ * Prices are Int (VND — no decimals).
+ */
+export function calculateOrderTotal(
+  items: Array<{ status: string; price: number; quantity: number }>
+): number {
+  return items.reduce((sum, item) => {
+    if (item.status === 'CANCELLED') return sum
+    return sum + item.price * item.quantity
+  }, 0)
+}
+
 // ─── Transition Validation ──────────────────────────────────────────
 
 /**

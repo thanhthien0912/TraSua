@@ -4,6 +4,7 @@ import { broadcast } from '@/lib/sse'
 import {
   isValidTransition,
   deriveOrderStatus,
+  calculateOrderTotal,
   type ItemStatus,
 } from '@/lib/order-status'
 
@@ -111,28 +112,33 @@ export async function PATCH(
     `[PATCH /api/staff/orders/${orderId}/items/${itemId}] Updated: ${currentStatus} → ${targetStatus}`
   )
 
-  // ─── Derive order status and update if changed ────────────────────
+  // ─── Derive order status + recalculate totalAmount ─────────────────
   const allItems = await prisma.orderItem.findMany({
     where: { orderId },
+    include: { menuItem: { select: { price: true } } },
   })
 
   const derivedStatus = deriveOrderStatus(
     allItems.map((i) => i.status as ItemStatus)
   )
 
-  const order = await prisma.order.findUniqueOrThrow({
+  const recalculatedTotal = calculateOrderTotal(
+    allItems.map((i) => ({
+      status: i.status,
+      price: i.menuItem.price,
+      quantity: i.quantity,
+    }))
+  )
+
+  // Always update both status and totalAmount together to keep them in sync
+  await prisma.order.update({
     where: { id: orderId },
+    data: { status: derivedStatus, totalAmount: recalculatedTotal },
   })
 
-  if (order.status !== derivedStatus) {
-    await prisma.order.update({
-      where: { id: orderId },
-      data: { status: derivedStatus },
-    })
-    console.log(
-      `[PATCH /api/staff/orders/${orderId}/items/${itemId}] Order status updated: ${order.status} → ${derivedStatus}`
-    )
-  }
+  console.log(
+    `[PATCH /api/staff/orders/${orderId}/items/${itemId}] Order updated: status=${derivedStatus}, totalAmount=${recalculatedTotal}`
+  )
 
   // ─── Fetch full order for response + broadcast ────────────────────
   const fullOrder = await prisma.order.findUniqueOrThrow({
