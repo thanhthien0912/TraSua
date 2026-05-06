@@ -39,12 +39,32 @@ export default function CheckoutPage() {
     }
   }, [])
 
-  // Initial fetch + polling every 10s
+  // Initial fetch + polling every 10s + SSE reactivity
   useEffect(() => {
     fetchTables()
     pollRef.current = setInterval(fetchTables, 10_000)
+
+    // SSE: refetch table list when orders are paid or items change
+    const es = new EventSource('/api/staff/orders/stream?station=all')
+
+    es.addEventListener('order-paid', () => {
+      console.log('[Checkout] SSE order-paid → refetching tables')
+      fetchTables()
+    })
+
+    es.addEventListener('item-status-change', () => {
+      // Item cancels from bill view affect totals
+      fetchTables()
+    })
+
+    es.addEventListener('new-order', () => {
+      // New orders add tables to the list
+      fetchTables()
+    })
+
     return () => {
       if (pollRef.current) clearInterval(pollRef.current)
+      es.close()
     }
   }, [fetchTables])
 

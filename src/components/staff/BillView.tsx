@@ -218,7 +218,36 @@ export default function BillView({
 
   useEffect(() => {
     fetchBill()
-  }, [fetchBill])
+
+    // SSE: refetch bill when items change or orders are paid on this table
+    const es = new EventSource('/api/staff/orders/stream?station=all')
+
+    es.addEventListener('item-status-change', () => {
+      // An item status changed (e.g. cancel from another device) — refetch bill
+      fetchBill()
+    })
+
+    es.addEventListener('order-paid', (event) => {
+      try {
+        const { tableId: paidTableId } = JSON.parse(event.data) as { tableId: number }
+        if (paidTableId === tableId) {
+          console.log('[BillView] SSE order-paid for this table → navigating back')
+          onBack()
+        }
+      } catch {
+        // Ignore parse errors
+      }
+    })
+
+    es.addEventListener('new-order', () => {
+      // New order on any table — refetch in case it's this table
+      fetchBill()
+    })
+
+    return () => {
+      es.close()
+    }
+  }, [fetchBill, tableId, onBack])
 
   // ─── 3-second auto-reset for pay confirmation ───────────────
   useEffect(() => {

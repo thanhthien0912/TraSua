@@ -71,18 +71,20 @@ function filterOrderForStation(order: Order, station: Station): Order | null {
 
 // ─── Reducer ────────────────────────────────────────────────────────
 
-type OrderState = {
+export type OrderState = {
   orders: Order[]
   connectionStatus: ConnectionStatus
 }
 
-type OrderAction =
+export type OrderAction =
   | { type: 'SET_ORDERS'; payload: Order[] }
   | { type: 'ADD_ORDER'; payload: Order }
   | { type: 'UPDATE_ORDER'; payload: Order }
+  | { type: 'REMOVE_ORDERS'; payload: number[] }
   | { type: 'SET_CONNECTION'; payload: ConnectionStatus }
 
-function orderReducer(state: OrderState, action: OrderAction): OrderState {
+/** Exported for unit testing */
+export function orderReducer(state: OrderState, action: OrderAction): OrderState {
   switch (action.type) {
     case 'SET_ORDERS':
       return { ...state, orders: action.payload }
@@ -108,6 +110,14 @@ function orderReducer(state: OrderState, action: OrderAction): OrderState {
         orders: state.orders.map((o) =>
           o.id === action.payload.id ? action.payload : o
         ),
+      }
+    }
+
+    case 'REMOVE_ORDERS': {
+      const idsToRemove = new Set(action.payload)
+      return {
+        ...state,
+        orders: state.orders.filter((o) => !idsToRemove.has(o.id)),
       }
     }
 
@@ -199,6 +209,22 @@ export function useOrderStream(station: Station, options?: UseOrderStreamOptions
         }
       } catch (err) {
         console.error('[useOrderStream] Failed to parse item-status-change event:', err)
+      }
+    })
+
+    es.addEventListener('order-paid', (event) => {
+      try {
+        const { orderIds, tableId: paidTableId } = JSON.parse(event.data) as {
+          orderIds: number[]
+          tableId: number
+          paidAt: string
+        }
+        console.log(
+          `[useOrderStream] Orders paid: [${orderIds.join(', ')}] (table ${paidTableId})`
+        )
+        dispatch({ type: 'REMOVE_ORDERS', payload: orderIds })
+      } catch (err) {
+        console.error('[useOrderStream] Failed to parse order-paid event:', err)
       }
     })
 
