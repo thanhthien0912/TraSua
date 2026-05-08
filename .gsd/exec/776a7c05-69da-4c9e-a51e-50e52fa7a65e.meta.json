@@ -1,0 +1,18 @@
+{
+  "id": "776a7c05-69da-4c9e-a51e-50e52fa7a65e",
+  "runtime": "node",
+  "purpose": "Find table/order API routes",
+  "script_chars": 1036,
+  "started_at": "2026-05-08T01:51:06.877Z",
+  "finished_at": "2026-05-08T01:51:06.926Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 49,
+  "stdout_bytes": 24,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\776a7c05-69da-4c9e-a51e-50e52fa7a65e.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\776a7c05-69da-4c9e-a51e-50e52fa7a65e.stderr"
+}

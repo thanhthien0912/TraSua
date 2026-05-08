@@ -13,15 +13,15 @@ const STATUS_CONFIG: Record<
 > = {
   PENDING: {
     label: 'Chờ',
-    bg: 'bg-amber-100',
-    text: 'text-amber-800',
-    ring: 'ring-amber-300',
+    bg: 'bg-emerald-100',
+    text: 'text-emerald-700',
+    ring: 'ring-emerald-300',
   },
   PREPARING: {
     label: 'Đang pha',
-    bg: 'bg-orange-100',
-    text: 'text-orange-800',
-    ring: 'ring-orange-300',
+    bg: 'bg-teal-100',
+    text: 'text-teal-700',
+    ring: 'ring-teal-300',
   },
   READY: {
     label: 'Xong',
@@ -43,21 +43,14 @@ const STATUS_CONFIG: Record<
   },
 }
 
-/** Vietnamese action labels for status transitions */
-const ACTION_LABELS: Partial<Record<ItemStatus, string>> = {
-  PREPARING: 'Nhận đơn',
-  READY: 'Xong',
-  SERVED: 'Phục vụ',
-}
-
 // ─── Derived Status Badge ───────────────────────────────────────────
 
 const ORDER_STATUS_CONFIG: Record<
   string,
   { label: string; dotColor: string }
 > = {
-  PENDING: { label: 'Chờ xử lý', dotColor: 'bg-amber-400' },
-  PREPARING: { label: 'Đang pha chế', dotColor: 'bg-orange-400' },
+  PENDING: { label: 'Chờ xử lý', dotColor: 'bg-emerald-400' },
+  PREPARING: { label: 'Đang pha chế', dotColor: 'bg-teal-400' },
   READY: { label: 'Sẵn sàng', dotColor: 'bg-emerald-400' },
   SERVED: { label: 'Đã phục vụ', dotColor: 'bg-slate-400' },
   CANCELLED: { label: 'Đã huỷ', dotColor: 'bg-red-400' },
@@ -79,9 +72,6 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
 
   const status = item.status as ItemStatus
   const config = STATUS_CONFIG[status]
-  const nextStatuses = getValidNextStatuses(status).filter(
-    (s) => s !== 'CANCELLED'
-  )
   const canCancel = CANCELLABLE_STATUSES.has(status)
 
   // Reset confirmation timeout after 3 seconds
@@ -129,11 +119,9 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
 
   const handleCancelTap = useCallback(async () => {
     if (!confirmingCancel) {
-      // First tap — enter confirmation mode
       setConfirmingCancel(true)
       return
     }
-    // Second tap — execute cancel
     setLoading(true)
     setConfirmingCancel(false)
     try {
@@ -160,87 +148,44 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
   }, [confirmingCancel, orderId, item.id])
 
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-amber-100 last:border-b-0">
+    <div className="flex items-center gap-3 py-3 border-b border-emerald-100 last:border-b-0">
       {/* Item info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-base truncate">
+          <span className="font-semibold text-base text-emerald-900 truncate">
             {item.menuItem.name}
           </span>
-          <span className="text-amber-600 font-medium text-sm flex-shrink-0">
+          <span className="text-emerald-600 font-medium text-sm flex-shrink-0">
             ×{item.quantity}
           </span>
         </div>
         {item.notes && (
-          <p className="text-sm text-amber-600/70 mt-0.5 italic truncate">
+          <p className="text-sm text-emerald-600/70 mt-0.5 truncate">
             📝 {item.notes}
           </p>
         )}
-        <div className="flex items-center gap-2 mt-1">
-          <span
-            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset ${config.bg} ${config.text} ${config.ring}`}
-          >
-            {config.label}
-          </span>
-          <span className="text-xs text-amber-500">
-            {formatVND(item.menuItem.price * item.quantity)}
-          </span>
-        </div>
+        <span className="text-xs text-emerald-500 mt-1 inline-block">
+          {formatVND(item.menuItem.price * item.quantity)}
+        </span>
       </div>
 
       {/* Action buttons */}
       <div className="flex gap-2 flex-shrink-0">
-        {nextStatuses.map((targetStatus) => {
-          const actionLabel =
-            ACTION_LABELS[targetStatus] ?? targetStatus
-          const isPrimary = targetStatus === 'PREPARING' || targetStatus === 'READY'
-          return (
-            <button
-              key={targetStatus}
-              onClick={() => handleAdvance(targetStatus)}
-              disabled={loading}
-              className={`
-                min-h-[44px] min-w-[80px] px-4 py-2 rounded-xl font-semibold text-sm
-                transition-all duration-150 active:scale-95
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${
-                  isPrimary
-                    ? 'bg-amber-700 text-amber-50 hover:bg-amber-800 shadow-md shadow-amber-900/20'
-                    : 'bg-amber-100 text-amber-800 hover:bg-amber-200 ring-1 ring-inset ring-amber-300'
-                }
-              `}
-            >
-              {loading ? (
-                <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-              ) : (
-                actionLabel
-              )}
-            </button>
-          )
-        })}
-
-        {/* Cancel button — two-tap confirmation */}
-        {canCancel && (
+        {status !== 'SERVED' && status !== 'CANCELLED' && (
           <button
-            onClick={handleCancelTap}
+            onClick={() => handleAdvance('SERVED')}
             disabled={loading}
-            className={`
-              min-h-[44px] px-4 py-2 rounded-xl font-semibold text-sm
+            className="
+              min-h-[44px] min-w-[80px] px-4 py-2 rounded-xl font-semibold text-sm
               transition-all duration-150 active:scale-95
               disabled:opacity-50 disabled:cursor-not-allowed
-              ${
-                confirmingCancel
-                  ? 'bg-red-600 text-white shadow-md shadow-red-900/20 min-w-[120px]'
-                  : 'bg-red-50 text-red-600 ring-1 ring-inset ring-red-200 hover:bg-red-100'
-              }
-            `}
+              bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-900/20
+            "
           >
             {loading ? (
               <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            ) : confirmingCancel ? (
-              'Xác nhận huỷ?'
             ) : (
-              'Huỷ'
+              'Xong'
             )}
           </button>
         )}
@@ -260,30 +205,22 @@ export default function OrderCard({ order, isNew }: { order: Order; isNew?: bool
   })
 
   return (
-    <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/60 shadow-lg shadow-amber-900/5 overflow-hidden transition-shadow duration-200 hover:shadow-xl hover:shadow-amber-900/10${isNew ? ' animate-pulse-highlight' : ''}`}>
+    <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-emerald-100 shadow-lg shadow-emerald-900/5 overflow-hidden transition-shadow duration-200 hover:shadow-xl hover:shadow-emerald-900/10${isNew ? ' animate-pulse-highlight' : ''}`}>
       {/* Header */}
-      <div className="px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200/40">
+      <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100/40">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold text-amber-900">
+            <span className="text-2xl font-bold text-emerald-900">
               {order.table.name}
             </span>
-            <span className="text-sm text-amber-500 font-mono">
+            <span className="text-sm text-emerald-500 font-mono">
               #{order.id}
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <span
-              className={`w-2 h-2 rounded-full ${orderStatusConfig.dotColor} animate-pulse`}
-            />
-            <span className="text-xs font-medium text-amber-600">
-              {orderStatusConfig.label}
-            </span>
-          </div>
+          <span className="text-xs text-emerald-500">{timeStr}</span>
         </div>
-        <div className="flex items-center justify-between mt-1">
-          <span className="text-xs text-amber-500">{timeStr}</span>
-          <span className="text-sm font-semibold text-amber-700">
+        <div className="mt-1">
+          <span className="text-sm font-semibold text-emerald-700">
             {formatVND(order.totalAmount)}
           </span>
         </div>

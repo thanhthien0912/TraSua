@@ -1,0 +1,18 @@
+{
+  "id": "e4d2da58-af48-414f-b7ef-495a63f1bb16",
+  "runtime": "bash",
+  "purpose": "Find QR/table related source files",
+  "script_chars": 207,
+  "started_at": "2026-05-08T01:49:46.738Z",
+  "finished_at": "2026-05-08T01:49:46.740Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 2,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\e4d2da58-af48-414f-b7ef-495a63f1bb16.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\e4d2da58-af48-414f-b7ef-495a63f1bb16.stderr"
+}

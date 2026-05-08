@@ -1,0 +1,18 @@
+{
+  "id": "46570a6e-25eb-4cfc-beac-9fed0573555c",
+  "runtime": "node",
+  "purpose": "List API route files",
+  "script_chars": 678,
+  "started_at": "2026-05-08T01:51:35.191Z",
+  "finished_at": "2026-05-08T01:51:35.236Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 45,
+  "stdout_bytes": 743,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\46570a6e-25eb-4cfc-beac-9fed0573555c.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\46570a6e-25eb-4cfc-beac-9fed0573555c.stderr"
+}

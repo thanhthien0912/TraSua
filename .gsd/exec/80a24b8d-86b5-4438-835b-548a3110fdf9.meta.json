@@ -1,0 +1,18 @@
+{
+  "id": "80a24b8d-86b5-4438-835b-548a3110fdf9",
+  "runtime": "node",
+  "purpose": "Find QR PDF route and TABLE_COUNT usage",
+  "script_chars": 2272,
+  "started_at": "2026-05-06T09:23:40.695Z",
+  "finished_at": "2026-05-06T09:23:40.775Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 80,
+  "stdout_bytes": 953,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\80a24b8d-86b5-4438-835b-548a3110fdf9.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\80a24b8d-86b5-4438-835b-548a3110fdf9.stderr"
+}

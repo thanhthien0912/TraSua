@@ -1,0 +1,105 @@
+{
+  "compiledAt": "2026-05-06T09:15:37.273Z",
+  "milestoneId": "M005",
+  "pipeline": {
+    "clarifyRoundLimit": 3,
+    "researchSynthesized": true,
+    "draftContextIncluded": false,
+    "finalizedContextIncluded": true,
+    "sourcePhase": "summarizing"
+  },
+  "nodes": [
+    {
+      "id": "execute-task:M005:S01:T01",
+      "kind": "unit",
+      "dependsOn": [],
+      "writes": [
+        "prisma/migrations/20260506090234_add_menu_hidden/migration.sql",
+        "src/components/ui/Toast.tsx",
+        "src/components/ui/ToastProvider.tsx",
+        "src/components/admin/AdminNav.tsx",
+        "src/app/admin/layout.tsx",
+        "src/app/admin/page.tsx",
+        "src/app/admin/menu/page.tsx",
+        "src/app/admin/tables/page.tsx",
+        "src/app/admin/qr/page.tsx",
+        "src/app/layout.tsx"
+      ],
+      "metadata": {
+        "unitType": "execute-task",
+        "unitId": "M005.S01.T01",
+        "title": "Added hidden field to MenuItem, created portal-based Toast system, and built admin tabbed layout shell with 3 stub pages.",
+        "status": "complete"
+      }
+    },
+    {
+      "id": "execute-task:M005:S01:T02",
+      "kind": "unit",
+      "dependsOn": [
+        "execute-task:M005:S01:T01"
+      ],
+      "writes": [
+        "src/app/api/admin/menu/route.ts",
+        "src/app/api/admin/menu/[id]/route.ts",
+        "src/app/api/order/route.ts",
+        "src/app/api/staff/menu/route.ts",
+        "src/app/order/page.tsx",
+        "prisma/schema.prisma"
+      ],
+      "metadata": {
+        "unitType": "execute-task",
+        "unitId": "M005.S01.T02",
+        "title": "Created admin menu CRUD API routes (GET/POST/PUT/PATCH/DELETE) and added hidden-item filtering to customer and staff routes.",
+        "status": "complete"
+      }
+    },
+    {
+      "id": "execute-task:M005:S01:T03",
+      "kind": "unit",
+      "dependsOn": [
+        "execute-task:M005:S01:T02"
+      ],
+      "writes": [
+        "src/app/admin/menu/page.tsx",
+        "src/components/admin/MenuItemForm.tsx",
+        "src/app/globals.css"
+      ],
+      "metadata": {
+        "unitType": "execute-task",
+        "unitId": "M005.S01.T03",
+        "title": "Built full admin menu management page with category tabs, item cards, create/edit modal form, availability toggle, two-tap soft-delete, restore, and staggered card animations — all with toast feedback and Vietnamese labels.",
+        "status": "complete"
+      }
+    },
+    {
+      "id": "execute-task:M005:S01:T04",
+      "kind": "unit",
+      "dependsOn": [
+        "execute-task:M005:S01:T03"
+      ],
+      "writes": [
+        "src/app/api/admin/menu/__tests__/menu-crud.test.ts",
+        "src/lib/__tests__/hidden-menu-filter.test.ts"
+      ],
+      "metadata": {
+        "unitType": "execute-task",
+        "unitId": "M005.S01.T04",
+        "title": "Added 41 tests for admin menu CRUD API routes and hidden-item filtering, bringing total from 111 to 152",
+        "status": "complete"
+      }
+    },
+    {
+      "id": "complete-slice:M005:S01",
+      "kind": "verification",
+      "dependsOn": [
+        "execute-task:M005:S01:T04"
+      ],
+      "metadata": {
+        "unitType": "complete-slice",
+        "unitId": "M005.S01",
+        "title": "S01",
+        "status": "pending"
+      }
+    }
+  ]
+}

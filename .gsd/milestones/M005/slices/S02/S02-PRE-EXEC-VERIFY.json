@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "milestoneId": "M005",
+  "sliceId": "S02",
+  "timestamp": 1778211274335,
+  "status": "fail",
+  "durationMs": 720,
+  "checks": [
+    {
+      "category": "file",
+      "target": "src/app/api/admin/qr-pdf/route.ts (current)",
+      "passed": false,
+      "message": "Task T02 references 'src/app/api/admin/qr-pdf/route.ts (current)' which doesn't exist and isn't created by prior or same-task outputs",
+      "blocking": true
+    },
+    {
+      "category": "package",
+      "target": "@/lib",
+      "passed": true,
+      "message": "Warning: npm view failed (code 4294963238): npm error code ENOENT\nnpm error syscall open\nnpm error path D:\\TraSua\\@\\lib\\package.json\nnpm error e",
+      "blocking": false
+    }
+  ]
+}

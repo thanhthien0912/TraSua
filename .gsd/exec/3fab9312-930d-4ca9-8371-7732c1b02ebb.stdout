@@ -1,0 +1,5 @@
+T01-PLAN.md -> # T01: Build Table CRUD API and admin tables page
+T02-PLAN.md -> # T02: Refactor QR PDF to read from DB + build admin QR page
+T03-PLAN.md -> # T03: Write tests for table CRUD and QR PDF refactor
+T04-PLAN.md -> # T04: Build Admin QR Code page UI
+T05-PLAN.md -> # T05: Add Table CRUD and QR PDF tests

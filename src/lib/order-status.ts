@@ -68,8 +68,8 @@ export function calculateOrderTotal(
 
 /**
  * Valid forward transitions for item statuses.
- * PENDING → PREPARING → READY → SERVED (forward-only)
- * Any status → CANCELLED (always allowed)
+ * Step-by-step only: PENDING → PREPARING → READY → SERVED
+ * Plus: any status → CANCELLED (always allowed from non-terminal)
  */
 const VALID_TRANSITIONS: Record<ItemStatus, ItemStatus[]> = {
   PENDING: ['PREPARING', 'CANCELLED'],

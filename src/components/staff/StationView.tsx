@@ -122,36 +122,26 @@ export default function StationView({ station }: { station: Station }) {
     const isErrorState = connectionStatus === 'error' || connectionStatus === 'disconnected'
 
     if (isErrorState) {
-      // Start debounce timer — show banner only after 3s of continuous error
       if (!disconnectTimerRef.current) {
         disconnectTimerRef.current = setTimeout(() => {
           setShowDisconnectBanner(true)
           wasDisconnectedRef.current = true
-          console.log('[StationView] Disconnection banner shown')
         }, DISCONNECT_DEBOUNCE_MS)
       }
     } else {
-      // Connection restored — cancel pending debounce
       if (disconnectTimerRef.current) {
         clearTimeout(disconnectTimerRef.current)
         disconnectTimerRef.current = null
       }
       setShowDisconnectBanner(false)
 
-      // Show reconnection success banner if we were disconnected
       if (wasDisconnectedRef.current && connectionStatus === 'connected') {
         wasDisconnectedRef.current = false
         setShowReconnectBanner(true)
-        console.log('[StationView] Reconnection banner shown')
         reconnectTimerRef.current = setTimeout(() => {
           setShowReconnectBanner(false)
-          console.log('[StationView] Reconnection banner hidden')
         }, RECONNECT_BANNER_MS)
       }
-    }
-
-    return () => {
-      // Cleanup only on unmount (not on every status change)
     }
   }, [connectionStatus])
 
@@ -166,19 +156,19 @@ export default function StationView({ station }: { station: Station }) {
   const connConfig = CONNECTION_LABELS[connectionStatus] ?? CONNECTION_LABELS.disconnected
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
       {/* ─── Header ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-10 bg-white/70 backdrop-blur-md border-b border-amber-200/40 shadow-sm">
+      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-emerald-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-3xl" role="img" aria-label={STATION_LABELS[station]}>
               {STATION_EMOJI[station]}
             </span>
             <div>
-              <h1 className="text-2xl font-bold text-amber-900 tracking-tight">
+              <h1 className="text-2xl font-bold text-emerald-900 tracking-tight">
                 {STATION_LABELS[station]}
               </h1>
-              <p className="text-sm text-amber-600">
+              <p className="text-sm text-emerald-600">
                 {active.length > 0
                   ? `${active.length} đơn đang hoạt động`
                   : 'Không có đơn nào'}
@@ -188,13 +178,13 @@ export default function StationView({ station }: { station: Station }) {
 
           <div className="flex items-center gap-3">
             {/* Connection status indicator */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/50 border border-amber-200/40">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/50 border border-emerald-100">
               <span
                 className={`w-2 h-2 rounded-full ${connConfig.color} ${
                   connectionStatus === 'connected' ? 'animate-pulse' : ''
                 }`}
               />
-              <span className="text-xs font-medium text-amber-700">
+              <span className="text-xs font-medium text-emerald-700">
                 {connConfig.label}
               </span>
             </div>
@@ -205,8 +195,8 @@ export default function StationView({ station }: { station: Station }) {
                 onClick={() => setShowHistory((v) => !v)}
                 className={`min-h-[44px] px-4 py-2 rounded-xl font-semibold text-sm transition-colors active:scale-95 ${
                   showHistory
-                    ? 'bg-amber-700 text-amber-50 shadow-md shadow-amber-900/20'
-                    : 'bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/20'
+                    : 'bg-white/60 border border-emerald-100 text-emerald-700 hover:bg-emerald-50'
                 }`}
                 style={{ transitionProperty: 'background-color, transform' }}
                 aria-label={showHistory ? 'Ẩn lịch sử đơn hàng' : 'Hiện lịch sử đơn hàng'}
@@ -219,7 +209,7 @@ export default function StationView({ station }: { station: Station }) {
             {needsUnlock && (
               <button
                 onClick={unlock}
-                className="min-h-[44px] px-4 py-2 rounded-xl bg-amber-600 text-amber-50 font-semibold text-sm shadow-md shadow-amber-900/20 hover:bg-amber-700 transition-colors active:scale-95"
+                className="min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow-md shadow-emerald-900/20 hover:bg-emerald-700 transition-colors active:scale-95"
                 style={{ transitionProperty: 'background-color, transform' }}
               >
                 🔔 Bật thông báo
@@ -230,7 +220,7 @@ export default function StationView({ station }: { station: Station }) {
             {!needsUnlock && (
               <button
                 onClick={toggleMute}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100 transition-colors active:scale-95"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-emerald-100 text-emerald-700 hover:bg-emerald-50 transition-colors active:scale-95"
                 style={{ transitionProperty: 'background-color, transform' }}
                 title={isMuted ? 'Bỏ tắt tiếng' : 'Tắt tiếng'}
                 aria-label={isMuted ? 'Bỏ tắt tiếng thông báo' : 'Tắt tiếng thông báo'}
@@ -244,7 +234,7 @@ export default function StationView({ station }: { station: Station }) {
             {/* Refresh button */}
             <button
               onClick={refetch}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100 transition-colors active:scale-95"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-emerald-100 text-emerald-700 hover:bg-emerald-50 transition-colors active:scale-95"
               title="Tải lại"
             >
               <svg
@@ -315,10 +305,10 @@ export default function StationView({ station }: { station: Station }) {
             <div className="text-6xl mb-4 opacity-40">
               {STATION_EMOJI[station]}
             </div>
-            <h2 className="text-xl font-semibold text-amber-800/60 mb-2">
+            <h2 className="text-xl font-semibold text-emerald-800/60 mb-2">
               Chưa có đơn hàng mới
             </h2>
-            <p className="text-amber-600/50 text-sm max-w-xs">
+            <p className="text-emerald-600/50 text-sm max-w-xs">
               Đơn hàng mới sẽ xuất hiện tự động khi khách đặt. Không cần tải lại trang.
             </p>
           </div>
@@ -336,7 +326,7 @@ export default function StationView({ station }: { station: Station }) {
             {/* Recently completed orders (greyed out) */}
             {recentlyCompleted.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-sm font-semibold text-amber-600/60 uppercase tracking-wider mb-3">
+                <h3 className="text-sm font-semibold text-emerald-600/60 uppercase tracking-wider mb-3">
                   Đã xong
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 completed-orders-section">
@@ -347,10 +337,10 @@ export default function StationView({ station }: { station: Station }) {
               </div>
             )}
 
-            {/* Hidden (history) orders — shown when Lịch sử toggle is on */}
+            {/* Hidden (history) orders */}
             {showHistory && hidden.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-sm font-semibold text-amber-600/60 uppercase tracking-wider mb-3">
+                <h3 className="text-sm font-semibold text-emerald-600/60 uppercase tracking-wider mb-3">
                   Lịch sử
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 completed-orders-section">

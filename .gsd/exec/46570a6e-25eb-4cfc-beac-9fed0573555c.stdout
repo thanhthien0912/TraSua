@@ -1,0 +1,46 @@
+=== API routes ===
+📁 admin
+  📁 login
+    📄 route.ts
+  📁 menu
+    📄 route.ts
+    📁 [id]
+      📄 route.ts
+    📁 __tests__
+      📄 menu-crud.test.ts
+  📁 qr-pdf
+    📄 route.ts
+📁 order
+  📄 route.ts
+📁 staff
+  📁 checkout
+    📄 route.ts
+  📁 menu
+    📄 route.ts
+  📁 orders
+    📄 route.ts
+    📁 stream
+      📄 route.ts
+    📁 [orderId]
+      📁 items
+        📄 route.ts
+        📁 [itemId]
+          📄 route.ts
+  📁 tables
+    📁 [tableId]
+      📁 bill
+        📄 route.ts
+      📁 pay
+        📄 route.ts
+
+=== admin pages ===
+📄 layout.tsx
+📁 login
+  📄 page.tsx
+📁 menu
+  📄 page.tsx
+📄 page.tsx
+📁 qr
+  📄 page.tsx
+📁 tables
+  📄 page.tsx

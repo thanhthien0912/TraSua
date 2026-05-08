@@ -1,0 +1,18 @@
+{
+  "id": "e4598f71-8c74-4d6c-bf8b-7ba92be25f5b",
+  "runtime": "node",
+  "purpose": "Check tables and unpaid orders count",
+  "script_chars": 772,
+  "started_at": "2026-05-08T07:57:24.143Z",
+  "finished_at": "2026-05-08T07:57:24.185Z",
+  "exit_code": 1,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 42,
+  "stdout_bytes": 0,
+  "stderr_bytes": 833,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\e4598f71-8c74-4d6c-bf8b-7ba92be25f5b.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\e4598f71-8c74-4d6c-bf8b-7ba92be25f5b.stderr"
+}

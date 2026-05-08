@@ -1,0 +1,62 @@
+=== Table Model ===
+model Table {
+  id     Int     @id @default(autoincrement())
+  number Int     @unique
+  name   String  // e.g. "Bàn 1"
+  orders Order[]
+
+  @@map("tables")
+}
+
+=== Order Model ===
+model Order {
+  id          Int         @id @default(autoincrement())
+  tableId     Int
+  table       Table       @relation(fields: [tableId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Int         @default(0)
+  paidAt      DateTime?
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+=== Staff tables API ===
+src/app/api/staff/tables/[tableId]/bill/route.ts
+src/app/api/staff/tables/[tableId]/pay/route.ts
+
+=== Seed file (table-related) ===
+// Clear tables in reverse dependency order to avoid FK constraint violations
+await prisma.table.deleteMany()
+// ─── Seed Tables ──────────────────────────────────────────────────
+const tables = await Promise.all(
+prisma.table.create({
+console.log(`Seeded ${menuItems.length} menu items and ${tables.length} tables`)
+
+=== Order page table query ===
+const { table } = await searchParams
+// --- Table validation ---
+const tableStr = typeof table === 'string' ? table : undefined
+const tableNum = tableStr ? parseInt(tableStr, 10) : NaN
+if (!tableStr || isNaN(tableNum)) {
+const tableRecord = await prisma.table.findFirst({
+where: { number: tableNum },
+if (!tableRecord) {
+const tableInfo = {
+id: tableRecord.id,
+number: tableRecord.number,
+name: tableRecord.name,
+<CartProvider tableId={tableInfo.id}>
+<CartUI tableId={tableInfo.id} tableNumber={tableInfo.number}>
+<MenuView menuItems={items} table={tableInfo} />
+
+=== Pay API (table deletion guard reference) ===
+src\app\api\staff\tables\[tableId]\pay\route.ts:9: * Sets paidAt timestamp on each order. Broadcasts 'order-paid' SSE event.
+src\app\api\staff\tables\[tableId]\pay\route.ts:11: * Response: { paid: true, orderIds: number[], paidAt: string }
+src\app\api\staff\tables\[tableId]\pay\route.ts:53:  const paidAt = new Date()
+src\app\api\staff\tables\[tableId]\pay\route.ts:61:          data: { status: 'PAID', paidAt },
+src\app\api\staff\tables\[tableId]\pay\route.ts:67:      `[POST /api/staff/tables/${tableId}/pay] Marked ${orderIds.length} orders as PAID: [${orderIds.join(', ')}], paidAt=${paidAt.toISOString()}`
+src\app\api\staff\tables\[tableId]\pay\route.ts:71:    broadcast('order-paid', { tableId, orderIds, paidAt: paidAt.toISOString() })
+src\app\api\staff\tables\[tableId]\pay\route.ts:76:      paidAt: paidAt.toISOString(),
+

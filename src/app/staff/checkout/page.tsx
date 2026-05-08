@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { formatVND } from '@/lib/format'
 import BillView from '@/components/staff/BillView'
+import { SkeletonCard } from '@/components/ui/Skeleton'
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -19,11 +20,13 @@ interface TableWithBill {
 export default function CheckoutPage() {
   const [tables, setTables] = useState<TableWithBill[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // ─── Fetch tables with unpaid orders ────────────────────────
   const fetchTables = useCallback(async () => {
+    setError(null)
     try {
       const res = await fetch('/api/staff/checkout')
       if (!res.ok) {
@@ -32,8 +35,10 @@ export default function CheckoutPage() {
       }
       const data = await res.json()
       setTables(data.tables)
+      setError(null)
     } catch (err) {
       console.error('[Checkout] Network error:', err)
+      setError('Lỗi kết nối. Vui lòng thử lại.')
     } finally {
       setLoading(false)
     }
@@ -78,18 +83,18 @@ export default function CheckoutPage() {
   // ─── Bill detail view ───────────────────────────────────────
   if (selectedTableId !== null) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50/50">
-        <header className="sticky top-0 z-10 bg-white/70 backdrop-blur-md border-b border-amber-200/40 shadow-sm">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50/50">
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-emerald-200/40 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
             <div className="flex items-center gap-3">
               <span className="text-3xl" role="img" aria-label="Tính tiền">
                 💰
               </span>
               <div>
-                <h1 className="text-2xl font-bold text-amber-900 tracking-tight">
+                <h1 className="text-2xl font-bold text-emerald-900 tracking-tight">
                   Tính tiền
                 </h1>
-                <p className="text-sm text-amber-600">Chi tiết hoá đơn</p>
+                <p className="text-sm text-emerald-600">Chi tiết hoá đơn</p>
               </div>
             </div>
           </div>
@@ -103,20 +108,20 @@ export default function CheckoutPage() {
 
   // ─── Table list view ────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50/50">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/70 backdrop-blur-md border-b border-amber-200/40 shadow-sm">
+      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-emerald-200/40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-3xl" role="img" aria-label="Tính tiền">
               💰
             </span>
             <div>
-              <h1 className="text-2xl font-bold text-amber-900 tracking-tight"
+              <h1 className="text-2xl font-bold text-emerald-900 tracking-tight"
                   style={{ textWrap: 'balance' } as React.CSSProperties}>
                 Tính tiền
               </h1>
-              <p className="text-sm text-amber-600">
+              <p className="text-sm text-emerald-600">
                 {loading
                   ? 'Đang tải…'
                   : tables.length > 0
@@ -129,7 +134,7 @@ export default function CheckoutPage() {
           {/* Refresh button */}
           <button
             onClick={() => { setLoading(true); fetchTables() }}
-            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100 transition-colors active:scale-[0.96]"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-emerald-200/40 text-emerald-700 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
             style={{ transitionProperty: 'background-color, transform' }}
             title="Tải lại"
           >
@@ -159,19 +164,45 @@ export default function CheckoutPage() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-32 rounded-2xl bg-white/50 border border-amber-200/30 animate-pulse"
-              />
+                className="rounded-2xl bg-white/80 backdrop-blur-sm border border-emerald-200/40 overflow-hidden"
+              >
+                <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-200/40">
+                  <div className="flex items-center justify-between">
+                    <SkeletonCard className="h-7 w-28 rounded-lg" />
+                    <SkeletonCard className="h-6 w-16 rounded-full" />
+                  </div>
+                </div>
+                <div className="px-5 py-4 flex items-center justify-between">
+                  <SkeletonCard className="h-4 w-24" />
+                  <SkeletonCard className="h-7 w-20 rounded-lg" />
+                </div>
+                <div className="px-5 pb-4">
+                  <SkeletonCard className="h-4 w-20 rounded" />
+                </div>
+              </div>
             ))}
+          </div>
+        ) : error ? (
+          /* Error state */
+          <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+            <span className="text-6xl mb-4 opacity-40">⚠️</span>
+            <p className="text-lg font-medium text-emerald-800 mb-6">{error}</p>
+            <button
+              onClick={() => { setLoading(true); fetchTables() }}
+              className="min-h-[48px] px-8 py-3 rounded-2xl bg-emerald-700 text-emerald-50 font-semibold text-base hover:bg-emerald-800 transition-colors active:scale-[0.96]"
+            >
+              Thử lại
+            </button>
           </div>
         ) : tables.length === 0 ? (
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="text-6xl mb-4 opacity-40">🎉</div>
-            <h2 className="text-xl font-semibold text-amber-800/60 mb-2"
+            <h2 className="text-xl font-semibold text-emerald-800/60 mb-2"
                 style={{ textWrap: 'balance' } as React.CSSProperties}>
               Tất cả bàn đã thanh toán!
             </h2>
-            <p className="text-amber-600/50 text-sm max-w-xs">
+            <p className="text-emerald-600/50 text-sm max-w-xs">
               Không có bàn nào cần tính tiền. Danh sách sẽ tự cập nhật khi có đơn mới.
             </p>
           </div>
@@ -182,27 +213,27 @@ export default function CheckoutPage() {
               <button
                 key={table.id}
                 onClick={() => setSelectedTableId(table.id)}
-                className="group bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/60
-                           shadow-lg shadow-amber-900/5 overflow-hidden text-left
+                className="group bg-white/80 backdrop-blur-sm rounded-2xl border border-emerald-200/60
+                           shadow-lg shadow-emerald-900/5 overflow-hidden text-left
                            transition-all duration-200
-                           hover:shadow-xl hover:shadow-amber-900/10 hover:border-amber-300/60
+                           hover:shadow-xl hover:shadow-emerald-900/10 hover:border-emerald-300/60
                            active:scale-[0.96]"
                 style={{ transitionProperty: 'box-shadow, border-color, transform' }}
               >
-                <div className="px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200/40">
+                <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-200/40">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-amber-900">
+                    <span className="text-2xl font-bold text-emerald-900">
                       {table.name}
                     </span>
-                    <span className="text-xs font-medium text-amber-500 bg-amber-100 px-2.5 py-1 rounded-full">
+                    <span className="text-xs font-medium text-emerald-500 bg-emerald-100 px-2.5 py-1 rounded-full">
                       {table.orderCount} đơn
                     </span>
                   </div>
                 </div>
                 <div className="px-5 py-4 flex items-center justify-between">
-                  <span className="text-sm text-amber-600">Tổng tạm tính</span>
+                  <span className="text-sm text-emerald-600">Tổng tạm tính</span>
                   <span
-                    className="text-xl font-bold text-amber-900"
+                    className="text-xl font-bold text-emerald-900"
                     style={{ fontVariantNumeric: 'tabular-nums' }}
                   >
                     {formatVND(table.total)}
@@ -210,7 +241,7 @@ export default function CheckoutPage() {
                 </div>
                 {/* Hover indicator arrow */}
                 <div className="px-5 pb-4">
-                  <div className="flex items-center gap-2 text-amber-500 group-hover:text-amber-700 transition-colors text-sm font-medium">
+                  <div className="flex items-center gap-2 text-emerald-500 group-hover:text-emerald-700 transition-colors text-sm font-medium">
                     <span>Xem hoá đơn</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

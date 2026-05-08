@@ -1,0 +1,18 @@
+{
+  "id": "d91fb0f0-474c-4556-b03c-7d08b14c212c",
+  "runtime": "node",
+  "purpose": "List app directory structure",
+  "script_chars": 936,
+  "started_at": "2026-05-08T01:51:27.616Z",
+  "finished_at": "2026-05-08T01:51:27.663Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 47,
+  "stdout_bytes": 161,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\d91fb0f0-474c-4556-b03c-7d08b14c212c.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\d91fb0f0-474c-4556-b03c-7d08b14c212c.stderr"
+}

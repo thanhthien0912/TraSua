@@ -1,0 +1,35 @@
+=== Table-related files ===
+"none"
+
+
+=== TABLE_COUNT references ===
+src\app\api\admin\qr-pdf\route.ts:  const tableCount = Math.max(0, parseInt(process.env.TABLE_COUNT || "15", 10));
+src\app\api\admin\qr-pdf\route.ts:      { error: "TABLE_COUNT phải lớn hơn 0" },
+
+
+=== QR-related files ===
+"none"
+
+
+=== Admin API routes ===
+  src\app\api\admin\login\route.ts
+  src\app\api\admin\menu\route.ts
+    src\app\api\admin\menu\[id]\route.ts
+    src\app\api\admin\menu\__tests__\menu-crud.test.ts
+  src\app\api\admin\qr-pdf\route.ts
+src\app\admin\layout.tsx
+  src\app\admin\login\page.tsx
+  src\app\admin\menu\page.tsx
+src\app\admin\page.tsx
+  src\app\admin\qr\page.tsx
+  src\app\admin\tables\page.tsx
+
+=== Seed script - table seeding ===
+  // Clear tables in reverse dependency order to avoid FK constraint violations
+  await prisma.table.deleteMany()
+  // ─── Seed Tables ──────────────────────────────────────────────────
+  const tables = await Promise.all(
+      prisma.table.create({
+          number: i + 1,
+          name: `Bàn ${i + 1}`,
+  console.log(`Seeded ${menuItems.length} menu items and ${tables.length} tables`)

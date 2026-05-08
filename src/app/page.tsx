@@ -1,9 +1,17 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-amber-50 px-5 py-12 sm:px-8 md:py-20">
-      {/* Hero icon */}
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50" />
+      <div className="absolute top-20 -left-20 w-72 h-72 bg-emerald-200/20 rounded-full blur-3xl" />
+      <div className="absolute top-40 right-10 w-48 h-48 bg-teal-200/20 rounded-full blur-2xl" />
+      <div className="absolute bottom-40 -right-16 w-64 h-64 bg-cyan-200/20 rounded-full blur-3xl" />
+
+      {/* Logo */}
       <div
-        className="mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-amber-100 text-5xl shadow-sm sm:h-28 sm:w-28 sm:text-6xl md:mb-8"
+        className="relative z-10 mb-8 flex h-32 w-32 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 text-7xl shadow-2xl shadow-emerald-500/30"
         aria-hidden="true"
       >
         🧋
@@ -11,59 +19,87 @@ export default function Home() {
 
       {/* Heading */}
       <h1
-        className="mb-4 text-center text-3xl font-bold tracking-tight text-amber-950 sm:text-4xl md:text-5xl"
-        style={{ textWrap: "balance" }}
+        className="relative z-10 mb-3 text-center text-4xl font-bold tracking-tight text-gray-900"
+        style={{ textWrap: 'balance' }}
       >
-        Chào mừng đến TraSua
+        TraSua
       </h1>
 
-      {/* Description */}
+      {/* Subtitle */}
       <p
-        className="mx-auto mb-8 max-w-md text-center text-base leading-relaxed text-amber-800/80 sm:text-lg md:mb-10 md:max-w-lg"
-        style={{ textWrap: "pretty" }}
+        className="relative z-10 mb-12 text-center text-lg text-emerald-700 max-w-md"
+        style={{ textWrap: 'pretty' }}
       >
-        Hệ thống đặt món trà sữa dành cho quán — quản lý thực đơn, nhận đơn
-        hàng và theo dõi doanh thu một cách dễ dàng.
+        Hệ thống quản lý quán trà sữa
       </p>
 
-      {/* CTA placeholder */}
-      <button
-        type="button"
-        className="inline-flex h-12 items-center justify-center rounded-xl bg-amber-900 px-7 text-sm font-semibold text-amber-50 transition-transform transition-colors duration-150 ease-out hover:bg-amber-800 active:scale-[0.96] sm:h-14 sm:px-9 sm:text-base"
-      >
-        Bắt đầu đặt món
-      </button>
+      {/* Role Selection Cards */}
+      <div className="relative z-10 w-full max-w-md flex flex-col gap-4">
+        {/* Admin Card */}
+        <Link
+          href="/admin"
+          className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 p-8 shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40 transition-all duration-300 active:scale-[0.98]"
+        >
+          <div className="flex items-center gap-5">
+            <div className="flex-shrink-0 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-4xl backdrop-blur-sm">
+              👨‍💼
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-white mb-1">
+                Quản lý
+              </h2>
+              <p className="text-emerald-100 text-sm">
+                Thực đơn, bàn, QR code
+              </p>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={3}
+              stroke="currentColor"
+              className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </Link>
 
-      {/* Feature hints */}
-      <div className="mt-12 grid w-full max-w-lg grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5 md:mt-16">
-        <FeatureCard emoji="📋" title="Thực đơn" desc="Quản lý món dễ dàng" />
-        <FeatureCard emoji="🛒" title="Đặt hàng" desc="Nhận đơn nhanh chóng" />
-        <FeatureCard
-          emoji="📊"
-          title="Thống kê"
-          desc="Theo dõi doanh thu"
-        />
+        {/* Staff Card */}
+        <Link
+          href="/staff"
+          className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-500 to-cyan-600 p-8 shadow-xl shadow-teal-500/30 hover:shadow-2xl hover:shadow-teal-500/40 transition-all duration-300 active:scale-[0.98]"
+        >
+          <div className="flex items-center gap-5">
+            <div className="flex-shrink-0 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-4xl backdrop-blur-sm">
+              👨‍🍳
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-white mb-1">
+                Nhân viên
+              </h2>
+              <p className="text-teal-100 text-sm">
+                Pha chế, bếp, tổng quan
+              </p>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={3}
+              stroke="currentColor"
+              className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </Link>
       </div>
-    </div>
-  );
-}
 
-function FeatureCard({
-  emoji,
-  title,
-  desc,
-}: {
-  emoji: string;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className="flex flex-col items-center rounded-2xl bg-white/70 px-4 py-5 text-center shadow-sm backdrop-blur-sm sm:py-6">
-      <span className="mb-2 text-2xl" aria-hidden="true">
-        {emoji}
-      </span>
-      <h2 className="mb-1 text-sm font-semibold text-amber-950">{title}</h2>
-      <p className="text-xs leading-relaxed text-amber-700/70">{desc}</p>
+      {/* Footer hint */}
+      <p className="relative z-10 mt-12 text-center text-sm text-emerald-600/60">
+        Khách hàng quét QR code tại bàn để đặt món
+      </p>
     </div>
-  );
+  )
 }

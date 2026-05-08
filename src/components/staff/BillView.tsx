@@ -32,8 +32,8 @@ const ITEM_STATUS_DISPLAY: Record<
   string,
   { label: string; bg: string; text: string }
 > = {
-  PENDING: { label: 'Chờ', bg: 'bg-amber-100', text: 'text-amber-800' },
-  PREPARING: { label: 'Đang pha', bg: 'bg-orange-100', text: 'text-orange-800' },
+  PENDING: { label: 'Chờ', bg: 'bg-emerald-100', text: 'text-emerald-800' },
+  PREPARING: { label: 'Đang pha', bg: 'bg-teal-100', text: 'text-teal-800' },
   READY: { label: 'Xong', bg: 'bg-emerald-100', text: 'text-emerald-800' },
   SERVED: { label: 'Đã phục vụ', bg: 'bg-slate-100', text: 'text-slate-500' },
   CANCELLED: { label: 'Huỷ', bg: 'bg-red-100', text: 'text-red-700' },
@@ -109,7 +109,7 @@ function BillItemRow({
 
   return (
     <div
-      className={`flex items-center gap-3 py-3 border-b border-amber-100/60 last:border-b-0 transition-opacity duration-200 ${
+      className={`flex items-center gap-3 py-3 border-b border-emerald-100/60 last:border-b-0 transition-opacity duration-200 ${
         isCancelled ? 'opacity-50' : ''
       }`}
     >
@@ -118,17 +118,17 @@ function BillItemRow({
         <div className="flex items-center gap-2">
           <span
             className={`font-semibold text-base ${
-              isCancelled ? 'line-through text-amber-600/50' : 'text-amber-900'
+              isCancelled ? 'line-through text-emerald-600/50' : 'text-emerald-900'
             }`}
           >
             {item.name}
           </span>
-          <span className="text-amber-600 font-medium text-sm flex-shrink-0">
+          <span className="text-emerald-600 font-medium text-sm flex-shrink-0">
             ×{item.quantity}
           </span>
         </div>
         {item.notes && (
-          <p className="text-sm text-amber-600/70 mt-0.5 italic truncate">
+          <p className="text-sm text-emerald-600/70 mt-0.5 italic truncate">
             📝 {item.notes}
           </p>
         )}
@@ -140,7 +140,7 @@ function BillItemRow({
           </span>
           <span
             className={`text-xs font-variant-numeric: tabular-nums ${
-              isCancelled ? 'text-amber-400 line-through' : 'text-amber-500'
+              isCancelled ? 'text-emerald-400 line-through' : 'text-emerald-500'
             }`}
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
@@ -304,7 +304,7 @@ export default function BillView({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
-        <span className="inline-block w-8 h-8 border-3 border-amber-300 border-t-amber-700 rounded-full animate-spin" />
+        <span className="inline-block w-8 h-8 border-3 border-emerald-300 border-t-amber-700 rounded-full animate-spin" />
       </div>
     )
   }
@@ -314,10 +314,10 @@ export default function BillView({
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center px-4">
         <span className="text-4xl mb-3 opacity-50">⚠️</span>
-        <p className="text-amber-800 font-medium mb-4">{error}</p>
+        <p className="text-emerald-800 font-medium mb-4">{error}</p>
         <button
           onClick={() => { setLoading(true); setError(null); fetchBill() }}
-          className="min-h-[44px] px-6 py-2 rounded-xl bg-amber-700 text-amber-50 font-semibold text-sm hover:bg-amber-800 transition-colors active:scale-[0.96]"
+          className="min-h-[44px] px-6 py-2 rounded-xl bg-emerald-700 text-emerald-50 font-semibold text-sm hover:bg-emerald-800 transition-colors active:scale-[0.96]"
           style={{ transitionProperty: 'background-color, transform' }}
         >
           Thử lại
@@ -338,7 +338,7 @@ export default function BillView({
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={onBack}
-          className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-amber-200/40 text-amber-700 hover:bg-amber-100 transition-colors active:scale-[0.96]"
+          className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-emerald-200/40 text-emerald-700 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
           style={{ transitionProperty: 'background-color, transform' }}
           aria-label="Quay lại danh sách bàn"
         >
@@ -354,17 +354,17 @@ export default function BillView({
           </svg>
         </button>
         <div>
-          <h2 className="text-2xl font-bold text-amber-900 tracking-tight">
+          <h2 className="text-2xl font-bold text-emerald-900 tracking-tight">
             {bill.table.name}
           </h2>
-          <p className="text-sm text-amber-600">
+          <p className="text-sm text-emerald-600">
             {bill.orders.length} đơn · {bill.items.length} món
           </p>
         </div>
       </div>
 
       {/* ─── Bill card ───────────────────────────────────────── */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-amber-200/60 shadow-lg shadow-amber-900/5 overflow-hidden">
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-emerald-200/60 shadow-lg shadow-emerald-900/5 overflow-hidden">
         {/* Active items */}
         <div className="px-5 py-3">
           {activeItems.length > 0 ? (
@@ -376,14 +376,14 @@ export default function BillView({
               />
             ))
           ) : (
-            <p className="text-amber-500 text-center py-6">Không có món nào</p>
+            <p className="text-emerald-500 text-center py-6">Không có món nào</p>
           )}
         </div>
 
         {/* Cancelled items (collapsible) */}
         {cancelledItems.length > 0 && (
-          <div className="px-5 pb-3 border-t border-amber-100/60">
-            <p className="text-xs font-semibold text-amber-500/60 uppercase tracking-wider mt-3 mb-1">
+          <div className="px-5 pb-3 border-t border-emerald-100/60">
+            <p className="text-xs font-semibold text-emerald-500/60 uppercase tracking-wider mt-3 mb-1">
               Đã huỷ
             </p>
             {cancelledItems.map((item) => (
@@ -397,11 +397,11 @@ export default function BillView({
         )}
 
         {/* ─── Add item button ────────────────────────────────── */}
-        <div className="px-5 py-3 border-t border-amber-100/60">
+        <div className="px-5 py-3 border-t border-emerald-100/60">
           <button
             type="button"
             onClick={() => setShowMenuPicker(true)}
-            className="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-amber-100/70 border border-amber-200/60 text-amber-800 font-semibold text-sm hover:bg-amber-200/60 transition-colors active:scale-[0.96]"
+            className="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-emerald-100/70 border border-emerald-200/60 text-emerald-800 font-semibold text-sm hover:bg-emerald-200/60 transition-colors active:scale-[0.96]"
             style={{ transitionProperty: 'background-color, transform' }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
@@ -412,13 +412,13 @@ export default function BillView({
         </div>
 
         {/* ─── Total + Pay button ────────────────────────────── */}
-        <div className="px-5 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-t border-amber-200/40">
+        <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-t border-emerald-200/40">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-semibold text-amber-800">
+            <span className="text-lg font-semibold text-emerald-800">
               Tổng cộng
             </span>
             <span
-              className="text-2xl font-bold text-amber-900"
+              className="text-2xl font-bold text-emerald-900"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {formatVND(bill.total)}
@@ -436,7 +436,7 @@ export default function BillView({
               ${
                 confirmingPay
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/30'
-                  : 'bg-amber-700 text-amber-50 hover:bg-amber-800 shadow-md shadow-amber-900/20'
+                  : 'bg-emerald-700 text-emerald-50 hover:bg-emerald-800 shadow-md shadow-emerald-900/20'
               }
             `}
             style={{ transitionProperty: 'background-color, color, transform, box-shadow' }}

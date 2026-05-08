@@ -1,0 +1,18 @@
+{
+  "id": "4de06941-f2be-4929-ad82-2e370b0bec05",
+  "runtime": "node",
+  "purpose": "Find QR PDF route and existing table handling",
+  "script_chars": 2110,
+  "started_at": "2026-05-06T09:20:48.788Z",
+  "finished_at": "2026-05-06T09:20:48.836Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 48,
+  "stdout_bytes": 6898,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\4de06941-f2be-4929-ad82-2e370b0bec05.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\4de06941-f2be-4929-ad82-2e370b0bec05.stderr"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "3fab9312-930d-4ca9-8371-7732c1b02ebb",
+  "runtime": "node",
+  "purpose": "Check slice task files",
+  "script_chars": 425,
+  "started_at": "2026-05-08T01:54:25.511Z",
+  "finished_at": "2026-05-08T01:54:25.556Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 45,
+  "stdout_bytes": 314,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\3fab9312-930d-4ca9-8371-7732c1b02ebb.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\3fab9312-930d-4ca9-8371-7732c1b02ebb.stderr"
+}

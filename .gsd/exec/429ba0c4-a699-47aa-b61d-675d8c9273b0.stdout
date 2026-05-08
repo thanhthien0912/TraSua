@@ -1,0 +1,30 @@
+├ ○ /admin/login
+├ ○ /admin/menu
+├ ○ /admin/qr
+├ ○ /admin/tables
+├ ƒ /api/admin/login
+├ ƒ /api/admin/menu
+├ ƒ /api/admin/menu/[id]
+├ ƒ /api/admin/qr-pdf
+├ ƒ /api/order
+├ ƒ /api/staff/checkout
+├ ƒ /api/staff/menu
+├ ƒ /api/staff/orders
+├ ƒ /api/staff/orders/[orderId]/items
+├ ƒ /api/staff/orders/[orderId]/items/[itemId]
+├ ƒ /api/staff/orders/stream
+├ ƒ /api/staff/tables/[tableId]/bill
+├ ƒ /api/staff/tables/[tableId]/pay
+├ ƒ /order
+├ ○ /staff
+├ ○ /staff/bar
+├ ○ /staff/checkout
+└ ○ /staff/kitchen
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+

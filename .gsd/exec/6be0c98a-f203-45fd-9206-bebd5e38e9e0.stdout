@@ -1,0 +1,25 @@
+=== QR PDF Files ===
+D:\TraSua\src\app\api\admin\qr-pdf\route.ts
+
+=== Table/Admin Files ===
+D:\TraSua\src\app\admin\qr\page.tsx
+D:\TraSua\src\app\admin\tables\page.tsx
+D:\TraSua\src\app\api\admin\qr-pdf\route.ts
+
+=== Admin Files ===
+D:\TraSua\src\app\admin\layout.tsx
+D:\TraSua\src\app\admin\login\page.tsx
+D:\TraSua\src\app\admin\menu\page.tsx
+D:\TraSua\src\app\admin\page.tsx
+D:\TraSua\src\app\admin\qr\page.tsx
+D:\TraSua\src\app\admin\tables\page.tsx
+D:\TraSua\src\app\api\admin\login\route.ts
+D:\TraSua\src\app\api\admin\menu\route.ts
+D:\TraSua\src\app\api\admin\menu\[id]\route.ts
+D:\TraSua\src\app\api\admin\menu\__tests__\menu-crud.test.ts
+D:\TraSua\src\app\api\admin\qr-pdf\route.ts
+D:\TraSua\src\components\admin\AdminNav.tsx
+D:\TraSua\src\components\admin\MenuItemForm.tsx
+
+Table model in schema: true
+Total source files: 79

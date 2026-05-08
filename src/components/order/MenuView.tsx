@@ -47,13 +47,13 @@ export default function MenuView({
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-10 bg-amber-50/95 backdrop-blur-sm">
-        <div className="flex items-center gap-2 px-4 py-3">
-          <span className="text-lg" aria-hidden="true">
+      <header className="sticky top-0 z-10 bg-white shadow-sm">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+          <span className="text-2xl" aria-hidden="true">
             🧋
           </span>
           <h1
-            className="text-base font-semibold text-amber-950"
+            className="text-xl font-bold text-gray-900"
             style={{ textWrap: 'balance' }}
           >
             {table.name}
@@ -61,11 +61,11 @@ export default function MenuView({
         </div>
 
         {/* ── Tab Bar ──────────────────────────────────────────── */}
-        <div className="px-4 pb-3">
+        <div className="px-5 py-4 bg-gray-50/50">
           <nav
             role="tablist"
             aria-label="Danh mục thực đơn"
-            className="inline-flex w-full rounded-xl bg-amber-100/70 p-1"
+            className="inline-flex w-full rounded-2xl bg-white shadow-sm border border-gray-200 p-1.5"
           >
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
@@ -77,15 +77,15 @@ export default function MenuView({
                   aria-controls={`panel-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
                   className={`
-                    flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold
-                    transition-colors transition-shadow duration-150 ease-out
+                    flex-1 rounded-xl px-5 py-3 text-base font-bold
+                    transition-all duration-200 ease-out
                     ${
                       isActive
-                        ? 'bg-amber-900 text-amber-50 shadow-sm shadow-amber-900/20'
-                        : 'text-amber-700 hover:text-amber-900'
+                        ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }
                   `}
-                  style={{ minHeight: 44 }}
+                  style={{ minHeight: 48 }}
                 >
                   {tab.label}
                 </button>
@@ -93,9 +93,6 @@ export default function MenuView({
             })}
           </nav>
         </div>
-
-        {/* Bottom edge shadow */}
-        <div className="h-px bg-amber-200/50" />
       </header>
 
       {/* ── Item List ──────────────────────────────────────────── */}
@@ -103,9 +100,9 @@ export default function MenuView({
         id={`panel-${activeTab}`}
         role="tabpanel"
         aria-label={TABS.find((t) => t.key === activeTab)?.label}
-        className="px-4 pb-8 pt-4"
+        className="px-5 pb-24 pt-5"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {filtered.map((item) => (
             <ItemCard key={item.id} item={item} onAdd={handleAdd} />
           ))}
@@ -113,7 +110,7 @@ export default function MenuView({
 
         {filtered.length === 0 && (
           <p
-            className="py-12 text-center text-sm text-amber-700/60"
+            className="py-16 text-center text-base text-gray-500"
             style={{ textWrap: 'pretty' }}
           >
             Chưa có món nào trong danh mục này.
@@ -137,27 +134,27 @@ function ItemCard({
   return (
     <div
       className={`
-        relative rounded-2xl bg-white p-4
-        transition-transform duration-150 ease-out
+        relative rounded-2xl bg-white p-5 border border-gray-200
+        transition-all duration-200 ease-out
         ${
           unavailable
-            ? 'opacity-55'
-            : 'active:scale-[0.96] cursor-pointer'
+            ? 'opacity-50'
+            : 'hover:shadow-lg hover:border-teal-200 active:scale-[0.98] cursor-pointer'
         }
       `}
       style={{
         boxShadow: unavailable
-          ? '0 1px 2px rgba(120, 53, 15, 0.04)'
-          : '0 1px 3px rgba(120, 53, 15, 0.06), 0 4px 12px rgba(120, 53, 15, 0.04)',
+          ? 'none'
+          : '0 2px 8px rgba(0, 0, 0, 0.04)',
       }}
       aria-disabled={unavailable || undefined}
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-4">
         {/* Left: name + description */}
         <div className="min-w-0 flex-1">
           <h3
-            className={`text-[15px] font-semibold leading-snug ${
-              unavailable ? 'text-amber-800/60' : 'text-amber-950'
+            className={`text-lg font-bold leading-snug ${
+              unavailable ? 'text-gray-400' : 'text-gray-900'
             }`}
             style={{ textWrap: 'balance' }}
           >
@@ -166,10 +163,10 @@ function ItemCard({
 
           {item.description && (
             <p
-              className={`mt-1 text-sm leading-relaxed ${
+              className={`mt-2 text-sm leading-relaxed ${
                 unavailable
-                  ? 'text-amber-700/40'
-                  : 'text-amber-700/65'
+                  ? 'text-gray-400'
+                  : 'text-gray-600'
               }`}
               style={{ textWrap: 'pretty' }}
             >
@@ -179,8 +176,8 @@ function ItemCard({
 
           {/* Price */}
           <p
-            className={`mt-2 text-sm font-semibold ${
-              unavailable ? 'text-amber-700/50' : 'text-amber-800'
+            className={`mt-3 text-base font-bold ${
+              unavailable ? 'text-gray-400' : 'text-teal-600'
             }`}
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
@@ -189,9 +186,9 @@ function ItemCard({
         </div>
 
         {/* Right: badge or add affordance */}
-        <div className="flex-shrink-0 pt-0.5">
+        <div className="flex-shrink-0 pt-1">
           {unavailable ? (
-            <span className="inline-flex items-center rounded-lg bg-amber-100/80 px-2.5 py-1 text-xs font-medium text-amber-700/70">
+            <span className="inline-flex items-center rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-500">
               Hết hàng
             </span>
           ) : (
@@ -202,8 +199,8 @@ function ItemCard({
                 e.stopPropagation()
                 onAdd(item)
               }}
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-900 text-amber-50 transition-transform duration-150 ease-out active:scale-[0.92]"
-              style={{ minHeight: 36, minWidth: 36 }}
+              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-emerald-500/30 transition-all duration-200 ease-out hover:shadow-xl hover:shadow-emerald-500/40 active:scale-[0.92]"
+              style={{ minHeight: 48, minWidth: 48 }}
             >
               <PlusIcon />
             </button>
@@ -218,17 +215,17 @@ function ItemCard({
 function PlusIcon() {
   return (
     <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="2.5"
       strokeLinecap="round"
       aria-hidden="true"
     >
-      <line x1="9" y1="4" x2="9" y2="14" />
-      <line x1="4" y1="9" x2="14" y2="9" />
+      <line x1="12" y1="6" x2="12" y2="18" />
+      <line x1="6" y1="12" x2="18" y2="12" />
     </svg>
   )
 }

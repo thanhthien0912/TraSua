@@ -148,7 +148,7 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
         role="dialog"
         aria-modal={isOpen}
         aria-label="Giỏ hàng"
-        className="fixed inset-x-0 bottom-0 z-40 flex max-h-[85dvh] flex-col bg-amber-50"
+        className="fixed inset-x-0 bottom-0 z-40 flex max-h-[85dvh] flex-col bg-emerald-50"
         style={{
           borderTopLeftRadius: OUTER_RADIUS,
           borderTopRightRadius: OUTER_RADIUS,
@@ -158,7 +158,7 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
           transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
           willChange: 'transform',
           boxShadow: isOpen
-            ? '0 -8px 32px rgba(120, 53, 15, 0.15), 0 -2px 8px rgba(120, 53, 15, 0.08)'
+            ? '0 -8px 32px rgba(16, 185, 129, 0.15), 0 -2px 8px rgba(16, 185, 129, 0.08)'
             : 'none',
           paddingBottom: 'env(safe-area-inset-bottom, 8px)',
         }}
@@ -169,19 +169,19 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
             type="button"
             onClick={onClose}
             aria-label="Đóng giỏ hàng"
-            className="h-1.5 w-10 rounded-full bg-amber-300/60 transition-colors duration-150 hover:bg-amber-400/60"
+            className="h-1.5 w-10 rounded-full bg-emerald-300/60 transition-colors duration-150 hover:bg-emerald-400/60"
             style={{ minHeight: 6 }}
           />
         </div>
 
         {/* ── Title ────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between border-b border-amber-200/50 px-5 pb-3">
-          <h2 className="text-lg font-bold text-amber-950">Giỏ hàng</h2>
+        <div className="flex items-center justify-between border-b border-emerald-200/50 px-5 pb-3">
+          <h2 className="text-lg font-bold text-emerald-950">Giỏ hàng</h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Đóng giỏ hàng"
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-amber-700 transition-colors duration-150 hover:bg-amber-100"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-emerald-700 transition-colors duration-150 hover:bg-emerald-100"
             style={{ minHeight: 48, minWidth: 48 }}
           >
             <CloseIcon />
@@ -191,7 +191,7 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
         {/* ── Item list (scrollable) ──────────────────────────── */}
         <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-4">
           {items.length === 0 ? (
-            <p className="py-12 text-center text-sm text-amber-700/60">
+            <p className="py-12 text-center text-sm text-emerald-700/60">
               Giỏ hàng trống
             </p>
           ) : (
@@ -228,7 +228,7 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
         {/* ── Footer: error + total + submit ─────────────────── */}
         {items.length > 0 && (
           <div
-            className="border-t border-amber-200/50 px-5 pt-4 pb-2"
+            className="border-t border-emerald-200/50 px-5 pt-4 pb-2"
             style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
           >
             {/* Error toast */}
@@ -248,11 +248,11 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
 
             {/* Grand total */}
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-[15px] font-semibold text-amber-800">
+              <span className="text-[15px] font-semibold text-emerald-800">
                 Tổng cộng
               </span>
               <span
-                className="text-lg font-bold text-amber-950"
+                className="text-lg font-bold text-emerald-950"
                 style={{ fontVariantNumeric: 'tabular-nums' }}
               >
                 {formatVND(totalAmount)}
@@ -264,13 +264,13 @@ export default function CartSheet({ isOpen, onClose, tableId, onOrderSuccess }: 
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full rounded-2xl py-3.5 text-[15px] font-bold text-amber-50 transition-transform duration-150 ease-out active:scale-[0.97] disabled:opacity-60 disabled:active:scale-100"
+              className="w-full rounded-2xl py-3.5 text-[15px] font-bold text-emerald-50 transition-transform duration-150 ease-out active:scale-[0.97] disabled:opacity-60 disabled:active:scale-100"
               style={{
                 minHeight: 52,
                 background:
-                  'linear-gradient(135deg, #78350f 0%, #92400e 100%)',
+                  'linear-gradient(135deg, #064e3b 0%, #0f766e 100%)',
                 boxShadow:
-                  '0 4px 16px rgba(120, 53, 15, 0.25), 0 1px 4px rgba(120, 53, 15, 0.15)',
+                  '0 4px 16px rgba(16, 185, 129, 0.25), 0 1px 4px rgba(16, 185, 129, 0.15)',
                 borderRadius: INNER_RADIUS,
                 cursor: isSubmitting ? 'wait' : undefined,
               }}
@@ -305,7 +305,7 @@ function CartItemRow({
       className="rounded-2xl bg-white p-4"
       style={{
         boxShadow:
-          '0 1px 3px rgba(120, 53, 15, 0.06), 0 4px 12px rgba(120, 53, 15, 0.04)',
+          '0 1px 3px rgba(16, 185, 129, 0.06), 0 4px 12px rgba(16, 185, 129, 0.04)',
         borderRadius: INNER_RADIUS,
         outline: isUnavailable ? '2px solid rgba(239, 68, 68, 0.5)' : undefined,
         outlineOffset: -2,
@@ -315,13 +315,13 @@ function CartItemRow({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <h3
-            className="text-[15px] font-semibold text-amber-950"
+            className="text-[15px] font-semibold text-emerald-950"
             style={{ textWrap: 'balance' }}
           >
             {item.name}
           </h3>
           <p
-            className="mt-0.5 text-sm text-amber-700/65"
+            className="mt-0.5 text-sm text-emerald-700/65"
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             {formatVND(item.price)}
@@ -336,7 +336,7 @@ function CartItemRow({
           type="button"
           onClick={onRemove}
           aria-label={`Xoá ${item.name}`}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-amber-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-emerald-400 transition-colors duration-150 hover:bg-red-50 hover:text-red-500"
           style={{ minHeight: 48, minWidth: 48 }}
         >
           <TrashIcon />
@@ -354,13 +354,13 @@ function CartItemRow({
                 : onUpdateQuantity(item.quantity - 1)
             }
             aria-label={`Giảm số lượng ${item.name}`}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-800 transition-colors duration-150 active:bg-amber-200"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 transition-colors duration-150 active:bg-emerald-200"
             style={{ minHeight: 48, minWidth: 48 }}
           >
             <MinusIcon />
           </button>
           <span
-            className="flex h-10 min-w-10 items-center justify-center px-2 text-[15px] font-bold text-amber-950"
+            className="flex h-10 min-w-10 items-center justify-center px-2 text-[15px] font-bold text-emerald-950"
             style={{ fontVariantNumeric: 'tabular-nums' }}
             aria-live="polite"
             aria-label={`Số lượng: ${item.quantity}`}
@@ -371,7 +371,7 @@ function CartItemRow({
             type="button"
             onClick={() => onUpdateQuantity(item.quantity + 1)}
             aria-label={`Tăng số lượng ${item.name}`}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-800 transition-colors duration-150 active:bg-amber-200"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 transition-colors duration-150 active:bg-emerald-200"
             style={{ minHeight: 48, minWidth: 48 }}
           >
             <PlusIcon />
@@ -380,7 +380,7 @@ function CartItemRow({
 
         {/* Subtotal */}
         <span
-          className="text-[15px] font-bold text-amber-950"
+          className="text-[15px] font-bold text-emerald-950"
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {formatVND(subtotal)}
@@ -395,7 +395,7 @@ function CartItemRow({
           onChange={(e) => onUpdateNotes(e.target.value)}
           placeholder="Ghi chú (ít đường, nhiều đá...)"
           aria-label={`Ghi chú cho ${item.name}`}
-          className="w-full rounded-xl border border-amber-200/60 bg-amber-50/50 px-3 py-2.5 text-sm text-amber-900 placeholder:text-amber-400/60 transition-colors duration-150 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-200/40"
+          className="w-full rounded-xl border border-emerald-200/60 bg-emerald-50/50 px-3 py-2.5 text-sm text-emerald-900 placeholder:text-emerald-400/60 transition-colors duration-150 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-200/40"
           style={{ minHeight: 44 }}
         />
       </div>

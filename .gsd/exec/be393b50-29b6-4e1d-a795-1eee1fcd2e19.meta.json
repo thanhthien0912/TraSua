@@ -1,0 +1,18 @@
+{
+  "id": "be393b50-29b6-4e1d-a795-1eee1fcd2e19",
+  "runtime": "node",
+  "purpose": "List staff table API files and seed references",
+  "script_chars": 593,
+  "started_at": "2026-05-06T09:52:48.838Z",
+  "finished_at": "2026-05-06T09:52:48.926Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 88,
+  "stdout_bytes": 927,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\be393b50-29b6-4e1d-a795-1eee1fcd2e19.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\be393b50-29b6-4e1d-a795-1eee1fcd2e19.stderr"
+}

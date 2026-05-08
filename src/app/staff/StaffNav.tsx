@@ -8,6 +8,7 @@ import Link from 'next/link'
 const NAV_ITEMS = [
   { href: '/staff/bar', label: 'Quầy Bar', emoji: '🧋' },
   { href: '/staff/kitchen', label: 'Bếp', emoji: '🍳' },
+  { href: '/staff/add-order', label: 'Thêm đơn', emoji: '➕' },
   { href: '/staff/checkout', label: 'Tính tiền', emoji: '💰' },
   { href: '/staff', label: 'Tổng quan', emoji: '📋', exact: true },
 ] as const
@@ -19,7 +20,7 @@ export default function StaffNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-amber-200/60 shadow-[0_-2px_16px_rgba(180,120,40,0.08)]"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-emerald-200 shadow-lg shadow-emerald-100/50"
       aria-label="Điều hướng trạm"
     >
       <div className="max-w-7xl mx-auto flex items-stretch justify-around">
@@ -40,8 +41,8 @@ export default function StaffNav() {
                 transition-all duration-200 ease-out
                 ${
                   isActive
-                    ? 'text-amber-900'
-                    : 'text-amber-600/60 hover:text-amber-800 active:scale-95'
+                    ? 'text-emerald-700'
+                    : 'text-gray-500 hover:text-emerald-700 active:scale-95'
                 }
               `}
               aria-current={isActive ? 'page' : undefined}
@@ -49,7 +50,7 @@ export default function StaffNav() {
               {/* Active indicator pill */}
               {isActive && (
                 <span
-                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-amber-500"
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-emerald-500"
                   aria-hidden="true"
                 />
               )}

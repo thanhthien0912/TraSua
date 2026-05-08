@@ -1,0 +1,13 @@
+Staff tables files:
+ D:\TraSua\src\app\api\staff\tables\[tableId]
+D:\TraSua\src\app\api\staff\tables\[tableId]\bill
+D:\TraSua\src\app\api\staff\tables\[tableId]\pay
+D:\TraSua\src\app\api\staff\tables\[tableId]\bill\route.ts
+D:\TraSua\src\app\api\staff\tables\[tableId]\pay\route.ts
+
+
+Admin table component refs:
+ D:\TraSua\src\components\admin\AdminNav.tsx:  { href: '/admin/tables', label: 'Bàn', emoji: '🪑' },
+
+
+Test count check failed

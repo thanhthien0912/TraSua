@@ -1,0 +1,7 @@
+📁 20260506024910_add_full_schema
+  📄 migration.sql
+📁 20260506071758_add_paid_at
+  📄 migration.sql
+📁 20260506090234_add_menu_hidden
+  📄 migration.sql
+📁 migration_lock.toml

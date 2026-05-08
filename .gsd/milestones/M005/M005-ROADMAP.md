@@ -19,13 +19,13 @@
 - [x] **S01: S01** `risk:high` `depends:[]`
   > After this: Shop owner logs into /admin, sees tabbed dashboard with 3 tabs. Creates a new drink item with name/price/category. Toggles an existing item to 'Hết hàng'. Soft-deletes an old item (grayed out in admin, gone from customer menu). Restores it. All operations show toast feedback. Customer /order page excludes hidden items. Existing 111 tests still pass.
 
-- [ ] **S02: Table Management + QR Refactor** `risk:medium` `depends:[S01]`
+- [x] **S02: S02** `risk:medium` `depends:[]`
   > After this: Shop owner navigates to Bàn tab, adds a new table (auto-numbered 'Bàn N'). Renames a table. Attempts to delete a table with unpaid orders — sees Vietnamese error toast. Deletes an empty table. Navigates to QR Code tab, generates PDF — new table appears, deleted table is gone.
 
-- [ ] **S03: Skeleton Loaders + Error UX Polish** `risk:low` `depends:[S01]`
+- [x] **S03: S03** `risk:low` `depends:[]`
   > After this: On slow network (throttled in DevTools), customer menu shows skeleton cards during fetch. Staff station views show skeleton order cards. Admin lists show skeleton rows. Network error on any page shows Vietnamese error state with retry button.
 
-- [ ] **S04: Deployment Readiness** `risk:low` `depends:[S01,S02,S03]`
+- [x] **S04: S04** `risk:low` `depends:[]`
   > After this: Owner runs start.bat on Windows shop machine. Script validates env vars, runs migration, builds, and starts the app. If ADMIN_PASSWORD is missing, a clear Vietnamese error appears. Vietnamese README guides a non-developer through Node.js install, env setup, seed, and launch.
 
 ## Boundary Map

@@ -41,11 +41,11 @@ export default function MenuItemForm({
   const [nameError, setNameError] = useState<string | null>(null)
   const [priceError, setPriceError] = useState<string | null>(null)
 
-  // ─── Submit state ─────────────────────────────────────────────
+  // ─── Submit state ──────────────────────────────────────────────
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
-  // ─── Animation state ──────────────────────────────────────────
+  // ─── Animation state ─────────────────────────────────────────
   const [visible, setVisible] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
@@ -71,7 +71,6 @@ export default function MenuItemForm({
       setSubmitError(null)
       requestAnimationFrame(() => {
         setVisible(true)
-        // Focus name field after animation starts
         setTimeout(() => nameRef.current?.focus(), 300)
       })
     }
@@ -94,14 +93,12 @@ export default function MenuItemForm({
   // ─── Validate ─────────────────────────────────────────────────
   const validate = useCallback((): boolean => {
     let valid = true
-
     if (!name.trim()) {
       setNameError('Tên món không được để trống')
       valid = false
     } else {
       setNameError(null)
     }
-
     const priceNum = parseInt(price, 10)
     if (!price || isNaN(priceNum) || priceNum <= 0) {
       setPriceError('Giá phải lớn hơn 0')
@@ -109,7 +106,6 @@ export default function MenuItemForm({
     } else {
       setPriceError(null)
     }
-
     return valid
   }, [name, price])
 
@@ -160,31 +156,29 @@ export default function MenuItemForm({
     }
   }, [validate, name, price, category, description, sortOrder, isEdit, editItem, onSuccess, handleClose])
 
-  // ─── Don't render if not open ─────────────────────────────────
   if (!isOpen) return null
 
   return (
-    /* ─── Overlay ──────────────────────────────────────────── */
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
       className={`
-        fixed inset-0 z-50 flex items-end justify-center
+        fixed inset-0 z-50 flex items-center justify-center p-4
         transition-colors duration-200
         ${visible ? 'bg-black/40' : 'bg-black/0'}
       `}
       style={{ transitionProperty: 'background-color' }}
     >
-      {/* ─── Modal (slide up from bottom) ───────────────────── */}
+      {/* ─── Modal ───────────────────────────────────────────── */}
       <div
         className={`
-          w-full max-w-lg bg-amber-50 rounded-t-3xl
+          w-full max-w-lg bg-white rounded-3xl
           overflow-hidden flex flex-col
-          ${visible ? 'translate-y-0' : 'translate-y-full'}
+          ${visible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
         `}
         style={{
           maxHeight: '90vh',
-          transitionProperty: 'transform',
+          transitionProperty: 'transform, opacity',
           transitionTimingFunction: visible
             ? 'cubic-bezier(0.16, 1, 0.3, 1)'
             : 'cubic-bezier(0.4, 0, 1, 1)',
@@ -192,49 +186,31 @@ export default function MenuItemForm({
         }}
       >
         {/* ─── Drag handle + Header ──────────────────────────── */}
-        <div className="sticky top-0 z-10 bg-amber-50">
+        <div className="flex-shrink-0 bg-white border-b border-gray-200">
           <div className="flex justify-center pt-3 pb-1">
-            <div className="w-10 h-1 rounded-full bg-amber-300/60" />
+            <div className="w-10 h-1 rounded-full bg-gray-300" />
           </div>
           <div className="flex items-center justify-between px-5 pb-3">
-            <h2
-              className="text-lg font-bold text-amber-900"
-              style={{ textWrap: 'balance' }}
-            >
+            <h2 className="text-xl font-bold text-gray-900" style={{ textWrap: 'balance' }}>
               {isEdit ? 'Sửa món' : 'Thêm món mới'}
             </h2>
             <button
               onClick={handleClose}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl text-amber-600 hover:text-amber-900 hover:bg-amber-100 transition-colors active:scale-[0.96]"
-              style={{ transitionProperty: 'background-color, color, transform' }}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors active:scale-[0.96]"
               aria-label="Đóng"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          <div className="h-px bg-amber-200/50" />
         </div>
 
         {/* ─── Scrollable form body ──────────────────────────── */}
-        <div
-          className="flex-1 overflow-y-auto px-5 py-5"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
+        <div className="flex-1 overflow-y-auto px-5 py-5 bg-gray-50">
           {/* Name */}
           <div className="mb-4">
-            <label
-              htmlFor="menu-name"
-              className="block text-sm font-semibold text-amber-800 mb-1.5"
-            >
+            <label htmlFor="menu-name" className="block text-sm font-bold text-gray-700 mb-2">
               Tên món <span className="text-red-500">*</span>
             </label>
             <input
@@ -242,30 +218,21 @@ export default function MenuItemForm({
               id="menu-name"
               type="text"
               value={name}
-              onChange={(e) => {
-                setName(e.target.value)
-                if (nameError) setNameError(null)
-              }}
+              onChange={(e) => { setName(e.target.value); if (nameError) setNameError(null) }}
               placeholder="VD: Trà sữa trân châu"
               className={`
-                w-full rounded-xl border bg-white px-4 py-3 text-sm text-amber-900
-                placeholder:text-amber-400
-                focus:outline-none focus:ring-2 focus:ring-amber-600/30
-                ${nameError ? 'border-red-400 ring-2 ring-red-200' : 'border-amber-200/60'}
+                w-full rounded-xl border-2 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-400
+                focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200
+                ${nameError ? 'border-red-400 ring-2 ring-red-200' : 'border-gray-200'}
               `}
-              style={{ minHeight: 44 }}
+              style={{ minHeight: 48 }}
             />
-            {nameError && (
-              <p className="mt-1.5 text-xs text-red-600 font-medium">{nameError}</p>
-            )}
+            {nameError && <p className="mt-2 text-sm text-red-600 font-medium">{nameError}</p>}
           </div>
 
           {/* Price */}
           <div className="mb-4">
-            <label
-              htmlFor="menu-price"
-              className="block text-sm font-semibold text-amber-800 mb-1.5"
-            >
+            <label htmlFor="menu-price" className="block text-sm font-bold text-gray-700 mb-2">
               Giá (VNĐ) <span className="text-red-500">*</span>
             </label>
             <input
@@ -273,30 +240,22 @@ export default function MenuItemForm({
               type="number"
               inputMode="numeric"
               value={price}
-              onChange={(e) => {
-                setPrice(e.target.value)
-                if (priceError) setPriceError(null)
-              }}
+              onChange={(e) => { setPrice(e.target.value); if (priceError) setPriceError(null) }}
               placeholder="VD: 35000"
               className={`
-                w-full rounded-xl border bg-white px-4 py-3 text-sm text-amber-900
-                placeholder:text-amber-400
-                focus:outline-none focus:ring-2 focus:ring-amber-600/30
-                ${priceError ? 'border-red-400 ring-2 ring-red-200' : 'border-amber-200/60'}
+                w-full rounded-xl border-2 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-400
+                focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200
+                ${priceError ? 'border-red-400 ring-2 ring-red-200' : 'border-gray-200'}
               `}
-              style={{ minHeight: 44, fontVariantNumeric: 'tabular-nums' }}
+              style={{ minHeight: 48, fontVariantNumeric: 'tabular-nums' }}
             />
-            {priceError && (
-              <p className="mt-1.5 text-xs text-red-600 font-medium">{priceError}</p>
-            )}
+            {priceError && <p className="mt-2 text-sm text-red-600 font-medium">{priceError}</p>}
           </div>
 
           {/* Category */}
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-amber-800 mb-1.5">
-              Danh mục
-            </label>
-            <div className="inline-flex w-full rounded-xl bg-amber-100/70 p-1">
+            <label className="block text-sm font-bold text-gray-700 mb-2">Danh mục</label>
+            <div className="inline-flex w-full rounded-2xl bg-white shadow-sm border border-gray-200 p-1.5">
               {(['DRINK', 'FOOD'] as const).map((cat) => {
                 const isActive = category === cat
                 return (
@@ -305,15 +264,15 @@ export default function MenuItemForm({
                     type="button"
                     onClick={() => setCategory(cat)}
                     className={`
-                      flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold
-                      transition-colors duration-150 ease-out
+                      flex-1 rounded-xl px-5 py-3 text-base font-bold
+                      transition-all duration-200 ease-out
                       ${
                         isActive
-                          ? 'bg-amber-900 text-amber-50 shadow-sm shadow-amber-900/20'
-                          : 'text-amber-700 hover:text-amber-900'
+                          ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                       }
                     `}
-                    style={{ minHeight: 44 }}
+                    style={{ minHeight: 48 }}
                   >
                     {cat === 'DRINK' ? 'Đồ uống' : 'Đồ ăn'}
                   </button>
@@ -324,12 +283,8 @@ export default function MenuItemForm({
 
           {/* Description */}
           <div className="mb-4">
-            <label
-              htmlFor="menu-desc"
-              className="block text-sm font-semibold text-amber-800 mb-1.5"
-            >
-              Mô tả{' '}
-              <span className="text-amber-500 font-normal text-xs">(tuỳ chọn)</span>
+            <label htmlFor="menu-desc" className="block text-sm font-bold text-gray-700 mb-2">
+              Mô tả <span className="text-gray-500 font-normal text-sm">(tuỳ chọn)</span>
             </label>
             <textarea
               id="menu-desc"
@@ -337,18 +292,14 @@ export default function MenuItemForm({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Mô tả ngắn về món"
               rows={3}
-              className="w-full rounded-xl border border-amber-200/60 bg-white px-4 py-3 text-sm text-amber-900 placeholder:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-600/30 resize-none"
+              className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 resize-none"
             />
           </div>
 
           {/* Sort Order */}
           <div className="mb-2">
-            <label
-              htmlFor="menu-sort"
-              className="block text-sm font-semibold text-amber-800 mb-1.5"
-            >
-              Thứ tự{' '}
-              <span className="text-amber-500 font-normal text-xs">(mặc định: 0)</span>
+            <label htmlFor="menu-sort" className="block text-sm font-bold text-gray-700 mb-2">
+              Thứ tự <span className="text-gray-500 font-normal text-sm">(mặc định: 0)</span>
             </label>
             <input
               id="menu-sort"
@@ -356,27 +307,25 @@ export default function MenuItemForm({
               inputMode="numeric"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full rounded-xl border border-amber-200/60 bg-white px-4 py-3 text-sm text-amber-900 placeholder:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-600/30"
-              style={{ minHeight: 44, fontVariantNumeric: 'tabular-nums' }}
+              className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              style={{ minHeight: 48, fontVariantNumeric: 'tabular-nums' }}
             />
           </div>
         </div>
 
-        {/* ─── Footer: error + action buttons ────────────────── */}
-        <div className="border-t border-amber-200/60 bg-gradient-to-r from-amber-50 to-orange-50 px-5 py-4">
+        {/* ─── Footer ───────────────────────────────────────────── */}
+        <div className="flex-shrink-0 border-t border-gray-200 bg-white px-5 py-4">
           {submitError && (
-            <p className="text-sm text-red-600 mb-3 bg-red-50 rounded-lg px-3 py-2">
+            <p className="text-sm text-red-600 mb-3 bg-red-50 rounded-xl px-4 py-3 border border-red-200">
               {submitError}
             </p>
           )}
-
           <div className="flex gap-3">
             <button
               type="button"
               onClick={handleClose}
               disabled={submitting}
-              className="flex-1 min-h-[48px] rounded-2xl bg-white border border-amber-200/60 text-amber-700 font-semibold text-sm hover:bg-amber-100 transition-colors active:scale-[0.96] disabled:opacity-50"
-              style={{ transitionProperty: 'background-color, transform' }}
+              className="flex-1 min-h-[52px] rounded-2xl bg-white border-2 border-gray-200 text-gray-700 font-bold text-base hover:bg-gray-50 transition-colors active:scale-[0.96] disabled:opacity-50"
             >
               Huỷ
             </button>
@@ -384,8 +333,7 @@ export default function MenuItemForm({
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-[2] min-h-[48px] rounded-2xl bg-amber-700 text-amber-50 font-bold text-sm hover:bg-amber-800 shadow-md shadow-amber-900/20 transition-colors active:scale-[0.96] disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ transitionProperty: 'background-color, transform, box-shadow' }}
+              className="flex-[2] min-h-[52px] rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-base hover:shadow-xl hover:shadow-emerald-500/40 shadow-lg shadow-emerald-500/30 transition-all active:scale-[0.96] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <span className="inline-flex items-center gap-2">

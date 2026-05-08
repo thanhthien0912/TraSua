@@ -1,0 +1,25 @@
+
+[90mstdout[2m | src/app/api/admin/menu/__tests__/menu-crud.test.ts[2m > [22m[2mPATCH /api/admin/menu/[id][2m > [22m[2mtoggles available flag
+[22m[39m[PATCH /api/admin/menu/1] Toggled available=false for: Trà sữa
+
+[90mstdout[2m | src/app/api/admin/menu/__tests__/menu-crud.test.ts[2m > [22m[2mPATCH /api/admin/menu/[id][2m > [22m[2mtoggles hidden flag
+[22m[39m[PATCH /api/admin/menu/2] Toggled hidden=true for: Cà phê
+
+[90mstdout[2m | src/app/api/admin/menu/__tests__/menu-crud.test.ts[2m > [22m[2mDELETE /api/admin/menu/[id][2m > [22m[2msoft-deletes by setting hidden=true
+[22m[39m[DELETE /api/admin/menu/3] Soft-deleted menu item: Nước ép
+
+[90mstdout[2m | src/lib/__tests__/hidden-menu-filter.test.ts[2m > [22m[2mOrder creation — hidden item rejection[2m > [22m[2mallows order with visible and available items
+[22m[39m[POST /api/order] Broadcasting new-order event for order #100
+
+ [32m✓[39m src/lib/__tests__/hidden-menu-filter.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/app/api/admin/menu/__tests__/menu-crud.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/add-item-api.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/bill-aggregation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/cancel-recalculation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m      Tests [22m [1m[32m152 passed[39m[22m[90m (152)[39m
+[2m   Start at [22m 16:16:05
+[2m   Duration [22m 901ms[2m (transform 603ms, setup 0ms, import 1.26s, tests 190ms, environment 2ms)[22m
+
+

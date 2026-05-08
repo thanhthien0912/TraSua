@@ -18,7 +18,7 @@ export default function AdminNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-amber-200/60 shadow-[0_-2px_16px_rgba(180,120,40,0.08)]"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-emerald-200 shadow-lg shadow-emerald-100/50"
       aria-label="Điều hướng quản trị"
     >
       <div className="max-w-7xl mx-auto flex items-stretch justify-around">
@@ -36,8 +36,8 @@ export default function AdminNav() {
                 transition-all duration-200 ease-out
                 ${
                   isActive
-                    ? 'text-amber-900'
-                    : 'text-amber-600/60 hover:text-amber-800 active:scale-95'
+                    ? 'text-emerald-700'
+                    : 'text-gray-500 hover:text-emerald-700 active:scale-95'
                 }
               `}
               aria-current={isActive ? 'page' : undefined}
@@ -45,7 +45,7 @@ export default function AdminNav() {
               {/* Active indicator pill */}
               {isActive && (
                 <span
-                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-amber-500"
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[3px] rounded-full bg-emerald-500"
                   aria-hidden="true"
                 />
               )}
@@ -57,21 +57,6 @@ export default function AdminNav() {
             </Link>
           )
         })}
-
-        {/* Logout link */}
-        <Link
-          href="/admin/login"
-          className="
-            relative flex flex-col items-center justify-center gap-1
-            min-h-[56px] min-w-[72px] px-4 py-2
-            text-xs font-semibold tracking-wide
-            text-amber-600/60 hover:text-red-600 active:scale-95
-            transition-all duration-200 ease-out
-          "
-        >
-          <span className="text-xl leading-none" aria-hidden="true">🚪</span>
-          <span>Đăng xuất</span>
-        </Link>
       </div>
     </nav>
   )

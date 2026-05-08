@@ -1,0 +1,18 @@
+{
+  "id": "007efc96-c18b-48d6-a701-e6aa59c4f05e",
+  "runtime": "bash",
+  "purpose": "Find existing QR PDF generation code",
+  "script_chars": 85,
+  "started_at": "2026-05-08T01:36:00.804Z",
+  "finished_at": "2026-05-08T01:36:00.813Z",
+  "exit_code": -4058,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 9,
+  "stdout_bytes": 0,
+  "stderr_bytes": 31,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\007efc96-c18b-48d6-a701-e6aa59c4f05e.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\007efc96-c18b-48d6-a701-e6aa59c4f05e.stderr"
+}

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { formatVND } from '@/lib/format'
 import { useToast } from '@/components/ui/ToastProvider'
 import MenuItemForm, { type MenuItemData } from '@/components/admin/MenuItemForm'
+import { SkeletonMenuRow } from '@/components/ui/Skeleton'
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -174,8 +175,12 @@ export default function AdminMenuPage() {
   // ─── Loading state ──────────────────────────────────────────
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
-        <span className="inline-block w-8 h-8 border-3 border-amber-300 border-t-amber-700 rounded-full animate-spin" />
+      <div className="px-4 pb-28 pt-4">
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonMenuRow key={i} />
+          ))}
+        </div>
       </div>
     )
   }
@@ -185,14 +190,14 @@ export default function AdminMenuPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center px-4">
         <span className="text-4xl mb-3 opacity-50">⚠️</span>
-        <p className="text-amber-800 font-medium mb-4">{error}</p>
+        <p className="text-emerald-800 font-medium mb-4">{error}</p>
         <button
           onClick={() => {
             setLoading(true)
             setError(null)
             fetchItems()
           }}
-          className="min-h-[44px] px-6 py-2 rounded-xl bg-amber-700 text-amber-50 font-semibold text-sm hover:bg-amber-800 transition-colors active:scale-[0.96]"
+          className="min-h-[44px] px-6 py-2 rounded-xl bg-emerald-700 text-emerald-50 font-semibold text-sm hover:bg-emerald-800 transition-colors active:scale-[0.96]"
           style={{ transitionProperty: 'background-color, transform' }}
         >
           Thử lại
@@ -204,18 +209,18 @@ export default function AdminMenuPage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-10 bg-amber-50/95 backdrop-blur-sm">
-        <div className="flex items-center justify-between gap-3 px-4 py-3">
+      <header className="sticky top-0 z-10 bg-white shadow-sm">
+        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-gray-100">
           <h1
-            className="text-lg font-bold text-amber-950 tracking-tight"
+            className="text-xl font-bold text-gray-900 tracking-tight"
             style={{ textWrap: 'balance' }}
           >
             📋 Quản lý thực đơn
           </h1>
           <button
             onClick={handleCreate}
-            className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-amber-800 px-4 py-2 text-sm font-semibold text-amber-50 shadow-sm shadow-amber-900/20 hover:bg-amber-900 transition-colors active:scale-[0.96]"
-            style={{ transitionProperty: 'background-color, transform' }}
+            className="min-h-[48px] inline-flex items-center gap-2 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 px-5 py-3 text-base font-bold text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all active:scale-[0.96]"
+            style={{ transitionProperty: 'box-shadow, transform' }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -223,20 +228,20 @@ export default function AdminMenuPage() {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            Thêm
+            Thêm món
           </button>
         </div>
 
         {/* ── Tab Bar ──────────────────────────────────────────── */}
-        <div className="px-4 pb-3">
+        <div className="px-5 py-4 bg-gray-50/50">
           <nav
             role="tablist"
             aria-label="Danh mục thực đơn"
-            className="inline-flex w-full rounded-xl bg-amber-100/70 p-1"
+            className="inline-flex w-full rounded-2xl bg-white shadow-sm border border-gray-200 p-1.5"
           >
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
@@ -251,19 +256,19 @@ export default function AdminMenuPage() {
                   aria-controls={`panel-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
                   className={`
-                    flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold
-                    transition-colors transition-shadow duration-150 ease-out
+                    flex-1 rounded-xl px-5 py-3 text-base font-bold
+                    transition-all duration-200 ease-out
                     ${
                       isActive
-                        ? 'bg-amber-900 text-amber-50 shadow-sm shadow-amber-900/20'
-                        : 'text-amber-700 hover:text-amber-900'
+                        ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }
                   `}
-                  style={{ minHeight: 44 }}
+                  style={{ minHeight: 48 }}
                 >
-                  {tab.label}{' '}
+                  {tab.emoji} {tab.label}{' '}
                   <span
-                    className={`text-xs ${isActive ? 'text-amber-200' : 'text-amber-500'}`}
+                    className={`text-sm ${isActive ? 'text-white/80' : 'text-gray-500'}`}
                   >
                     ({count})
                   </span>
@@ -272,8 +277,6 @@ export default function AdminMenuPage() {
             })}
           </nav>
         </div>
-
-        <div className="h-px bg-amber-200/50" />
       </header>
 
       {/* ── Item List ──────────────────────────────────────────── */}
@@ -281,9 +284,9 @@ export default function AdminMenuPage() {
         id={`panel-${activeTab}`}
         role="tabpanel"
         aria-label={TABS.find((t) => t.key === activeTab)?.label}
-        className="px-4 pb-28 pt-4"
+        className="px-5 pb-28 pt-5"
       >
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((item, index) => (
             <AdminItemCard
               key={item.id}
@@ -298,20 +301,20 @@ export default function AdminMenuPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <span className="text-4xl mb-3 opacity-40">
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <span className="text-6xl mb-4 opacity-40">
               {activeTab === 'DRINK' ? '🧋' : '🍜'}
             </span>
             <p
-              className="text-sm text-amber-700/60"
+              className="text-base text-gray-500 mb-6"
               style={{ textWrap: 'pretty' }}
             >
               Chưa có món nào trong danh mục này.
             </p>
             <button
               onClick={handleCreate}
-              className="mt-4 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-amber-100 px-5 py-2 text-sm font-semibold text-amber-800 hover:bg-amber-200 transition-colors active:scale-[0.96]"
-              style={{ transitionProperty: 'background-color, transform' }}
+              className="min-h-[48px] inline-flex items-center gap-2 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 px-6 py-3 text-base font-bold text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all active:scale-[0.96]"
+              style={{ transitionProperty: 'box-shadow, transform' }}
             >
               Thêm món đầu tiên
             </button>
@@ -379,24 +382,24 @@ function AdminItemCard({
   return (
     <div
       className={`
-        rounded-2xl bg-white p-4
-        transition-all duration-150 ease-out
-        ${isHidden ? 'opacity-55 ring-1 ring-amber-200/60' : ''}
+        rounded-2xl bg-white p-5 border border-gray-200
+        transition-all duration-200 ease-out
+        ${isHidden ? 'opacity-50' : 'hover:shadow-lg hover:border-teal-200'}
       `}
       style={{
         boxShadow: isHidden
-          ? '0 1px 2px rgba(120, 53, 15, 0.04)'
-          : '0 1px 3px rgba(120, 53, 15, 0.06), 0 4px 12px rgba(120, 53, 15, 0.04)',
+          ? 'none'
+          : '0 2px 8px rgba(0, 0, 0, 0.04)',
         animationDelay: `${index * 50}ms`,
         animation: 'adminCardEnter 0.3s ease-out both',
       }}
     >
       {/* ─── Top row: name + badges ──────────────────────────── */}
-      <div className="flex items-start justify-between gap-3 mb-2">
+      <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0 flex-1">
           <h3
-            className={`text-[15px] font-semibold leading-snug ${
-              isHidden ? 'text-amber-800/60' : 'text-amber-950'
+            className={`text-lg font-bold leading-snug ${
+              isHidden ? 'text-gray-400' : 'text-gray-900'
             }`}
             style={{ textWrap: 'balance' }}
           >
@@ -404,8 +407,8 @@ function AdminItemCard({
           </h3>
           {item.description && (
             <p
-              className={`mt-0.5 text-sm leading-relaxed ${
-                isHidden ? 'text-amber-700/40' : 'text-amber-700/65'
+              className={`mt-2 text-sm leading-relaxed ${
+                isHidden ? 'text-gray-400' : 'text-gray-600'
               }`}
               style={{ textWrap: 'pretty' }}
             >
@@ -417,12 +420,12 @@ function AdminItemCard({
         {/* Badges column */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
           {isHidden && (
-            <span className="inline-flex items-center rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+            <span className="inline-flex items-center rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-600">
               Đã ẩn
             </span>
           )}
           {isUnavailable && !isHidden && (
-            <span className="inline-flex items-center rounded-lg bg-amber-100/80 px-2.5 py-1 text-xs font-medium text-amber-700/70">
+            <span className="inline-flex items-center rounded-xl bg-teal-100 px-3 py-1.5 text-xs font-semibold text-orange-700">
               Hết hàng
             </span>
           )}
@@ -430,17 +433,17 @@ function AdminItemCard({
       </div>
 
       {/* ─── Price + sort order ──────────────────────────────── */}
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center gap-3 mb-4">
         <span
-          className={`text-sm font-semibold ${
-            isHidden ? 'text-amber-700/50' : 'text-amber-800'
+          className={`text-base font-bold ${
+            isHidden ? 'text-gray-400' : 'text-teal-600'
           }`}
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {formatVND(item.price)}
         </span>
         {item.sortOrder !== 0 && (
-          <span className="text-xs text-amber-500/70">
+          <span className="text-xs text-gray-400">
             #{item.sortOrder}
           </span>
         )}
@@ -452,7 +455,7 @@ function AdminItemCard({
           /* Restore button for hidden items */
           <button
             onClick={() => onRestore(item)}
-            className="min-h-[40px] inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-2 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
+            className="min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
             style={{ transitionProperty: 'background-color, transform' }}
           >
             <svg
@@ -461,7 +464,7 @@ function AdminItemCard({
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="w-3.5 h-3.5"
+              className="w-4 h-4"
             >
               <path
                 strokeLinecap="round"
@@ -476,7 +479,7 @@ function AdminItemCard({
             {/* Edit */}
             <button
               onClick={() => onEdit(item)}
-              className="min-h-[40px] inline-flex items-center gap-1.5 rounded-xl bg-amber-50 px-3.5 py-2 text-xs font-semibold text-amber-800 ring-1 ring-inset ring-amber-200/60 hover:bg-amber-100 transition-colors active:scale-[0.96]"
+              className="min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-2.5 text-sm font-bold text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors active:scale-[0.96]"
               style={{ transitionProperty: 'background-color, transform' }}
             >
               <svg
@@ -485,7 +488,7 @@ function AdminItemCard({
                 viewBox="0 0 24 24"
                 strokeWidth={2}
                 stroke="currentColor"
-                className="w-3.5 h-3.5"
+                className="w-4 h-4"
               >
                 <path
                   strokeLinecap="round"
@@ -500,12 +503,12 @@ function AdminItemCard({
             <button
               onClick={() => onToggleAvailable(item)}
               className={`
-                min-h-[40px] inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold ring-1 ring-inset
+                min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold border
                 transition-colors active:scale-[0.96]
                 ${
                   item.available
-                    ? 'bg-orange-50 text-orange-700 ring-orange-200 hover:bg-orange-100'
-                    : 'bg-emerald-50 text-emerald-700 ring-emerald-200 hover:bg-emerald-100'
+                    ? 'bg-teal-50 text-orange-700 border-teal-200 hover:bg-teal-100'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
                 }
               `}
               style={{ transitionProperty: 'background-color, transform' }}
@@ -518,7 +521,7 @@ function AdminItemCard({
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className="w-3.5 h-3.5"
+                    className="w-4 h-4"
                   >
                     <path
                       strokeLinecap="round"
@@ -536,7 +539,7 @@ function AdminItemCard({
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className="w-3.5 h-3.5"
+                    className="w-4 h-4"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
@@ -549,12 +552,12 @@ function AdminItemCard({
             <button
               onClick={handleDeleteTap}
               className={`
-                min-h-[40px] inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold
+                min-h-[44px] w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold
                 transition-all duration-150 active:scale-[0.96]
                 ${
                   confirmingDelete
-                    ? 'bg-red-600 text-white shadow-md shadow-red-900/20 ring-0'
-                    : 'bg-red-50 text-red-600 ring-1 ring-inset ring-red-200 hover:bg-red-100'
+                    ? 'bg-red-600 text-white shadow-lg shadow-red-500/30'
+                    : 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
                 }
               `}
               style={{ transitionProperty: 'background-color, color, transform, box-shadow' }}
@@ -565,7 +568,7 @@ function AdminItemCard({
                 viewBox="0 0 24 24"
                 strokeWidth={2}
                 stroke="currentColor"
-                className="w-3.5 h-3.5"
+                className="w-4 h-4"
               >
                 <path
                   strokeLinecap="round"
@@ -573,7 +576,7 @@ function AdminItemCard({
                   d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                 />
               </svg>
-              {confirmingDelete ? 'Xác nhận xoá?' : 'Ẩn'}
+              {confirmingDelete ? 'Xác nhận xoá?' : 'Ẩn món'}
             </button>
           </>
         )}

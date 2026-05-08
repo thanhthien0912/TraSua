@@ -1,0 +1,18 @@
+{
+  "id": "18c6c45a-0d0c-4d75-9df4-86b29b282391",
+  "runtime": "node",
+  "purpose": "find seed and env files",
+  "script_chars": 271,
+  "started_at": "2026-05-08T02:20:32.163Z",
+  "finished_at": "2026-05-08T02:20:32.775Z",
+  "exit_code": 0,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 612,
+  "stdout_bytes": 111853,
+  "stderr_bytes": 0,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "D:\\TraSua\\.gsd\\exec\\18c6c45a-0d0c-4d75-9df4-86b29b282391.stdout",
+  "stderr_path": "D:\\TraSua\\.gsd\\exec\\18c6c45a-0d0c-4d75-9df4-86b29b282391.stderr"
+}

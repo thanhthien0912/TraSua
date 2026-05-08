@@ -1,0 +1,20 @@
+TABLE_COUNT references:
+ D:\TraSua\src\app\api\admin\qr-pdf\route.ts:  const tableCount = Math.max(0, parseInt(process.env.TABLE_COUNT || "15", 10));
+D:\TraSua\src\app\api\admin\qr-pdf\route.ts:      { error: "TABLE_COUNT phải lớn hơn 0" },
+
+
+No admin/tables API routes found
+
+Table-related files:
+ D:\TraSua\src\app\admin\tables
+D:\TraSua\src\app\admin\tables
+D:\TraSua\src\app\api\staff\tables
+D:\TraSua\src\app\api\staff\tables
+D:\TraSua\src\app\api\staff\tables\[tableId]
+D:\TraSua\src\app\api\staff\tables\[tableId]
+
+
+.env contents (relevant lines):
+SHOP_IP=192.168.1.100
+SHOP_PORT=3000
+TABLE_COUNT=15
