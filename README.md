@@ -1,228 +1,370 @@
-# 🧋 TraSuá App — Hướng Dẫn Cài Đặt
+# 🧋 TraSua - Hệ Thống Quản Lý Quán Trà Sữa
 
-## Mục lục
-1. [Yêu cầu](#1-yêu-cầu)
-2. [Cài đặt nhanh](#2-cài-đặt-nhanh)
-3. [Cấu hình](#3-cấu-hình)
-4. [Khởi động ứng dụng](#4-khởi-động-ứng-dụng)
-5. [Truy cập ứng dụng](#5-truy-cập-ứng-dụng)
-6. [Xử lý lỗi](#6-xử-lý-lỗi)
+> Ứng dụng quản lý quán trà sữa hiện đại với giao diện xanh tươi mát, hỗ trợ đặt món QR, real-time order tracking, và quản lý toàn diện.
+
+## ✨ Tính năng chính
+
+### 👥 Khách hàng
+- 📱 Đặt món qua QR code tại bàn
+- 🎨 Giao diện thân thiện, dễ sử dụng
+- 🔄 Cập nhật trạng thái đơn real-time
+
+### 👨‍🍳 Nhân viên
+- 🧋 **Quầy Bar**: Quản lý đơn đồ uống
+- 🍜 **Bếp**: Quản lý đơn đồ ăn
+- 💰 **Tính tiền**: Thanh toán và in hóa đơn
+- ➕ **Thêm đơn**: Nhân viên thêm món cho khách
+- 📊 **Tổng quan**: Xem tất cả đơn hàng
+
+### 👨‍💼 Quản lý
+- 📋 **Thực đơn**: Thêm/sửa/xóa món, quản lý giá
+- 🪑 **Bàn**: Quản lý số lượng và tên bàn
+- 📄 **QR Code**: Tạo và in mã QR cho các bàn
 
 ---
 
-## 1. Yêu cầu
+## 🎨 Giao diện
 
-- **Node.js** phiên bản 18 trở lên
-  - Tải tại: https://nodejs.org (chọn bản LTS)
-- **npm** (đã có sẵn khi cài Node.js)
-- **Windows 10/11** hoặc **macOS** hoặc **Linux**
+Ứng dụng sử dụng bảng màu **Emerald/Teal** tươi mát:
+- Màu chính: Emerald (xanh lá)
+- Màu phụ: Teal (xanh ngọc)
+- Gradient: `from-emerald-50 via-teal-50 to-cyan-50`
 
 ---
 
-## 2. Cài đặt nhanh
+## 🛠️ Công nghệ
 
-### Bước 1: Cài đặt Node.js
-1. Truy cập https://nodejs.org
-2. Tải bản **LTS** (khuyến nghị)
-3. Cài đặt theo hướng dẫn mặc định
+- **Frontend**: Next.js 16.2.4 + React 19.2.4
+- **Styling**: Tailwind CSS v4
+- **Database**: SQLite + Prisma 7.8.0
+- **Real-time**: Server-Sent Events (SSE)
+- **Language**: TypeScript (strict mode)
 
-### Bước 2: Cài đặt thư viện
-Mở **CMD** hoặc **PowerShell**, chạy:
+---
 
+## 📋 Yêu cầu hệ thống
+
+- **Node.js** ≥ 18.0.0 (khuyến nghị LTS)
+- **npm** ≥ 9.0.0
+- **Hệ điều hành**: Windows 10/11, macOS, hoặc Linux
+
+---
+
+## 🚀 Cài đặt nhanh
+
+### 1. Clone repository
 ```bash
-cd D:\TraSua
+git clone https://github.com/thanhthien0912/TraSua.git
+cd TraSua
+```
+
+### 2. Cài đặt dependencies
+```bash
 npm install
 ```
 
-Đợi cho đến khi hoàn tất (có thể mất 2-5 phút).
+### 3. Tạo file `.env`
+Tạo file `.env` trong thư mục gốc:
 
-### Bước 3: Tạo file cấu hình
-Tạo file `.env` trong thư mục gốc với nội dung:
-
-```
-# Prisma SQLite database URL
+```env
+# Database
 DATABASE_URL="file:./prisma/dev.db"
 
-# Admin panel configuration
-ADMIN_PASSWORD=admin123
+# Server configuration
 SHOP_IP=192.168.1.100
 SHOP_PORT=3000
+
+# Admin
+ADMIN_PASSWORD=admin123
+
+# Tables
 TABLE_COUNT=15
 ```
 
-> **Lưu ý:** Thay `192.168.1.100` bằng địa chỉ IP thực của máy tính trong mạng LAN.
+> **Lưu ý:** Thay `192.168.1.100` bằng địa chỉ IP thực của máy trong mạng LAN.
 
-### Bước 4: Chạy migration và seed
+### 4. Khởi tạo database
 ```bash
 npx prisma migrate deploy
 npx prisma db seed
 ```
 
----
-
-## 3. Cấu hình
-
-### Các biến môi trường
-
-| Biến | Mô tả | Ví dụ |
-|------|-------|-------|
-| `DATABASE_URL` | Đường dẫn database SQLite | `file:./prisma/dev.db` |
-| `ADMIN_PASSWORD` | Mật khẩu đăng nhập trang quản lý | `admin123` |
-| `SHOP_IP` | Địa chỉ IP máy trong mạng LAN | `192.168.1.100` |
-| `SHOP_PORT` | Cổng chạy ứng dụng | `3000` |
-| `TABLE_COUNT` | Số bàn mặc định | `15` |
-
-### Tìm địa chỉ IP máy
+### 5. Khởi động ứng dụng
 
 **Windows:**
-1. Mở CMD, gõ: `ipconfig`
-2. Tìm dòng "IPv4 Address" (ví dụ: `192.168.1.100`)
+```bash
+start.bat
+```
 
-**macOS:**
-1. Mở System Preferences → Network
-2. Chọn kết nối mạng đang dùng
-3. Xem "IPv4 Address"
-
----
-
-## 4. Khởi động ứng dụng
-
-### Cách 1: Dùng script có sẵn (Khuyến nghị)
-
-**Windows:** Chạy file `start.bat` (double-click hoặc gõ trong CMD)
-
-**macOS/Linux:** Chạy file `start.sh` trong Terminal:
+**macOS/Linux:**
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
-Script sẽ tự động:
-- Kiểm tra các biến môi trường
-- Chạy migration nếu cần
-- Khởi động server
-
-### Cách 2: Chạy thủ công
-
+Hoặc chạy thủ công:
 ```bash
-# Khởi động development server
 npm run dev
-
-# Hoặc build và chạy production
-npm run build
-npm start
 ```
 
 ---
 
-## 5. Truy cập ứng dụng
+## 📱 Truy cập ứng dụng
 
-### Trang khách hàng (Đặt món)
+### Khách hàng (Đặt món)
 ```
 http://localhost:3000/order?table=1
 ```
+- Quét QR code tại bàn để đặt món
 - Thay `1` bằng số bàn tương ứng
-- Khách hàng quét QR code để đặt món
 
-### Trang nhân viên (Bar)
-```
-http://localhost:3000/staff/bar
-```
-- Xem và cập nhật đơn nước
+### Nhân viên
 
-### Trang nhân viên (Bếp)
-```
-http://localhost:3000/staff/kitchen
-```
-- Xem và cập nhật đơn đồ ăn
+| Trang | URL | Mô tả |
+|-------|-----|-------|
+| 🧋 Quầy Bar | `/staff/bar` | Quản lý đơn đồ uống |
+| 🍜 Bếp | `/staff/kitchen` | Quản lý đơn đồ ăn |
+| ➕ Thêm đơn | `/staff/add-order` | Nhân viên thêm món cho khách |
+| 💰 Tính tiền | `/staff/checkout` | Thanh toán và in hóa đơn |
+| 📊 Tổng quan | `/staff` | Xem tất cả đơn hàng |
 
-### Trang thanh toán
-```
-http://localhost:3000/staff/checkout
-```
-- Tính tiền và in hóa đơn
-
-### Trang quản lý (Admin)
+### Quản lý (Admin)
 ```
 http://localhost:3000/admin
 ```
-- **Mật khẩu:** `admin123` (hoặc giá trị `ADMIN_PASSWORD` trong .env)
-
-Quản lý:
-- **Thực đơn:** Thêm/sửa/xóa món, đổi giá
-- **Bàn:** Thêm/xóa bàn, đổi tên
-- **QR Code:** Tải file PDF in mã QR cho các bàn
+- **Mật khẩu mặc định**: `admin123`
+- Quản lý thực đơn, bàn, và tạo QR code
 
 ---
 
-## 6. Xử lý lỗi
+## 🔧 Scripts
+
+```bash
+# Development
+npm run dev          # Khởi động dev server
+npm run build        # Build production
+npm start            # Chạy production build
+
+# Database
+npx prisma migrate dev    # Tạo migration mới
+npx prisma migrate deploy # Apply migrations
+npx prisma db seed        # Seed dữ liệu mẫu
+npx prisma studio         # Mở Prisma Studio
+
+# Testing
+npm test             # Chạy tests
+npm run test:watch   # Chạy tests ở chế độ watch
+
+# Code quality
+npm run lint         # Kiểm tra linting
+npm run type-check   # Kiểm tra TypeScript
+```
+
+---
+
+## 📁 Cấu trúc dự án
+
+```
+TraSua/
+├── prisma/
+│   ├── schema.prisma       # Database schema
+│   ├── seed.ts             # Seed data
+│   └── dev.db              # SQLite database
+├── src/
+│   ├── app/
+│   │   ├── admin/          # Admin pages
+│   │   │   ├── menu/       # Quản lý thực đơn
+│   │   │   ├── tables/     # Quản lý bàn
+│   │   │   └── qr/         # Tạo QR code
+│   │   ├── staff/          # Staff pages
+│   │   │   ├── bar/        # Quầy bar
+│   │   │   ├── kitchen/    # Bếp
+│   │   │   ├── checkout/   # Tính tiền
+│   │   │   └── add-order/  # Thêm đơn
+│   │   ├── order/          # Customer order page
+│   │   ├── api/            # API routes
+│   │   └── globals.css     # Global styles
+│   ├── components/
+│   │   ├── admin/          # Admin components
+│   │   ├── staff/          # Staff components
+│   │   ├── order/          # Order components
+│   │   └── ui/             # Shared UI components
+│   └── lib/
+│       ├── prisma.ts       # Prisma client
+│       ├── order-status.ts # Order status logic
+│       └── format.ts       # Formatting utilities
+├── start.bat               # Windows startup script
+├── start.sh                # Unix startup script
+└── README.md               # This file
+```
+
+---
+
+## 🔍 Tìm địa chỉ IP máy
+
+### Windows
+1. Mở **Command Prompt** (CMD)
+2. Gõ: `ipconfig`
+3. Tìm dòng **"IPv4 Address"** (ví dụ: `192.168.1.100`)
+
+### macOS
+1. Mở **System Settings** → **Network**
+2. Chọn kết nối đang dùng (Wi-Fi hoặc Ethernet)
+3. Xem **"IP Address"**
+
+### Linux
+```bash
+ip addr show
+# hoặc
+ifconfig
+```
+
+---
+
+## 🐛 Xử lý lỗi thường gặp
 
 ### Lỗi: "ADMIN_PASSWORD chưa được cấu hình"
-- Kiểm tra file `.env` có tồn tại không
-- Đảm bảo có dòng `ADMIN_PASSWORD=...`
+**Nguyên nhân:** File `.env` không tồn tại hoặc thiếu biến `ADMIN_PASSWORD`
 
-### Lỗi: "SHOP_IP chưa được cấu hình"
-- Kiểm tra file `.env` có dòng `SHOP_IP=...`
-- Thay bằng địa chỉ IP thực của máy
-
-### Lỗi: "Prisma Migrate failed"
+**Giải pháp:**
 ```bash
-# Xóa database cũ và tạo lại
+# Tạo file .env với nội dung:
+echo "ADMIN_PASSWORD=admin123" > .env
+```
+
+### Lỗi: "Port 3000 đã được sử dụng"
+**Giải pháp 1:** Đổi port trong `.env`
+```env
+SHOP_PORT=3001
+```
+
+**Giải pháp 2:** Tắt ứng dụng đang dùng port 3000
+```bash
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# macOS/Linux
+lsof -ti:3000 | xargs kill -9
+```
+
+### Lỗi: "Prisma Client không tìm thấy"
+```bash
+npx prisma generate
+```
+
+### Lỗi: Database bị lỗi
+```bash
+# Xóa database và tạo lại
 rm prisma/dev.db
 npx prisma migrate deploy
 npx prisma db seed
 ```
 
-### Lỗi: "Port 3000 đã được sử dụng"
-- Đổi cổng bằng cách thêm vào `.env`:
-  ```
-  SHOP_PORT=3001
-  ```
-- Hoặc tắt ứng dụng khác đang dùng port 3000
-
-### Lỗi: Cannot find module
-```bash
-npm install
-```
-
-### Các lỗi khác
+### Lỗi: "Cannot find module"
 ```bash
 # Xóa node_modules và cài lại
-rm -rf node_modules
+rm -rf node_modules package-lock.json
 npm install
 ```
 
 ---
 
-## Cấu trúc dự án
+## 🧪 Testing
 
-```
-D:\TraSua\
-├── prisma/
-│   ├── schema.prisma    # Schema database
-│   └── dev.db           # Database SQLite
-├── src/
-│   ├── app/
-│   │   ├── admin/       # Trang quản lý
-│   │   ├── order/       # Trang đặt món (khách)
-│   │   ├── staff/       # Trang nhân viên
-│   │   └── api/         # API endpoints
-│   └── components/      # Các component React
-├── start.bat            # Script khởi động Windows
-├── start.sh             # Script khởi động Mac/Linux
-└── README.md            # File này
+Dự án có 178 unit tests covering:
+- API routes (order creation, menu, tables)
+- Order status transitions
+- Bill aggregation
+- Item cancellation logic
+
+```bash
+npm test                    # Chạy tất cả tests
+npm run test:watch          # Watch mode
+npm test -- order-status    # Chạy test cụ thể
 ```
 
 ---
 
-## Liên hệ hỗ trợ
+## 🔐 Bảo mật
 
-Nếu gặp lỗi không giải quyết được, kiểm tra:
-1. File `.env` có đúng format không
-2. Đã chạy `npm install` thành công chưa
-3. Port 3000 có đang bị chiếm không
-4. Node.js phiên bản có >= 18 không
+- ✅ Server-side price validation (không tin client)
+- ✅ Admin password protection
+- ✅ Input sanitization
+- ✅ SQL injection prevention (Prisma ORM)
+- ✅ XSS protection (React auto-escaping)
 
 ---
 
-**Chúc quán kinh doanh thuận lợi! 🧋☕**
+## 📊 Database Schema
+
+### Models
+- **MenuItem**: Món ăn/uống (name, price, category, available)
+- **Table**: Bàn (number, name)
+- **Order**: Đơn hàng (table, totalAmount, status, paid)
+- **OrderItem**: Chi tiết đơn (menuItem, quantity, status, notes)
+
+### Order Status Flow
+```
+PENDING → PREPARING → READY → SERVED
+```
+
+### Item Status Flow
+```
+PENDING → PREPARING → READY → SERVED
+                    ↓
+                CANCELLED
+```
+
+---
+
+## 🌐 Real-time Updates
+
+Ứng dụng sử dụng **Server-Sent Events (SSE)** để cập nhật real-time:
+- Đơn hàng mới → Tự động hiện ở bar/bếp
+- Thay đổi trạng thái → Cập nhật ngay lập tức
+- Thanh toán → Xóa khỏi danh sách checkout
+
+**Endpoint SSE:**
+```
+GET /api/staff/orders/stream?station=bar|kitchen|all
+```
+
+---
+
+## 🎯 Roadmap
+
+- [ ] Báo cáo doanh thu theo ngày/tháng
+- [ ] Xuất hóa đơn PDF
+- [ ] Tích hợp máy in nhiệt
+- [ ] Quản lý nhân viên và ca làm việc
+- [ ] Thống kê món bán chạy
+- [ ] Dark mode
+
+---
+
+## 🤝 Đóng góp
+
+Mọi đóng góp đều được chào đón! Vui lòng:
+1. Fork repository
+2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
+
+---
+
+## 📝 License
+
+Dự án này được phát hành dưới giấy phép MIT.
+
+---
+
+## 📞 Liên hệ
+
+- **GitHub**: [@thanhthien0912](https://github.com/thanhthien0912)
+- **Repository**: [TraSua](https://github.com/thanhthien0912/TraSua)
+
+---
+
+**Chúc quán kinh doanh thuận lợi! 🧋✨**
