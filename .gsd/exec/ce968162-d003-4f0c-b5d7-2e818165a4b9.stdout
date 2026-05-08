@@ -1,9 +1,0 @@
-TSC EXIT: 1
-.next/dev/types/validator.ts(25,44): error TS2344: Type 'Route' does not satisfy the constraint '"/"'.
-  Type 'LayoutRoutes' is not assignable to type '"/"'.
-    Type '"/staff"' is not assignable to type '"/"'.
-.next/dev/types/validator.ts(25,75): error TS2344: Type 'Route' does not satisfy the constraint '"/"'.
-  Type 'LayoutRoutes' is not assignable to type '"/"'.
-    Type '"/staff"' is not assignable to type '"/"'.
-
-

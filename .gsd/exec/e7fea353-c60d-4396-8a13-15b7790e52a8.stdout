@@ -1,3 +1,0 @@
-ERROR: Command failed: git merge-base HEAD main
-fatal: Not a valid object name main
-
