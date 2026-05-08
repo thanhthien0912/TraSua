@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-06T09:47:11Z | Files: 84 | Described: 0/84
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-06T09:47:11Z","fingerprint":"720afd27dd5a291037e748f01310f6418c49e30d","fileCount":84,"truncated":false} -->
+Generated: 2026-05-08T01:17:29Z | Files: 84 | Described: 0/84
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-08T01:17:29Z","fingerprint":"720afd27dd5a291037e748f01310f6418c49e30d","fileCount":84,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
