@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-08T09:43:21Z","fingerprint":"720afd27dd5a291037e748f01310f6418c49e30d","fileCount":84,"truncated":false} -->
+Generated: 2026-05-08T09:54:04Z | Files: 88 | Described: 0/88
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-08T09:54:04Z","fingerprint":"d999a0f37841bc7a2f2e10bde126904a61b90f99","fileCount":88,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -15,8 +15,9 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 - `postcss.config.mjs`
 - `prisma.config.ts`
 - `README.md`
+- `start.bat`
+- `start.sh`
 - `tsconfig.json`
-- `tsconfig.tsbuildinfo`
 - `vitest.config.ts`
 
 ### prisma/
@@ -36,9 +37,6 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 ### prisma/migrations/20260506090234_add_menu_hidden/
 - `prisma/migrations/20260506090234_add_menu_hidden/migration.sql`
 
-### src/
-- `src/middleware.ts`
-
 ### src/app/
 - `src/app/globals.css`
 - `src/app/layout.tsx`
@@ -48,9 +46,6 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 - `src/app/admin/layout.tsx`
 - `src/app/admin/page.tsx`
 
-### src/app/admin/login/
-- `src/app/admin/login/page.tsx`
-
 ### src/app/admin/menu/
 - `src/app/admin/menu/page.tsx`
 
@@ -59,9 +54,6 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 
 ### src/app/admin/tables/
 - `src/app/admin/tables/page.tsx`
-
-### src/app/api/admin/login/
-- `src/app/api/admin/login/route.ts`
 
 ### src/app/api/admin/menu/
 - `src/app/api/admin/menu/route.ts`
@@ -74,6 +66,18 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 
 ### src/app/api/admin/qr-pdf/
 - `src/app/api/admin/qr-pdf/route.ts`
+
+### src/app/api/admin/qr-pdf/__tests__/
+- `src/app/api/admin/qr-pdf/__tests__/qr-pdf.test.ts`
+
+### src/app/api/admin/tables/
+- `src/app/api/admin/tables/route.ts`
+
+### src/app/api/admin/tables/[id]/
+- `src/app/api/admin/tables/[id]/route.ts`
+
+### src/app/api/admin/tables/__tests__/
+- `src/app/api/admin/tables/__tests__/table-crud.test.ts`
 
 ### src/app/api/order/
 - `src/app/api/order/route.ts`
@@ -110,6 +114,9 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 - `src/app/staff/page.tsx`
 - `src/app/staff/StaffNav.tsx`
 
+### src/app/staff/add-order/
+- `src/app/staff/add-order/page.tsx`
+
 ### src/app/staff/bar/
 - `src/app/staff/bar/page.tsx`
 
@@ -133,6 +140,7 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 - `src/components/order/OrderConfirmation.tsx`
 
 ### src/components/staff/
+- `src/components/staff/AddOrderModal.tsx`
 - `src/components/staff/BillView.tsx`
 - `src/components/staff/MenuPickerModal.tsx`
 - `src/components/staff/OrderCard.tsx`
@@ -144,11 +152,11 @@ Generated: 2026-05-08T09:43:21Z | Files: 84 | Described: 0/84
 - `src/components/staff/__tests__/orderReducer.test.ts`
 
 ### src/components/ui/
+- `src/components/ui/Skeleton.tsx`
 - `src/components/ui/Toast.tsx`
 - `src/components/ui/ToastProvider.tsx`
 
 ### src/lib/
-- `src/lib/auth.ts`
 - `src/lib/categorize-orders.ts`
 - `src/lib/format.ts`
 - `src/lib/order-status.ts`
