@@ -1,10 +1,11 @@
 # Codebase Map
 
-Generated: 2026-05-11T07:05:31Z | Files: 109 | Described: 0/109
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:05:31Z","fingerprint":"04dfa3c1834bb4e414d1899940582a9f97380ffc","fileCount":109,"truncated":false} -->
+Generated: 2026-05-11T07:38:37Z | Files: 110 | Described: 0/110
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:38:37Z","fingerprint":"d47b451818b6378cac7162bffd68d514785bb4fa","fileCount":110,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
+- `.vercel-build-trigger`
 - `AGENTS.md`
 - `capacitor.config.ts`
 - `CLAUDE.md`
