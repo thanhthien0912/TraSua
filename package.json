@@ -15,10 +15,10 @@
     "@capacitor/android": "^8.3.3",
     "@capacitor/cli": "^8.3.3",
     "@capacitor/core": "^8.3.3",
-    "@prisma/client": "^7.8.0",
+    "@prisma/client": "^5.22.0",
     "next": "15.1.6",
     "pdfkit": "^0.18.0",
-    "prisma": "^7.8.0",
+    "prisma": "^5.22.0",
     "qrcode": "^1.5.4",
     "react": "19.0.0",
     "react-dom": "19.0.0"
