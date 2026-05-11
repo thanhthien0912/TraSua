@@ -5,7 +5,7 @@
  * Imported by API routes and UI components alike.
  */
 
-import type { ItemStatus, OrderStatus } from '../../generated/prisma/enums'
+import type { ItemStatus, OrderStatus } from '@prisma/client'
 
 // Re-export for convenience so consumers don't need to import from generated
 export type { ItemStatus, OrderStatus }
