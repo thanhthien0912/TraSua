@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-11T07:38:37Z | Files: 110 | Described: 0/110
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:38:37Z","fingerprint":"d47b451818b6378cac7162bffd68d514785bb4fa","fileCount":110,"truncated":false} -->
+Generated: 2026-05-11T07:43:32Z | Files: 109 | Described: 0/109
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:43:32Z","fingerprint":"214912832ebd6deaf0a1e413eef435417e7ab9cf","fileCount":109,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -77,7 +77,6 @@ Generated: 2026-05-11T07:38:37Z | Files: 110 | Described: 0/110
 ### prisma/
 - `prisma/dev.db`
 - `prisma/schema.prisma`
-- `prisma/seed.ts`
 
 ### src/app/
 - `src/app/globals.css`

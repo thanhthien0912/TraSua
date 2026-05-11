@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/pdfkit": "^0.17.6",
     "@types/qrcode": "^1.5.6",
