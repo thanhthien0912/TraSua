@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-11T08:32:16Z | Files: 110 | Described: 0/110
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T08:32:16Z","fingerprint":"c0508e261b37853877f144a02ffd566980b292f4","fileCount":110,"truncated":false} -->
+Generated: 2026-05-11T08:38:57Z | Files: 109 | Described: 0/109
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T08:38:57Z","fingerprint":"3a72e7323fc5b50acb0badbcbdcb12cbab298ed4","fileCount":109,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -76,7 +76,6 @@ Generated: 2026-05-11T08:32:16Z | Files: 110 | Described: 0/110
 - `android/gradle/wrapper/gradle-wrapper.properties`
 
 ### prisma/
-- `prisma/dev.db`
 - `prisma/schema.prisma`
 
 ### src/app/
