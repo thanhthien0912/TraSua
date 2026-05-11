@@ -1,12 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
-  // Chỉ truyền URL nếu nó tồn tại (tránh lỗi lúc Build trên Vercel)
-  const options = process.env.DATABASE_URL 
-    ? { datasourceUrl: process.env.DATABASE_URL } 
-    : {}
-    
-  return new PrismaClient(options as any)
+  return new PrismaClient()
 }
 
 declare global {
