@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-11T07:00:13Z | Files: 108 | Described: 0/108
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:00:13Z","fingerprint":"239aafe6b54ce36311373b099234e41d8ab89a75","fileCount":108,"truncated":false} -->
+Generated: 2026-05-11T07:05:31Z | Files: 109 | Described: 0/109
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:05:31Z","fingerprint":"04dfa3c1834bb4e414d1899940582a9f97380ffc","fileCount":109,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -14,6 +14,7 @@ Generated: 2026-05-11T07:00:13Z | Files: 108 | Described: 0/108
 - `package-lock.json`
 - `package.json`
 - `postcss.config.mjs`
+- `prisma.config.ts`
 - `README.md`
 - `tsconfig.json`
 - `vitest.config.ts`
