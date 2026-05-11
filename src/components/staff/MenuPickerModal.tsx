@@ -48,7 +48,6 @@ export default function MenuPickerModal({
   // Selection state — single item at a time
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
   const [quantity, setQuantity] = useState(1)
-  const [notes, setNotes] = useState('')
 
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -65,7 +64,6 @@ export default function MenuPickerModal({
     setMenuError(null)
     setSelectedItem(null)
     setQuantity(1)
-    setNotes('')
     setSubmitError(null)
     setActiveTab('DRINK')
 
@@ -110,7 +108,6 @@ export default function MenuPickerModal({
     if (!item.available) return
     setSelectedItem(item)
     setQuantity(1)
-    setNotes('')
     setSubmitError(null)
   }, [])
 
@@ -139,7 +136,6 @@ export default function MenuPickerModal({
             {
               menuItemId: selectedItem.id,
               quantity,
-              ...(notes.trim() ? { notes: notes.trim() } : {}),
             },
           ],
         }),
@@ -166,7 +162,7 @@ export default function MenuPickerModal({
     } finally {
       setSubmitting(false)
     }
-  }, [selectedItem, quantity, notes, orderId, onSuccess, handleClose])
+  }, [selectedItem, quantity, orderId, onSuccess, handleClose])
 
   // ─── Don't render if not open ───────────────────────────────
   if (!isOpen) return null
@@ -406,16 +402,6 @@ export default function MenuPickerModal({
                 </button>
               </div>
             </div>
-
-            {/* Notes input */}
-            <input
-              type="text"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Ghi chú (tuỳ chọn)"
-              className="w-full rounded-xl border border-amber-200/60 bg-white px-4 py-3 text-sm text-amber-900 placeholder:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-600/30 mb-3"
-              style={{ minHeight: 44 }}
-            />
 
             {/* Error message */}
             {submitError && (

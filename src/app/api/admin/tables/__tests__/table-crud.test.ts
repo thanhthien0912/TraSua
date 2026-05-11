@@ -95,8 +95,7 @@ describe('POST /api/admin/tables', () => {
     mockFindFirst.mockResolvedValue(null) // no existing tables
     mockCreate.mockResolvedValue({ id: 1, number: 1, name: 'Bàn 1' })
 
-    const req = makeRequest('http://localhost/api/admin/tables', 'POST')
-    const res = await POST(req as any)
+    const res = await POST()
     expect(res.status).toBe(201)
 
     const data = await json(res)
@@ -110,8 +109,7 @@ describe('POST /api/admin/tables', () => {
     mockFindFirst.mockResolvedValue({ number: 5 })
     mockCreate.mockResolvedValue({ id: 3, number: 6, name: 'Bàn 6' })
 
-    const req = makeRequest('http://localhost/api/admin/tables', 'POST')
-    const res = await POST(req as any)
+    const res = await POST()
     expect(res.status).toBe(201)
 
     const data = await json(res)
@@ -122,8 +120,7 @@ describe('POST /api/admin/tables', () => {
   it('returns 500 on database error', async () => {
     mockFindFirst.mockRejectedValue(new Error('DB error'))
 
-    const req = makeRequest('http://localhost/api/admin/tables', 'POST')
-    const res = await POST(req as any)
+    const res = await POST()
     expect(res.status).toBe(500)
   })
 })

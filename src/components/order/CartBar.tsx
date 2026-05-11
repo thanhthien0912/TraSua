@@ -24,16 +24,13 @@ export default function CartBar({ onOpen }: CartBarProps) {
         type="button"
         onClick={onOpen}
         aria-label={`Xem giỏ hàng, ${totalItems} món, tổng ${formatVND(totalAmount)}`}
-        className="flex w-full items-center justify-between rounded-2xl px-6 text-white shadow-2xl transition-all duration-200 ease-out hover:shadow-orange-500/50 active:scale-[0.97]"
+        className="flex w-full items-center justify-between rounded-2xl px-6 text-white shadow-xl active:scale-95 transition-all"
         style={{
-          minHeight: 60,
-          background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-          boxShadow:
-            '0 8px 24px rgba(249, 115, 22, 0.4), 0 2px 8px rgba(234, 88, 12, 0.3)',
+          minHeight: 64,
+          backgroundColor: '#e67e22', // Màu Cam rực rỡ để không lẫn vào đâu được
+          border: '2px solid #ffffff40',
           transform: isEmpty ? 'translateY(150%)' : 'translateY(0)',
           opacity: isEmpty ? 0 : 1,
-          transitionProperty: 'transform, opacity, box-shadow',
-          willChange: 'transform',
         }}
         tabIndex={isEmpty ? -1 : 0}
       >

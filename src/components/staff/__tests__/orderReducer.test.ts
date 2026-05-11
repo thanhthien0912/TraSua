@@ -4,6 +4,7 @@
  * Tests the pure reducer function without React hooks.
  */
 
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { orderReducer } from '../useOrderStream'
 import type { OrderState, Order } from '../useOrderStream'
 

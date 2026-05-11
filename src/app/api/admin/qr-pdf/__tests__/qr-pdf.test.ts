@@ -43,8 +43,8 @@ vi.mock('qrcode', () => ({
 import { GET } from '../route'
 
 // ─── Helpers ─────────────────────────────────────────────────────────
-function makeRequest(url: string): Request {
-  return new Request(url, { method: 'GET' })
+function makeRequest(url: string): any {
+  return new Request(url, { method: 'GET' }) as any
 }
 
 async function json(res: Response) {
@@ -61,7 +61,7 @@ beforeEach(() => {
 // =====================================================================
 describe('GET /api/admin/qr-pdf', () => {
   it('returns 400 when SHOP_IP env var is missing', async () => {
-    const req = new Request('http://localhost/api/admin/qr-pdf')
+    const req = makeRequest('http://localhost/api/admin/qr-pdf')
     vi.stubEnv('SHOP_IP', '')
     const res = await GET(req)
     expect(res.status).toBe(400)
@@ -69,21 +69,7 @@ describe('GET /api/admin/qr-pdf', () => {
   })
 
   it('returns 400 when no tables exist in DB', async () => {
-    const req = new Request('http://localhost/api/admin/qr-pdf', {
-      headers: { cookie: 'trasua-admin=authenticated' },
-    })
-    vi.stubEnv('SHOP_IP', '192.168.1.100')
-    mockFindMany.mockResolvedValue([])
-
-    const res = await GET(req)
-    expect(res.status).toBe(400)
-
-    const data = await json(res)
-    expect(data.error).toContain('Chưa có bàn nào')
-  })
-
-  it('returns 400 when no tables exist in DB', async () => {
-    const req = new Request('http://localhost/api/admin/qr-pdf')
+    const req = makeRequest('http://localhost/api/admin/qr-pdf')
     vi.stubEnv('SHOP_IP', '192.168.1.100')
     mockFindMany.mockResolvedValue([])
 
@@ -95,7 +81,7 @@ describe('GET /api/admin/qr-pdf', () => {
   })
 
   it('returns PDF buffer when tables exist', async () => {
-    const req = new Request('http://localhost/api/admin/qr-pdf')
+    const req = makeRequest('http://localhost/api/admin/qr-pdf')
     vi.stubEnv('SHOP_IP', '192.168.1.100')
     vi.stubEnv('SHOP_PORT', '3000')
     mockFindMany.mockResolvedValue([
@@ -110,7 +96,7 @@ describe('GET /api/admin/qr-pdf', () => {
   })
 
   it('queries tables from DB ordered by number', async () => {
-    const req = new Request('http://localhost/api/admin/qr-pdf')
+    const req = makeRequest('http://localhost/api/admin/qr-pdf')
     vi.stubEnv('SHOP_IP', '192.168.1.100')
     mockFindMany.mockResolvedValue([{ id: 1, number: 1, name: 'Bàn 1' }])
 

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">trasua</string>
+    <string name="title_activity_main">trasua</string>
+    <string name="package_name">com.trasua.app</string>
+    <string name="custom_url_scheme">com.trasua.app</string>
+</resources>

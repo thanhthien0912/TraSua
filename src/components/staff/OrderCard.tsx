@@ -13,15 +13,15 @@ const STATUS_CONFIG: Record<
 > = {
   PENDING: {
     label: 'Chờ',
-    bg: 'bg-emerald-100',
-    text: 'text-emerald-700',
-    ring: 'ring-emerald-300',
+    bg: 'bg-orange-100',
+    text: 'text-orange-700',
+    ring: 'ring-orange-300',
   },
   PREPARING: {
     label: 'Đang pha',
-    bg: 'bg-teal-100',
-    text: 'text-teal-700',
-    ring: 'ring-teal-300',
+    bg: 'bg-blue-100',
+    text: 'text-blue-700',
+    ring: 'ring-blue-300',
   },
   READY: {
     label: 'Xong',
@@ -49,8 +49,8 @@ const ORDER_STATUS_CONFIG: Record<
   string,
   { label: string; dotColor: string }
 > = {
-  PENDING: { label: 'Chờ xử lý', dotColor: 'bg-emerald-400' },
-  PREPARING: { label: 'Đang pha chế', dotColor: 'bg-teal-400' },
+  PENDING: { label: 'Chờ xử lý', dotColor: 'bg-orange-400' },
+  PREPARING: { label: 'Đang pha chế', dotColor: 'bg-blue-400' },
   READY: { label: 'Sẵn sàng', dotColor: 'bg-emerald-400' },
   SERVED: { label: 'Đã phục vụ', dotColor: 'bg-slate-400' },
   CANCELLED: { label: 'Đã huỷ', dotColor: 'bg-red-400' },
@@ -65,7 +65,7 @@ const CANCELLABLE_STATUSES: Set<ItemStatus> = new Set([
   'READY',
 ])
 
-function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
+function ItemRow({ item, orderId, showPrice }: { item: OrderItem; orderId: number; showPrice: boolean }) {
   const [loading, setLoading] = useState(false)
   const [confirmingCancel, setConfirmingCancel] = useState(false)
   const cancelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -148,24 +148,19 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
   }, [confirmingCancel, orderId, item.id])
 
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-emerald-100 last:border-b-0">
+    <div className="flex items-center gap-3 py-3 border-b border-border last:border-b-0">
       {/* Item info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-base text-emerald-900 truncate">
+          <span className="font-semibold text-base text-foreground truncate">
             {item.menuItem.name}
           </span>
-          <span className="text-emerald-600 font-medium text-sm flex-shrink-0">
+          <span className="text-primary font-medium text-sm flex-shrink-0">
             ×{item.quantity}
           </span>
         </div>
-        {item.notes && (
-          <p className="text-sm text-emerald-600/70 mt-0.5 truncate">
-            📝 {item.notes}
-          </p>
-        )}
-        <span className="text-xs text-emerald-500 mt-1 inline-block">
-          {formatVND(item.menuItem.price * item.quantity)}
+        <span className="text-xs text-foreground/50 mt-1 inline-block">
+          {showPrice && formatVND(item.menuItem.price * item.quantity)}
         </span>
       </div>
 
@@ -176,10 +171,10 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
             onClick={() => handleAdvance('SERVED')}
             disabled={loading}
             className="
-              min-h-[44px] min-w-[80px] px-4 py-2 rounded-xl font-semibold text-sm
-              transition-all duration-150 active:scale-95
-              disabled:opacity-50 disabled:cursor-not-allowed
-              bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-900/20
+              min-h-[52px] min-w-[100px] px-6 py-2 rounded-2xl font-black text-base
+              transition-all duration-150 active:scale-90
+              disabled:opacity-50
+              bg-[#27ae60] text-white shadow-[0_4px_0_0_#1e8449] active:shadow-none active:translate-y-[4px]
             "
           >
             {loading ? (
@@ -196,42 +191,38 @@ function ItemRow({ item, orderId }: { item: OrderItem; orderId: number }) {
 
 // ─── OrderCard ──────────────────────────────────────────────────────
 
-export default function OrderCard({ order, isNew }: { order: Order; isNew?: boolean }) {
+export default function OrderCard({ order, isNew, dimmed, faded, showPrice = true }: { order: Order; isNew?: boolean; dimmed?: boolean; faded?: boolean; showPrice?: boolean }) {
   const derivedStatus = order.derivedStatus ?? order.status
-  const orderStatusConfig = ORDER_STATUS_CONFIG[derivedStatus] ?? ORDER_STATUS_CONFIG.PENDING
   const timeStr = new Date(order.createdAt).toLocaleTimeString('vi-VN', {
     hour: '2-digit',
     minute: '2-digit',
   })
 
   return (
-    <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-emerald-100 shadow-lg shadow-emerald-900/5 overflow-hidden transition-shadow duration-200 hover:shadow-xl hover:shadow-emerald-900/10${isNew ? ' animate-pulse-highlight' : ''}`}>
+    <div className={`bg-white rounded-2xl border-2 overflow-hidden transition-all
+      ${isNew ? 'border-primary ring-2 ring-primary ring-offset-2' : 'border-border'}
+      ${dimmed ? 'opacity-50' : ''}
+      ${faded ? 'grayscale' : ''}
+    `}>
       {/* Header */}
-      <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100/40">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold text-emerald-900">
-              {order.table.name}
-            </span>
-            <span className="text-sm text-emerald-500 font-mono">
-              #{order.id}
-            </span>
-          </div>
-          <span className="text-xs text-emerald-500">{timeStr}</span>
+      <div className="px-4 py-3 bg-secondary/30 border-b border-border/50 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="font-black text-lg text-foreground">{order.table.name}</span>
+          <span className="text-[10px] font-black text-foreground/30 font-mono">#{order.id}</span>
         </div>
-        <div className="mt-1">
-          <span className="text-sm font-semibold text-emerald-700">
-            {formatVND(order.totalAmount)}
-          </span>
+        <div className="text-right">
+          {showPrice && <p className="font-black text-base text-primary tabular-nums">{formatVND(order.totalAmount)}</p>}
+          <p className="text-[10px] font-bold text-foreground/30">{timeStr}</p>
         </div>
       </div>
 
       {/* Items */}
-      <div className="px-5 py-2">
+      <div className="px-4 py-2">
         {order.items.map((item) => (
-          <ItemRow key={item.id} item={item} orderId={order.id} />
+          <ItemRow key={item.id} item={item} orderId={order.id} showPrice={showPrice} />
         ))}
       </div>
     </div>
   )
+
 }

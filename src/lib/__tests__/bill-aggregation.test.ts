@@ -5,6 +5,7 @@
  * cancelled item exclusion, and edge cases.
  */
 
+import { describe, it, expect } from 'vitest'
 import { calculateOrderTotal } from '@/lib/order-status'
 
 describe('calculateOrderTotal', () => {

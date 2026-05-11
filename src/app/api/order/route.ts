@@ -5,7 +5,6 @@ import { broadcast } from '@/lib/sse'
 type OrderItemInput = {
   menuItemId: number
   quantity: number
-  notes?: string
 }
 
 type OrderRequestBody = {
@@ -132,7 +131,6 @@ export async function POST(request: NextRequest) {
           orderId: newOrder.id,
           menuItemId: i.menuItemId,
           quantity: i.quantity,
-          notes: i.notes || null,
           status: 'PENDING',
         })),
       })

@@ -34,16 +34,11 @@ export default function CartUI({
     setViewState({ view: 'confirmation', order })
   }, [])
 
-  const handleOrderMore = useCallback(() => {
-    setViewState({ view: 'menu' })
-  }, [])
-
   if (viewState.view === 'confirmation') {
     return (
       <OrderConfirmation
         order={viewState.order}
         tableNumber={tableNumber}
-        onOrderMore={handleOrderMore}
       />
     )
   }

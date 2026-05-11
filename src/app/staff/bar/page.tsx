@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import StationView from '@/components/staff/StationView'
 
 export const metadata: Metadata = {
-  title: 'TraSua - Quầy Bar',
-  description: 'Quản lý đơn hàng đồ uống — Quầy Bar',
+  title: 'TraSua - Nước',
+  description: 'Quản lý đơn hàng đồ uống — Nước',
 }
 
 export default function BarStationPage() {

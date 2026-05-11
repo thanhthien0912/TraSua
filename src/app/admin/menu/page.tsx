@@ -219,29 +219,19 @@ export default function AdminMenuPage() {
           </h1>
           <button
             onClick={handleCreate}
-            className="min-h-[48px] inline-flex items-center gap-2 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 px-5 py-3 text-base font-bold text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all active:scale-[0.96]"
-            style={{ transitionProperty: 'box-shadow, transform' }}
+            className="min-h-[48px] inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 text-base font-black text-white shadow-lg shadow-primary/20 active:scale-95 transition-all"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
+            <PlusIconAdmin />
             Thêm món
           </button>
         </div>
 
         {/* ── Tab Bar ──────────────────────────────────────────── */}
-        <div className="px-5 py-4 bg-gray-50/50">
+        <div className="px-5 py-4 bg-secondary/30">
           <nav
             role="tablist"
             aria-label="Danh mục thực đơn"
-            className="inline-flex w-full rounded-2xl bg-white shadow-sm border border-gray-200 p-1.5"
+            className="inline-flex w-full rounded-2xl bg-white border border-border p-1"
           >
             {TABS.map((tab) => {
               const isActive = activeTab === tab.key
@@ -256,19 +246,19 @@ export default function AdminMenuPage() {
                   aria-controls={`panel-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
                   className={`
-                    flex-1 rounded-xl px-5 py-3 text-base font-bold
-                    transition-all duration-200 ease-out
+                    flex-1 rounded-xl px-5 py-3 text-sm font-black uppercase tracking-tight
+                    transition-all duration-200
                     ${
                       isActive
-                        ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        ? 'bg-foreground text-white'
+                        : 'text-foreground/40 hover:bg-secondary/50'
                     }
                   `}
                   style={{ minHeight: 48 }}
                 >
                   {tab.emoji} {tab.label}{' '}
                   <span
-                    className={`text-sm ${isActive ? 'text-white/80' : 'text-gray-500'}`}
+                    className={`text-xs ${isActive ? 'text-white/60' : 'text-foreground/20'}`}
                   >
                     ({count})
                   </span>
@@ -333,7 +323,21 @@ export default function AdminMenuPage() {
   )
 }
 
-// ─── Admin Item Card ────────────────────────────────────────────────
+// ─── Plus Icon Admin ────────────────────────────────────────────────
+function PlusIconAdmin() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={3}
+      stroke="currentColor"
+      className="w-5 h-5"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+  )
+}
 
 function AdminItemCard({
   item,
@@ -382,96 +386,60 @@ function AdminItemCard({
   return (
     <div
       className={`
-        rounded-2xl bg-white p-5 border border-gray-200
-        transition-all duration-200 ease-out
-        ${isHidden ? 'opacity-50' : 'hover:shadow-lg hover:border-teal-200'}
+        rounded-2xl bg-white p-5 border border-border
+        transition-all duration-200
+        ${isHidden ? 'opacity-40 grayscale' : 'hover:border-primary'}
       `}
       style={{
-        boxShadow: isHidden
-          ? 'none'
-          : '0 2px 8px rgba(0, 0, 0, 0.04)',
+        boxShadow: isHidden ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.03)',
         animationDelay: `${index * 50}ms`,
         animation: 'adminCardEnter 0.3s ease-out both',
       }}
     >
       {/* ─── Top row: name + badges ──────────────────────────── */}
-      <div className="flex items-start justify-between gap-3 mb-3">
+      <div className="flex items-start justify-between gap-3 mb-4">
         <div className="min-w-0 flex-1">
           <h3
-            className={`text-lg font-bold leading-snug ${
-              isHidden ? 'text-gray-400' : 'text-gray-900'
+            className={`text-lg font-black leading-tight ${
+              isHidden ? 'text-foreground/40' : 'text-foreground'
             }`}
             style={{ textWrap: 'balance' }}
           >
             {item.name}
           </h3>
-          {item.description && (
-            <p
-              className={`mt-2 text-sm leading-relaxed ${
-                isHidden ? 'text-gray-400' : 'text-gray-600'
-              }`}
-              style={{ textWrap: 'pretty' }}
-            >
-              {item.description}
-            </p>
-          )}
+          <span
+            className={`text-base font-black ${
+              isHidden ? 'text-foreground/20' : 'text-primary'
+            }`}
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            {formatVND(item.price)}
+          </span>
         </div>
 
         {/* Badges column */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
           {isHidden && (
-            <span className="inline-flex items-center rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-600">
+            <span className="inline-flex items-center rounded-lg bg-secondary px-2 py-1 text-[10px] font-black uppercase text-foreground/40">
               Đã ẩn
             </span>
           )}
           {isUnavailable && !isHidden && (
-            <span className="inline-flex items-center rounded-xl bg-teal-100 px-3 py-1.5 text-xs font-semibold text-orange-700">
+            <span className="inline-flex items-center rounded-lg bg-red-100 px-2 py-1 text-[10px] font-black uppercase text-red-600">
               Hết hàng
             </span>
           )}
         </div>
       </div>
 
-      {/* ─── Price + sort order ──────────────────────────────── */}
-      <div className="flex items-center gap-3 mb-4">
-        <span
-          className={`text-base font-bold ${
-            isHidden ? 'text-gray-400' : 'text-teal-600'
-          }`}
-          style={{ fontVariantNumeric: 'tabular-nums' }}
-        >
-          {formatVND(item.price)}
-        </span>
-        {item.sortOrder !== 0 && (
-          <span className="text-xs text-gray-400">
-            #{item.sortOrder}
-          </span>
-        )}
-      </div>
-
       {/* ─── Action buttons ──────────────────────────────────── */}
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-border/50">
         {isHidden ? (
           /* Restore button for hidden items */
           <button
             onClick={() => onRestore(item)}
-            className="min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
-            style={{ transitionProperty: 'background-color, transform' }}
+            className="col-span-2 min-h-[48px] inline-flex items-center justify-center gap-2 rounded-xl bg-foreground text-white text-sm font-black uppercase transition-all active:scale-95"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
-              />
-            </svg>
             Khôi phục
           </button>
         ) : (
@@ -479,23 +447,8 @@ function AdminItemCard({
             {/* Edit */}
             <button
               onClick={() => onEdit(item)}
-              className="min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-2.5 text-sm font-bold text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors active:scale-[0.96]"
-              style={{ transitionProperty: 'background-color, transform' }}
+              className="min-h-[48px] inline-flex items-center justify-center gap-2 rounded-xl bg-secondary/50 text-foreground text-sm font-black uppercase border border-border hover:bg-secondary active:scale-95"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"
-                />
-              </svg>
               Sửa
             </button>
 
@@ -503,80 +456,32 @@ function AdminItemCard({
             <button
               onClick={() => onToggleAvailable(item)}
               className={`
-                min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold border
-                transition-colors active:scale-[0.96]
+                min-h-[48px] inline-flex items-center justify-center gap-2 rounded-xl text-sm font-black uppercase border
+                transition-all active:scale-95
                 ${
                   item.available
-                    ? 'bg-teal-50 text-orange-700 border-teal-200 hover:bg-teal-100'
-                    : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                    ? 'bg-white text-red-500 border-red-200'
+                    : 'bg-green-100 text-green-700 border-green-200'
                 }
               `}
-              style={{ transitionProperty: 'background-color, transform' }}
             >
-              {item.available ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"
-                    />
-                  </svg>
-                  Hết hàng
-                </>
-              ) : (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                  </svg>
-                  Còn hàng
-                </>
-              )}
+              {item.available ? 'Hết hàng' : 'Còn hàng'}
             </button>
 
             {/* Delete (two-tap) */}
             <button
               onClick={handleDeleteTap}
               className={`
-                min-h-[44px] w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold
-                transition-all duration-150 active:scale-[0.96]
+                col-span-2 min-h-[48px] inline-flex items-center justify-center gap-2 rounded-xl text-sm font-black uppercase
+                transition-all duration-150 active:scale-95
                 ${
                   confirmingDelete
-                    ? 'bg-red-600 text-white shadow-lg shadow-red-500/30'
-                    : 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+                    ? 'bg-red-600 text-white shadow-lg'
+                    : 'bg-red-50 text-red-600 border border-red-100'
                 }
               `}
-              style={{ transitionProperty: 'background-color, color, transform, box-shadow' }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                />
-              </svg>
-              {confirmingDelete ? 'Xác nhận xoá?' : 'Ẩn món'}
+              {confirmingDelete ? 'Xác nhận xoá?' : 'Ẩn món này'}
             </button>
           </>
         )}

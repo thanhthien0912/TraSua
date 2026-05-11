@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { broadcast } from '@/lib/sse'
 import {
-  isValidTransition,
   deriveOrderStatus,
   calculateOrderTotal,
   type ItemStatus,
@@ -111,16 +110,11 @@ export async function PATCH(
 
   // ─── Validate transition ──────────────────────────────────────────
   const currentStatus = item.status as ItemStatus
-  if (!isValidTransition(currentStatus, targetStatus)) {
-    console.log(
-      `[PATCH /api/staff/orders/${orderId}/items/${itemId}] Invalid transition: ${currentStatus} → ${targetStatus}`
-    )
+
+  // Chỉ chặn nếu đã terminal (SERVED hoặc CANCELLED)
+  if (currentStatus === 'SERVED' || currentStatus === 'CANCELLED') {
     return NextResponse.json(
-      {
-        error: `Không thể chuyển trạng thái từ ${currentStatus} sang ${targetStatus}.`,
-        currentStatus,
-        targetStatus,
-      },
+      { error: `Món đã ở trạng thái ${currentStatus}, không thể thay đổi.` },
       { status: 409 }
     )
   }
@@ -185,9 +179,54 @@ export async function PATCH(
     ),
   }
 
-  // Broadcast to all stations (no station filter — every station sees item changes
-  // and can update its own view accordingly)
+  // Broadcast to all stations
   broadcast('item-status-change', enrichedOrder)
 
   return NextResponse.json(enrichedOrder)
+}
+
+/**
+ * DELETE /api/staff/orders/[orderId]/items/[itemId]
+ *
+ * Physically removes an item from the order and updates the total.
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ orderId: string; itemId: string }> }
+) {
+  const { orderId: orderIdStr, itemId: itemIdStr } = await params
+  const orderId = parseInt(orderIdStr, 10)
+  const itemId = parseInt(itemIdStr, 10)
+
+  try {
+    const order = await prisma.order.findUnique({ where: { id: orderId }, select: { status: true } })
+    if (!order) return NextResponse.json({ error: 'Đơn hàng không tồn tại' }, { status: 404 })
+    if (order.status === 'PAID') return NextResponse.json({ error: 'Đơn đã thanh toán' }, { status: 409 })
+
+    await prisma.orderItem.delete({ where: { id: itemId } })
+
+    // Recalculate
+    const allItems = await prisma.orderItem.findMany({
+      where: { orderId },
+      include: { menuItem: { select: { price: true } } },
+    })
+
+    const newStatus = deriveOrderStatus(allItems.map(i => i.status as ItemStatus))
+    const newTotal = calculateOrderTotal(allItems.map(i => ({
+      status: i.status,
+      price: i.menuItem.price,
+      quantity: i.quantity,
+    })))
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: { status: newStatus, totalAmount: newTotal },
+      include: { table: true, items: { include: { menuItem: true } } }
+    })
+
+    broadcast('item-status-change', updatedOrder)
+    return new Response(null, { status: 204 })
+  } catch (err) {
+    return NextResponse.json({ error: 'Không thể xoá món' }, { status: 500 })
+  }
 }

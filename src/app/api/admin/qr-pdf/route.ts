@@ -74,8 +74,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ── Build PDF ──────────────────────────────────────────────
-    const doc = new PDFDocument({ size: "A4", margin: 40 })
-    doc.registerFont("Vietnamese", fontPath)
+    const doc = new PDFDocument({ size: "A4", margin: 40, font: fontPath })
 
     const chunks: Buffer[] = []
     doc.on("data", (chunk: Buffer) => chunks.push(chunk))
@@ -86,15 +85,16 @@ export async function GET(request: NextRequest) {
 
     // ── Layout constants ─────────────────────────────────────
     const pageWidth = 595.28
-    const margin = 40
+    const pageHeight = 841.89 // A4
+    const margin = 30
     const cols = 3
-    const rows = 5
+    const rows = 4
     const perPage = cols * rows
     const availableWidth = pageWidth - margin * 2
+    const availableHeight = pageHeight - margin * 2
     const colWidth = availableWidth / cols
-    const qrSize = 120
-    const rowHeight = 150
-    const titleHeight = 50
+    const rowHeight = availableHeight / rows
+    const qrSize = Math.min(colWidth, rowHeight) * 0.6
 
     // ── Render pages ─────────────────────────────────────────
     const tableCount = tables.length
@@ -103,19 +103,6 @@ export async function GET(request: NextRequest) {
     for (let page = 0; page < totalPages; page++) {
       if (page > 0) doc.addPage()
 
-      // Page title (only first page)
-      if (page === 0) {
-        doc
-          .font("Vietnamese")
-          .fontSize(20)
-          .fillColor("#000000")
-          .text("QR Code - TraSua", margin, margin, {
-            align: "center",
-            width: availableWidth,
-          })
-      }
-
-      const startY = page === 0 ? margin + titleHeight : margin
       const startIdx = page * perPage
       const endIdx = Math.min(startIdx + perPage, tableCount)
 
@@ -125,34 +112,31 @@ export async function GET(request: NextRequest) {
         const row = Math.floor(localIdx / cols)
 
         const cellX = margin + col * colWidth
-        const cellY = startY + row * rowHeight
+        const cellY = margin + row * rowHeight
         const qrX = cellX + (colWidth - qrSize) / 2
+        const qrY = cellY + (rowHeight - qrSize) / 2 - 10
 
-        // Embed QR image
-        doc.image(qrBuffers[i], qrX, cellY, {
+        // Viền ô
+        doc
+          .rect(cellX + 4, cellY + 4, colWidth - 8, rowHeight - 8)
+          .stroke("#eeeeee")
+
+        // QR image
+        doc.image(qrBuffers[i], qrX, qrY, {
           width: qrSize,
           height: qrSize,
         })
 
-        // "Bàn N" label — 14pt, centered below QR
+        // Tên bàn — cố định vị trí, không cho pdfkit dịch cursor
         doc
-          .font("Vietnamese")
-          .fontSize(14)
+          .fontSize(13)
           .fillColor("#1a1a1a")
-          .text(`Bàn ${tables[i].number}`, cellX, cellY + qrSize + 4, {
-            width: colWidth,
-            align: "center",
-          })
-
-        // "Quét để đặt món" subtitle — 10pt, lighter
-        doc
-          .font("Vietnamese")
-          .fontSize(10)
-          .fillColor("#666666")
-          .text("Quét để đặt món", cellX, cellY + qrSize + 20, {
-            width: colWidth,
-            align: "center",
-          })
+          .text(
+            `Ban ${tables[i].number}`,
+            cellX,
+            qrY + qrSize + 6,
+            { width: colWidth, align: "center", lineBreak: false }
+          )
       }
     }
 
@@ -171,6 +155,6 @@ export async function GET(request: NextRequest) {
     })
   } catch (err) {
     console.error("[qr-pdf] PDF generation failed:", err)
-    return Response.json({ error: "PDF generation failed" }, { status: 500 })
+    return Response.json({ error: `PDF generation failed: ${err instanceof Error ? err.message : 'Unknown error'}` }, { status: 500 })
   }
 }

@@ -32,11 +32,11 @@ const ITEM_STATUS_DISPLAY: Record<
   string,
   { label: string; bg: string; text: string }
 > = {
-  PENDING: { label: 'Chờ', bg: 'bg-emerald-100', text: 'text-emerald-800' },
-  PREPARING: { label: 'Đang pha', bg: 'bg-teal-100', text: 'text-teal-800' },
-  READY: { label: 'Xong', bg: 'bg-emerald-100', text: 'text-emerald-800' },
-  SERVED: { label: 'Đã phục vụ', bg: 'bg-slate-100', text: 'text-slate-500' },
-  CANCELLED: { label: 'Huỷ', bg: 'bg-red-100', text: 'text-red-700' },
+  PENDING:   { label: 'Chờ',         bg: 'bg-orange-100', text: 'text-orange-700' },
+  PREPARING: { label: 'Đang pha',    bg: 'bg-blue-100',   text: 'text-blue-700'   },
+  READY:     { label: 'Xong',        bg: 'bg-green-100',  text: 'text-green-700'  },
+  SERVED:    { label: 'Đã phục vụ', bg: 'bg-slate-100',  text: 'text-slate-500'  },
+  CANCELLED: { label: 'Huỷ',        bg: 'bg-red-100',    text: 'text-red-600'    },
 }
 
 const CANCELLABLE_STATUSES: Set<string> = new Set([
@@ -49,132 +49,96 @@ const CANCELLABLE_STATUSES: Set<string> = new Set([
 
 function BillItemRow({
   item,
-  onCancelled,
+  onChanged,
 }: {
   item: BillItem
-  onCancelled: () => void
+  onChanged: () => void
 }) {
   const [loading, setLoading] = useState(false)
   const [confirmingCancel, setConfirmingCancel] = useState(false)
-  const cancelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isCancelled = item.status === 'CANCELLED'
   const canCancel = CANCELLABLE_STATUSES.has(item.status)
   const statusConfig = ITEM_STATUS_DISPLAY[item.status] ?? ITEM_STATUS_DISPLAY.PENDING
 
-  // 3-second auto-reset for cancel confirmation
   useEffect(() => {
-    if (confirmingCancel) {
-      cancelTimerRef.current = setTimeout(() => {
+    if (confirmingCancel || confirmingDelete) {
+      timerRef.current = setTimeout(() => {
         setConfirmingCancel(false)
+        setConfirmingDelete(false)
       }, 3000)
     }
-    return () => {
-      if (cancelTimerRef.current) {
-        clearTimeout(cancelTimerRef.current)
-        cancelTimerRef.current = null
-      }
-    }
-  }, [confirmingCancel])
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+  }, [confirmingCancel, confirmingDelete])
 
   const handleCancelTap = useCallback(async () => {
-    if (!confirmingCancel) {
-      setConfirmingCancel(true)
-      return
-    }
-    // Second tap — execute cancel
+    if (!confirmingCancel) { setConfirmingCancel(true); return }
     setLoading(true)
-    setConfirmingCancel(false)
     try {
-      const res = await fetch(
-        `/api/staff/orders/${item.orderId}/items/${item.id}`,
-        {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'cancel' }),
-        }
-      )
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        console.error(`[BillView] Cancel failed (${res.status}):`, err.error ?? 'Unknown error')
-      } else {
-        onCancelled()
-      }
-    } catch (err) {
-      console.error('[BillView] Cancel network error:', err)
-    } finally {
-      setLoading(false)
-    }
-  }, [confirmingCancel, item.orderId, item.id, onCancelled])
+      await fetch(`/api/staff/orders/${item.orderId}/items/${item.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'cancel' }),
+      })
+      onChanged()
+    } finally { setLoading(false); setConfirmingCancel(false) }
+  }, [confirmingCancel, item.orderId, item.id, onChanged])
+
+  const handleDeleteTap = useCallback(async () => {
+    if (!confirmingDelete) { setConfirmingDelete(true); return }
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/staff/orders/${item.orderId}/items/${item.id}`, {
+        method: 'DELETE'
+      })
+      if (res.ok) onChanged()
+    } finally { setLoading(false); setConfirmingDelete(false) }
+  }, [confirmingDelete, item.orderId, item.id, onChanged])
 
   return (
-    <div
-      className={`flex items-center gap-3 py-3 border-b border-emerald-100/60 last:border-b-0 transition-opacity duration-200 ${
-        isCancelled ? 'opacity-50' : ''
-      }`}
-    >
-      {/* Item info */}
+    <div className={`flex items-center gap-3 py-3 border-b border-border last:border-b-0 ${isCancelled ? 'opacity-40' : ''}`}>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span
-            className={`font-semibold text-base ${
-              isCancelled ? 'line-through text-emerald-600/50' : 'text-emerald-900'
-            }`}
-          >
+          <span className={`font-black text-base ${isCancelled ? 'line-through text-foreground/30' : 'text-foreground'}`}>
             {item.name}
           </span>
-          <span className="text-emerald-600 font-medium text-sm flex-shrink-0">
-            ×{item.quantity}
-          </span>
+          <span className="text-primary font-black text-sm flex-shrink-0">×{item.quantity}</span>
         </div>
-        {item.notes && (
-          <p className="text-sm text-emerald-600/70 mt-0.5 italic truncate">
-            📝 {item.notes}
-          </p>
-        )}
         <div className="flex items-center gap-2 mt-1">
-          <span
-            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}
-          >
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black ${statusConfig.bg} ${statusConfig.text}`}>
             {statusConfig.label}
           </span>
-          <span
-            className={`text-xs font-variant-numeric: tabular-nums ${
-              isCancelled ? 'text-emerald-400 line-through' : 'text-emerald-500'
-            }`}
-            style={{ fontVariantNumeric: 'tabular-nums' }}
-          >
+          <span className={`text-xs font-black tabular-nums ${isCancelled ? 'line-through text-foreground/20' : 'text-foreground/50'}`}>
             {formatVND(item.price * item.quantity)}
           </span>
         </div>
       </div>
-
-      {/* Cancel button — two-tap confirmation */}
-      {canCancel && (
+      
+      <div className="flex gap-2">
+        {/* Delete Button */}
         <button
-          onClick={handleCancelTap}
+          onClick={handleDeleteTap}
           disabled={loading}
-          className={`
-            min-h-[44px] px-4 py-2 rounded-xl font-semibold text-sm
-            transition-all duration-150 active:scale-[0.96]
-            disabled:opacity-50 disabled:cursor-not-allowed
-            ${
-              confirmingCancel
-                ? 'bg-red-600 text-white shadow-md shadow-red-900/20 min-w-[120px]'
-                : 'bg-red-50 text-red-600 ring-1 ring-inset ring-red-200 hover:bg-red-100'
-            }
-          `}
-          style={{ transitionProperty: 'background-color, color, transform, box-shadow' }}
+          className={`min-h-[44px] px-3 py-2 rounded-xl font-black text-xs uppercase active:scale-95
+            ${confirmingDelete ? 'bg-red-700 text-white' : 'bg-white text-red-500 border border-red-100'}`}
         >
-          {loading ? (
-            <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : confirmingCancel ? (
-            'Xác nhận huỷ?'
-          ) : (
-            'Huỷ'
-          )}
+          {confirmingDelete ? 'Xoá hẳn?' : 'Xoá'}
         </button>
-      )}
+
+        {/* Cancel Button */}
+        {canCancel && (
+          <button
+            onClick={handleCancelTap}
+            disabled={loading}
+            className={`min-h-[44px] px-3 py-2 rounded-xl font-black text-xs uppercase active:scale-95
+              ${confirmingCancel ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 border border-orange-100'}`}
+          >
+            {confirmingCancel ? 'Huỷ món?' : 'Huỷ'}
+          </button>
+        )}
+      </div>
     </div>
   )
 }
@@ -333,129 +297,72 @@ export default function BillView({
   const cancelledItems = bill.items.filter((i) => i.status === 'CANCELLED')
 
   return (
-    <div className="animate-in fade-in slide-in-from-right-4 duration-200">
-      {/* ─── Back button + table header ──────────────────────── */}
-      <div className="flex items-center gap-3 mb-6">
+    <div className="animate-in fade-in duration-200">
+      {/* Back + table header */}
+      <div className="flex items-center gap-3 mb-5">
         <button
           onClick={onBack}
-          className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-white/60 border border-emerald-200/40 text-emerald-700 hover:bg-emerald-100 transition-colors active:scale-[0.96]"
-          style={{ transitionProperty: 'background-color, transform' }}
-          aria-label="Quay lại danh sách bàn"
+          className="w-11 h-11 flex items-center justify-center rounded-xl bg-white border border-border active:scale-95"
+          aria-label="Quay lại"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 text-foreground">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
           </svg>
         </button>
         <div>
-          <h2 className="text-2xl font-bold text-emerald-900 tracking-tight">
-            {bill.table.name}
-          </h2>
-          <p className="text-sm text-emerald-600">
-            {bill.orders.length} đơn · {bill.items.length} món
-          </p>
+          <h2 className="text-xl font-black text-foreground">{bill.table.name}</h2>
+          <p className="text-xs font-bold text-foreground/40">{bill.orders.length} đơn · {bill.items.length} món</p>
         </div>
       </div>
 
-      {/* ─── Bill card ───────────────────────────────────────── */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-emerald-200/60 shadow-lg shadow-emerald-900/5 overflow-hidden">
+      {/* Bill card */}
+      <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
         {/* Active items */}
-        <div className="px-5 py-3">
-          {activeItems.length > 0 ? (
-            activeItems.map((item) => (
-              <BillItemRow
-                key={item.id}
-                item={item}
-                onCancelled={handleItemCancelled}
-              />
-            ))
-          ) : (
-            <p className="text-emerald-500 text-center py-6">Không có món nào</p>
-          )}
+        <div className="px-5 py-2">
+          {activeItems.length > 0
+            ? activeItems.map((item) => <BillItemRow key={item.id} item={item} onChanged={handleItemCancelled} />)
+            : <p className="text-foreground/30 font-black text-center py-6 text-sm">Không có món nào</p>}
         </div>
 
-        {/* Cancelled items (collapsible) */}
+        {/* Cancelled items */}
         {cancelledItems.length > 0 && (
-          <div className="px-5 pb-3 border-t border-emerald-100/60">
-            <p className="text-xs font-semibold text-emerald-500/60 uppercase tracking-wider mt-3 mb-1">
-              Đã huỷ
-            </p>
-            {cancelledItems.map((item) => (
-              <BillItemRow
-                key={item.id}
-                item={item}
-                onCancelled={handleItemCancelled}
-              />
-            ))}
+          <div className="px-5 pb-3 border-t border-border/50">
+            <p className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mt-3 mb-1">Đã huỷ</p>
+            {cancelledItems.map((item) => <BillItemRow key={item.id} item={item} onChanged={handleItemCancelled} />)}
           </div>
         )}
 
-        {/* ─── Add item button ────────────────────────────────── */}
-        <div className="px-5 py-3 border-t border-emerald-100/60">
+        {/* Add item */}
+        <div className="px-5 py-3 border-t border-border/50">
           <button
-            type="button"
             onClick={() => setShowMenuPicker(true)}
-            className="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-emerald-100/70 border border-emerald-200/60 text-emerald-800 font-semibold text-sm hover:bg-emerald-200/60 transition-colors active:scale-[0.96]"
-            style={{ transitionProperty: 'background-color, transform' }}
+            className="w-full min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-secondary border border-border text-foreground font-black text-sm uppercase active:scale-95"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Thêm món
+            + Thêm món
           </button>
         </div>
 
-        {/* ─── Total + Pay button ────────────────────────────── */}
-        <div className="px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-t border-emerald-200/40">
+        {/* Total + Pay */}
+        <div className="px-5 py-5 bg-secondary/30 border-t border-border/50">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-semibold text-emerald-800">
-              Tổng cộng
-            </span>
-            <span
-              className="text-2xl font-bold text-emerald-900"
-              style={{ fontVariantNumeric: 'tabular-nums' }}
-            >
-              {formatVND(bill.total)}
-            </span>
+            <span className="text-sm font-black uppercase text-foreground/50">Tổng cộng</span>
+            <span className="text-2xl font-black text-foreground tabular-nums">{formatVND(bill.total)}</span>
           </div>
-
           <button
             data-testid="pay-button"
             onClick={handlePayTap}
             disabled={paying || activeItems.length === 0}
-            className={`
-              w-full min-h-[52px] py-3 rounded-2xl font-bold text-base
-              transition-colors duration-200 active:scale-[0.96]
-              disabled:opacity-50 disabled:cursor-not-allowed
-              ${
-                confirmingPay
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/30'
-                  : 'bg-emerald-700 text-emerald-50 hover:bg-emerald-800 shadow-md shadow-emerald-900/20'
-              }
-            `}
-            style={{ transitionProperty: 'background-color, color, transform, box-shadow' }}
+            className={`w-full min-h-[56px] rounded-2xl font-black text-base uppercase active:scale-95 disabled:opacity-30 transition-all
+              ${confirmingPay ? 'bg-green-600 text-white shadow-lg' : 'bg-primary text-white shadow-lg shadow-primary/20'}`}
           >
-            {paying ? (
-              <span className="inline-flex items-center gap-2">
-                <span className="inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                Đang xử lý…
-              </span>
-            ) : confirmingPay ? (
-              'Xác nhận thanh toán? ✓'
-            ) : (
-              `Đã thanh toán · ${formatVND(bill.total)}`
-            )}
+            {paying
+              ? <span className="flex items-center justify-center gap-2"><span className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />Đang xử lý…</span>
+              : confirmingPay ? 'Xác nhận thanh toán? ✓'
+              : `Đã thanh toán · ${formatVND(bill.total)}`}
           </button>
         </div>
       </div>
 
-      {/* ─── Menu Picker Modal ───────────────────────────────── */}
       <MenuPickerModal
         orderId={bill.orders[bill.orders.length - 1].id}
         tableId={tableId}

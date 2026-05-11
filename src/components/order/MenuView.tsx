@@ -77,15 +77,15 @@ export default function MenuView({
                   aria-controls={`panel-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
                   className={`
-                    flex-1 rounded-xl px-5 py-3 text-base font-bold
-                    transition-all duration-200 ease-out
+                    flex-1 rounded-xl px-5 py-3 text-sm font-black uppercase tracking-widest
+                    transition-all duration-200
                     ${
                       isActive
-                        ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                        ? 'bg-foreground text-white' // Tab chọn dùng màu Nâu đen cực đậm
+                        : 'bg-white text-foreground/40 border border-border'
                     }
                   `}
-                  style={{ minHeight: 48 }}
+                  style={{ minHeight: 52 }}
                 >
                   {tab.label}
                 </button>
@@ -139,13 +139,13 @@ function ItemCard({
         ${
           unavailable
             ? 'opacity-50'
-            : 'hover:shadow-lg hover:border-teal-200 active:scale-[0.98] cursor-pointer'
+            : 'hover:shadow-md hover:border-primary/30 active:scale-[0.98] cursor-pointer'
         }
       `}
       style={{
         boxShadow: unavailable
           ? 'none'
-          : '0 2px 8px rgba(0, 0, 0, 0.04)',
+          : '0 4px 12px rgba(74, 55, 40, 0.05)',
       }}
       aria-disabled={unavailable || undefined}
     >
@@ -176,8 +176,8 @@ function ItemCard({
 
           {/* Price */}
           <p
-            className={`mt-3 text-base font-bold ${
-              unavailable ? 'text-gray-400' : 'text-teal-600'
+            className={`mt-3 text-lg font-bold ${
+              unavailable ? 'text-gray-400' : 'text-primary'
             }`}
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
@@ -199,8 +199,8 @@ function ItemCard({
                 e.stopPropagation()
                 onAdd(item)
               }}
-              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-emerald-500/30 transition-all duration-200 ease-out hover:shadow-xl hover:shadow-emerald-500/40 active:scale-[0.92]"
-              style={{ minHeight: 48, minWidth: 48 }}
+              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-lg active:scale-90 transition-transform"
+              style={{ minHeight: 56, minWidth: 56 }}
             >
               <PlusIcon />
             </button>
