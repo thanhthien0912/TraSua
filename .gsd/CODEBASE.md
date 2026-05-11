@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-11T06:41:37Z | Files: 117 | Described: 0/117
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T06:41:37Z","fingerprint":"553f102dfc082833f02ec46b07e7331224d1faaf","fileCount":117,"truncated":false} -->
+Generated: 2026-05-11T06:50:14Z | Files: 113 | Described: 0/113
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T06:50:14Z","fingerprint":"b7cc8479f51fb11af0c3bcd7b4c5b80ffe26154a","fileCount":113,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -16,8 +16,6 @@ Generated: 2026-05-11T06:41:37Z | Files: 117 | Described: 0/117
 - `postcss.config.mjs`
 - `prisma.config.ts`
 - `README.md`
-- `start.bat`
-- `start.sh`
 - `tsconfig.json`
 - `vitest.config.ts`
 
@@ -158,9 +156,6 @@ Generated: 2026-05-11T06:41:37Z | Files: 117 | Described: 0/117
 ### src/app/api/staff/orders/[orderId]/items/[itemId]/
 - `src/app/api/staff/orders/[orderId]/items/[itemId]/route.ts`
 
-### src/app/api/staff/orders/stream/
-- `src/app/api/staff/orders/stream/route.ts`
-
 ### src/app/api/staff/tables/[tableId]/bill/
 - `src/app/api/staff/tables/[tableId]/bill/route.ts`
 
@@ -222,7 +217,6 @@ Generated: 2026-05-11T06:41:37Z | Files: 117 | Described: 0/117
 - `src/lib/format.ts`
 - `src/lib/order-status.ts`
 - `src/lib/prisma.ts`
-- `src/lib/sse.ts`
 
 ### src/lib/__tests__/
 - `src/lib/__tests__/add-item-api.test.ts`
