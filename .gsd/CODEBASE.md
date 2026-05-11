@@ -1,11 +1,12 @@
 # Codebase Map
 
-Generated: 2026-05-11T04:15:41Z | Files: 88 | Described: 0/88
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T04:15:41Z","fingerprint":"d999a0f37841bc7a2f2e10bde126904a61b90f99","fileCount":88,"truncated":false} -->
+Generated: 2026-05-11T06:41:37Z | Files: 117 | Described: 0/117
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T06:41:37Z","fingerprint":"553f102dfc082833f02ec46b07e7331224d1faaf","fileCount":117,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
 - `AGENTS.md`
+- `capacitor.config.ts`
 - `CLAUDE.md`
 - `eslint.config.mjs`
 - `next-env.d.ts`
@@ -19,6 +20,60 @@ Generated: 2026-05-11T04:15:41Z | Files: 88 | Described: 0/88
 - `start.sh`
 - `tsconfig.json`
 - `vitest.config.ts`
+
+### .github/workflows/
+- `.github/workflows/android-build.yml`
+
+### android/
+- `android/.gitignore`
+- `android/build.gradle`
+- `android/gradle.properties`
+- `android/gradlew`
+- `android/gradlew.bat`
+- `android/settings.gradle`
+- `android/variables.gradle`
+
+### android/app/
+- `android/app/.gitignore`
+- `android/app/build.gradle`
+- `android/app/proguard-rules.pro`
+
+### android/app/src/androidTest/java/com/getcapacitor/myapp/
+- `android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java`
+
+### android/app/src/main/
+- `android/app/src/main/AndroidManifest.xml`
+
+### android/app/src/main/java/com/trasua/app/
+- `android/app/src/main/java/com/trasua/app/MainActivity.java`
+
+### android/app/src/main/res/drawable/
+- `android/app/src/main/res/drawable/ic_launcher_background.xml`
+
+### android/app/src/main/res/drawable-v24/
+- `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml`
+
+### android/app/src/main/res/layout/
+- `android/app/src/main/res/layout/activity_main.xml`
+
+### android/app/src/main/res/mipmap-anydpi-v26/
+- `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml`
+- `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`
+
+### android/app/src/main/res/values/
+- `android/app/src/main/res/values/ic_launcher_background.xml`
+- `android/app/src/main/res/values/strings.xml`
+- `android/app/src/main/res/values/styles.xml`
+
+### android/app/src/main/res/xml/
+- `android/app/src/main/res/xml/file_paths.xml`
+
+### android/app/src/test/java/com/getcapacitor/myapp/
+- `android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java`
+
+### android/gradle/wrapper/
+- `android/gradle/wrapper/gradle-wrapper.jar`
+- `android/gradle/wrapper/gradle-wrapper.properties`
 
 ### prisma/
 - `prisma/dev.db`
@@ -46,6 +101,9 @@ Generated: 2026-05-11T04:15:41Z | Files: 88 | Described: 0/88
 - `src/app/admin/layout.tsx`
 - `src/app/admin/page.tsx`
 
+### src/app/admin/history/
+- `src/app/admin/history/page.tsx`
+
 ### src/app/admin/menu/
 - `src/app/admin/menu/page.tsx`
 
@@ -54,6 +112,9 @@ Generated: 2026-05-11T04:15:41Z | Files: 88 | Described: 0/88
 
 ### src/app/admin/tables/
 - `src/app/admin/tables/page.tsx`
+
+### src/app/api/admin/history/
+- `src/app/api/admin/history/route.ts`
 
 ### src/app/api/admin/menu/
 - `src/app/api/admin/menu/route.ts`

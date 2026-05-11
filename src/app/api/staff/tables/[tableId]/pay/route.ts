@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { broadcast } from '@/lib/sse'
 
 /**
  * POST /api/staff/tables/[tableId]/pay
  *
  * Marks all unpaid, non-cancelled orders for a table as PAID.
- * Sets paidAt timestamp on each order. Broadcasts 'order-paid' SSE event.
+ * Sets paidAt timestamp on each order.
  *
  * Response: { paid: true, orderIds: number[], paidAt: string }
  *
@@ -66,9 +65,6 @@ export async function POST(
     console.log(
       `[POST /api/staff/tables/${tableId}/pay] Marked ${orderIds.length} orders as PAID: [${orderIds.join(', ')}], paidAt=${paidAt.toISOString()}`
     )
-
-    // ─── Broadcast SSE event ──────────────────────────────────────────
-    broadcast('order-paid', { tableId, orderIds, paidAt: paidAt.toISOString() })
 
     return NextResponse.json({
       paid: true,

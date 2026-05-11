@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { broadcast } from '@/lib/sse'
 import {
   deriveOrderStatus,
   calculateOrderTotal,
@@ -179,9 +178,6 @@ export async function PATCH(
     ),
   }
 
-  // Broadcast to all stations
-  broadcast('item-status-change', enrichedOrder)
-
   return NextResponse.json(enrichedOrder)
 }
 
@@ -224,7 +220,6 @@ export async function DELETE(
       include: { table: true, items: { include: { menuItem: true } } }
     })
 
-    broadcast('item-status-change', updatedOrder)
     return new Response(null, { status: 204 })
   } catch (err) {
     return NextResponse.json({ error: 'Không thể xoá món' }, { status: 500 })

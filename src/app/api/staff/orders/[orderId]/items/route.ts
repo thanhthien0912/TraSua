@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { broadcast } from '@/lib/sse'
 import {
   deriveOrderStatus,
   calculateOrderTotal,
@@ -10,7 +9,6 @@ import {
 type AddItemInput = {
   menuItemId: number
   quantity: number
-  notes?: string
 }
 
 type AddItemsBody = {
@@ -146,7 +144,6 @@ export async function POST(
           orderId,
           menuItemId: i.menuItemId,
           quantity: i.quantity,
-          notes: i.notes || null,
           status: 'PENDING',
         })),
       })
@@ -197,14 +194,6 @@ export async function POST(
       `[POST /api/staff/orders/${orderId}/items] Added ${items.length} items, ` +
         `new totalAmount=${enrichedOrder.totalAmount}`
     )
-
-    // Broadcast item-status-change — stations already handle this event type
-    broadcast('item-status-change', {
-      ...enrichedOrder,
-      derivedStatus: deriveOrderStatus(
-        enrichedOrder.items.map((i) => i.status as ItemStatus)
-      ),
-    })
 
     return NextResponse.json(enrichedOrder, { status: 201 })
   } catch (error) {
