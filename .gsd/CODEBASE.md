@@ -1,7 +1,7 @@
 # Codebase Map
 
-Generated: 2026-05-11T06:50:14Z | Files: 113 | Described: 0/113
-<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T06:50:14Z","fingerprint":"b7cc8479f51fb11af0c3bcd7b4c5b80ffe26154a","fileCount":113,"truncated":false} -->
+Generated: 2026-05-11T07:00:13Z | Files: 108 | Described: 0/108
+<!-- gsd:codebase-meta {"generatedAt":"2026-05-11T07:00:13Z","fingerprint":"239aafe6b54ce36311373b099234e41d8ab89a75","fileCount":108,"truncated":false} -->
 
 ### (root)/
 - `.gitignore`
@@ -14,7 +14,6 @@ Generated: 2026-05-11T06:50:14Z | Files: 113 | Described: 0/113
 - `package-lock.json`
 - `package.json`
 - `postcss.config.mjs`
-- `prisma.config.ts`
 - `README.md`
 - `tsconfig.json`
 - `vitest.config.ts`
@@ -77,18 +76,6 @@ Generated: 2026-05-11T06:50:14Z | Files: 113 | Described: 0/113
 - `prisma/dev.db`
 - `prisma/schema.prisma`
 - `prisma/seed.ts`
-
-### prisma/migrations/
-- `prisma/migrations/migration_lock.toml`
-
-### prisma/migrations/20260506024910_add_full_schema/
-- `prisma/migrations/20260506024910_add_full_schema/migration.sql`
-
-### prisma/migrations/20260506071758_add_paid_at/
-- `prisma/migrations/20260506071758_add_paid_at/migration.sql`
-
-### prisma/migrations/20260506090234_add_menu_hidden/
-- `prisma/migrations/20260506090234_add_menu_hidden/migration.sql`
 
 ### src/app/
 - `src/app/globals.css`
