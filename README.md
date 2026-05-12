@@ -61,4 +61,4 @@ npx prisma db push
 Sau khi tải file APK cài vào máy tính bảng/điện thoại ở quán, ứng dụng sẽ chạy ở chế độ toàn màn hình và tự động kết nối với máy chủ Vercel. Quán của bạn có thể tắt máy tính chủ, hệ thống vẫn hoạt động 24/7.
 
 ---
-*Phát triển bởi Thanh Thiện*
+*Phát triển bởi Phan Thanh Thiên*
