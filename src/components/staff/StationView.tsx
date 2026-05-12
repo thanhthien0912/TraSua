@@ -124,14 +124,10 @@ export default function StationView({ station }: { station: Station }) {
               </span>
             </div>
 
-            {/* Unlock / Mute */}
-            {needsUnlock ? (
+            {/* Unlock Audio */}
+            {needsUnlock && (
               <button onClick={unlock} className="min-h-[40px] px-3 py-2 rounded-xl bg-primary text-white font-black text-xs uppercase active:scale-95">
                 🔔 Bật âm
-              </button>
-            ) : (
-              <button onClick={toggleMute} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-border active:scale-95 text-lg">
-                {isMuted ? '🔕' : '🔔'}
               </button>
             )}
 
