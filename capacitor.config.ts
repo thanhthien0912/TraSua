@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'TraSua',
   webDir: 'out',
   server: {
-    url: 'https://tra-sua-git-vercel-react-server-compon-b22cd1-thien-s-projects1.vercel.app',
+    url: 'https://tra-sua.vercel.app',
     cleartext: true
   }
 };
