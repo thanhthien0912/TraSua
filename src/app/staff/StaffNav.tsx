@@ -34,16 +34,14 @@ export default function StaffNav() {
               key={href}
               href={href}
               className={`
-                relative flex flex-col items-center justify-center gap-1
-                min-h-[64px] min-w-[70px] px-3 shrink-0 flex-1 sm:flex-none
-                text-[10px] font-black uppercase tracking-tighter
+                relative flex flex-col items-center justify-center
+                min-h-[60px] min-w-[60px] shrink-0 flex-1 sm:flex-none
                 transition-all duration-200
-                ${isActive ? 'text-primary' : 'text-foreground/30'}
+                ${isActive ? 'text-primary scale-110' : 'text-foreground/40 hover:text-foreground/60'}
               `}
               aria-current={isActive ? 'page' : undefined}
             >
-              <span className="text-2xl mb-0.5" aria-hidden="true">{emoji}</span>
-              <span>{label}</span>
+              <span className="text-3xl" aria-hidden="true" title={label}>{emoji}</span>
               {isActive && (
                 <div className="absolute top-0 w-8 h-1 bg-primary rounded-b-full" />
               )}
