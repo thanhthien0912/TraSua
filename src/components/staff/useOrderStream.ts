@@ -90,7 +90,7 @@ export function useOrderStream(station: Station, options?: UseOrderStreamOptions
 
   useEffect(() => {
     fetchOrders()
-    const interval = setInterval(fetchOrders, 5000) // Polling mỗi 5 giây
+    const interval = setInterval(fetchOrders, 10000) // Polling mỗi 10 giây để tiết kiệm Vercel Function Invocations
     return () => clearInterval(interval)
   }, [fetchOrders])
 
