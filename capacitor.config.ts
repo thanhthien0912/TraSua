@@ -2,10 +2,10 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.trasua.app',
-  appName: 'TraSua App',
+  appName: 'TraSua',
   webDir: 'out',
   server: {
-    url: 'http://192.168.1.22:3000', // Sửa IP này theo IP Laptop của bạn
+    url: 'https://tra-sua-git-vercel-react-server-compon-b22cd1-thien-s-projects1.vercel.app',
     cleartext: true
   }
 };

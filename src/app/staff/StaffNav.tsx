@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: '/staff/add-order', label: 'Thêm đơn', emoji: '➕' },
   { href: '/staff/checkout', label: 'Tính tiền', emoji: '💰' },
   { href: '/staff', label: 'Tổng quan', emoji: '📋', exact: true },
+  { href: '/', label: 'Trang chủ', emoji: '🏠', exact: true },
 ] as const
 
 // ─── Staff Navigation ───────────────────────────────────────────────
