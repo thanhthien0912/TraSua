@@ -33,7 +33,7 @@ export default function AdminNav() {
               href={href}
               className={`
                 relative flex flex-col items-center justify-center gap-1
-                min-h-[64px] min-w-[80px] px-4
+                min-h-[64px] min-w-[80px] px-4 shrink-0 flex-1 sm:flex-none
                 text-[10px] font-black uppercase tracking-tighter
                 transition-all duration-200
                 ${

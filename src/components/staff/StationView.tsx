@@ -180,7 +180,7 @@ export default function StationView({ station }: { station: Station }) {
                   <p className="text-sm font-black text-foreground/30">Không có đơn đang chờ</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {active.map((order) => (
                     <OrderCard 
                       key={order.id} 
@@ -207,7 +207,7 @@ export default function StationView({ station }: { station: Station }) {
               {recentlyCompleted.length === 0 && hidden.length === 0 ? (
                 <p className="text-center text-xs font-black text-foreground/20 py-6">Chưa có món nào hoàn thành</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                   {/* Recently completed — mờ nhẹ */}
                   {recentlyCompleted.map((order) => (
                     <OrderCard key={order.id} order={order} dimmed showPrice={station === 'all'} />

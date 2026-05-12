@@ -35,7 +35,7 @@ export default function StaffNav() {
               href={href}
               className={`
                 relative flex flex-col items-center justify-center gap-1
-                min-h-[64px] min-w-[60px] px-3
+                min-h-[64px] min-w-[70px] px-3 shrink-0 flex-1 sm:flex-none
                 text-[10px] font-black uppercase tracking-tighter
                 transition-all duration-200
                 ${isActive ? 'text-primary' : 'text-foreground/30'}
