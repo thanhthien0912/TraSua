@@ -103,12 +103,12 @@ export default function StationView({ station }: { station: Station }) {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Header ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-20 bg-white border-b border-border shadow-sm">
-        <div className="px-4 py-4 flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-20 bg-white border-b border-border shadow-sm landscape:py-2">
+        <div className="px-4 py-4 landscape:py-1 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">{STATION_EMOJI[station]}</span>
+            <span className="text-3xl landscape:text-2xl">{STATION_EMOJI[station]}</span>
             <div>
-              <h1 className="text-xl font-black text-foreground">{STATION_LABELS[station]}</h1>
+              <h1 className="text-xl landscape:text-lg font-black text-foreground">{STATION_LABELS[station]}</h1>
               <p className="text-xs font-bold text-foreground/40 mt-0.5">
                 {active.length > 0 ? `${active.length} đơn đang hoạt động` : 'Không có đơn nào'}
               </p>
@@ -157,7 +157,7 @@ export default function StationView({ station }: { station: Station }) {
       </div>
 
       {/* ── Content ──────────────────────────────────────── */}
-      <main className="px-4 py-5 pb-24 max-w-7xl mx-auto">
+      <main className="px-4 py-5 max-w-7xl mx-auto">
         {active.length === 0 && recentlyCompleted.length === 0 && hidden.length === 0 ? (
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-24 text-center">

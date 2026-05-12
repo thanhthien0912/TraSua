@@ -13,7 +13,7 @@ export default function StaffLayout({
       <div className="fixed bottom-40 right-10 w-64 h-64 bg-teal-200/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Page content — padded at bottom to clear fixed nav */}
-      <div className="relative z-10 pb-20">{children}</div>
+      <div className="relative z-10 pb-28 sm:pb-32">{children}</div>
 
       {/* Fixed bottom navigation */}
       <StaffNav />
