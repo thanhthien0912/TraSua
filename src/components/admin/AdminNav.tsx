@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: '/admin/tables', label: 'Bàn', emoji: '🪑' },
   { href: '/admin/qr', label: 'QR Code', emoji: '📱' },
   { href: '/admin/history', label: 'Lịch sử', emoji: '📈' },
+  { href: '/', label: 'Trang chủ', emoji: '🏠' },
 ] as const
 
 // ─── Admin Navigation ───────────────────────────────────────────────
